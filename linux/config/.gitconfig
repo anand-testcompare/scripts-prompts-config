@@ -1,0 +1,7 @@
+[user]
+	email = anand@testcompare.ai
+	name = Anand Pant
+[pull]
+	rebase = false
+[core]
+	excludesfile = /home/anandpant/.gitignore_global

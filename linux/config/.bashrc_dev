@@ -1,0 +1,106 @@
+# Oh My Posh configuration for Bash
+eval "$(/home/anandpant/.local/bin/oh-my-posh init bash --config ~/.config/ohmyposh/theme.json)"
+
+# Path additions
+export PATH=$PATH:~/.local/bin
+
+# History configuration
+HISTSIZE=10000
+HISTFILESIZE=20000
+HISTCONTROL=ignoredups:erasedups
+shopt -s histappend
+
+# FZF configuration (using fdfind on Ubuntu/Debian)
+export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+
+# Aliases for better development workflow (adjusted for Linux)
+# Check if exa/eza is installed
+if command -v exa &> /dev/null; then
+    alias ll='exa -la --icons --git'
+    alias ls='exa --icons'
+elif command -v eza &> /dev/null; then
+    alias ll='eza -la --icons --git'
+    alias ls='eza --icons'
+else
+    alias ll='ls -la --color=auto'
+    alias ls='ls --color=auto'
+fi
+
+# Use batcat on Ubuntu/Debian
+if command -v batcat &> /dev/null; then
+    alias cat='batcat'
+elif command -v bat &> /dev/null; then
+    alias cat='bat'
+fi
+
+# Use fdfind on Ubuntu/Debian
+if command -v fdfind &> /dev/null; then
+    alias fd='fdfind'
+fi
+
+# Ripgrep alias
+if command -v rg &> /dev/null; then
+    alias grep='rg'
+fi
+
+# Git aliases
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+alias gl='git log --oneline --graph'
+alias gd='git diff'
+alias gco='git checkout'
+alias gb='git branch'
+
+# Development aliases
+alias serve='python3 -m http.server'
+alias myip='curl -s https://ipinfo.io/ip'
+alias ports='ss -tuln'
+alias update='sudo apt update && sudo apt upgrade'
+
+# Directory navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+
+# Safety aliases
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+# Quick directory access
+alias dl='cd ~/Downloads'
+alias docs='cd ~/Documents'
+alias dev='cd ~/Development'
+
+# System info aliases
+alias meminfo='free -h'
+alias cpuinfo='lscpu'
+alias diskinfo='df -h'
+alias processinfo='htop'
+
+# Productivity
+alias h='history'
+alias j='jobs -l'
+alias c='clear'
+
+# Source FZF if installed
+[ -f /usr/share/bash-completion/completions/fzf ] && source /usr/share/bash-completion/completions/fzf
+[ -f /usr/share/doc/fzf/examples/key-bindings.bash ] && source /usr/share/doc/fzf/examples/key-bindings.bash
+
+# Better bash completion
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+# Enable programmable completion features
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+    . /etc/bash_completion
+fi

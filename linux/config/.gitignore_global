@@ -1,0 +1,26 @@
+# Global gitignore file
+# Configure with: git config --global core.excludesfile ~/.gitignore_global
+
+# Sensitive files
+.shell_secrets
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.log
+*.tmp
+.cache/

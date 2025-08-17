@@ -1,0 +1,10 @@
+# Never commit secrets
+.shell_secrets
+*.key
+*.pem
+.env
+.env.*
+
+# But allow the template
+!.shell_secrets.template
+linux/config/.claude.json
