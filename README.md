@@ -85,10 +85,12 @@ scripts-prompts-config/
 │   │   └── sync-shell-configs.md
 │   └── scripts/               # Utility scripts
 │       └── emulate_osx_setups.sh
-└── osx/                       # macOS (future support)
+└── osx/                       # macOS configurations
     ├── config/
     ├── prompts/
-    └── scripts/
+    └── scripts/               # macOS utility scripts
+        ├── kill-dev.sh        # Interactive dev process killer
+        └── update_packages.sh # System package updater
 ```
 
 ## Security
@@ -200,10 +202,49 @@ chmod +x linux/*.sh
 chmod 600 ~/.shell_secrets
 ```
 
+## Utility Scripts
+
+### macOS Scripts
+
+#### kill-dev.sh
+
+Interactive development process killer with 5 escalating levels:
+
+```bash
+./osx/scripts/kill-dev.sh
+```
+
+**Levels:**
+1. **Dev servers only** - Kills processes on common dev ports (3000-3002, 5173, 8080, 4000, 8000)
+2. **+ Node processes** - Adds Node, npm, yarn, pnpm processes
+3. **+ Build tools** - Adds Vite, Next.js, Playwright, Jest, Vitest, Webpack
+4. **+ IDEs** - Adds VSCode, WebStorm, IntelliJ IDEA, Cursor, Zed
+5. **Nuclear option** - Everything including Docker, databases (Redis, PostgreSQL, MongoDB)
+
+**Features:**
+- Interactive menu-driven interface
+- Graceful shutdown attempts before force kill (level 1)
+- Confirmation required for nuclear option
+- Color-coded output for clarity
+
+#### update_packages.sh
+
+Updates all package managers on macOS:
+
+```bash
+./osx/scripts/update_packages.sh
+```
+
+**Updates:**
+- Homebrew and all installed packages
+- Global npm packages
+- Global pnpm packages
+- Checks for macOS system updates
+
 ## Platform-Specific Documentation
 
 - **Linux**: See [linux/config/README.md](linux/config/README.md) for detailed Linux configuration information
-- **macOS**: Coming soon
+- **macOS**: Utility scripts available in `osx/scripts/`
 
 ## Contributing
 
