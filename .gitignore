@@ -8,3 +8,7 @@
 # But allow the template
 !.shell_secrets.template
 linux/config/.claude.json
+
+# macOS system files
+.DS_Store
+**/.DS_Store
