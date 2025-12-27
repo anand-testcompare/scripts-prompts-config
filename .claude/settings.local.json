@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(touch:*)"
+      "Bash(touch:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd universal image processing scripts and update gitignore\n\n- Add convert_to_svg.sh: Converts PNG to SVG with intelligent method selection\n  * Supports raster-embedded SVG for high quality preservation\n  * Attempts true vectorization for simple graphics\n  * Handles organized directory structures (png/original, png/no-bg, etc.)\n- Add optimize_logos.sh: Optimizes images with smart background removal\n  * Auto-detects light/dark backgrounds\n  * Creates three variants: original, no-bg, and no-bg-alt\n  * Organizes outputs in structured png/ directories\n- Update .gitignore to exclude .DS_Store files\nEOF\n)\")",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
