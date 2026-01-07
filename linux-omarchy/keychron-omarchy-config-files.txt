@@ -1,0 +1,83 @@
+# Config files modified for Mac-style keybindings on Omarchy
+
+# Ghostty terminal - Mac-style shortcuts (Cmd+A, Cmd+C, Cmd+V, Cmd+W, Cmd+D, etc.)
+~/.config/ghostty/config
+
+# Hyprland bindings - Remapped Super+W to Super+Q, added window movement
+~/.config/hypr/bindings.conf
+
+# Hyprland autostart - Launches xremap on login
+~/.config/hypr/autostart.conf
+
+# xremap - System-wide Mac-style keybindings (Cmd→Ctrl for non-terminal apps)
+# Excludes: Ghostty, Zed (they handle Cmd keys natively)
+~/.config/xremap/config.yml
+
+# Zed editor - Mac-style keybindings (Cmd+A/C/V/etc, Ctrl+C for SIGINT in terminal)
+~/.config/zed/keymap.json
+
+# Window movement script (Magnet-style: move within tiles, then across monitors)
+~/.local/bin/hypr-move-window
+
+# System files (need sudo to recreate):
+# - /etc/udev/rules.d/99-uinput.rules  (uinput permissions for xremap)
+# - /etc/modules-load.d/uinput.conf    (load uinput module at boot)
+
+# Required packages: xremap-wlroots-bin (from AUR)
+# Required groups: user must be in 'input' group (sudo usermod -aG input $USER)
+
+# ============================================================================
+# KEYBINDINGS SUMMARY
+# ============================================================================
+
+# SYSTEM (Hyprland)
+# -----------------
+# Super+Q              Close window (remapped from Super+W)
+# Super+Ctrl+Arrow     Move window (within tiles, then across monitors)
+# Super+G              Toggle window group
+# Super+Alt+Arrow      Navigate within groups
+# Super+Alt+Tab        Cycle through group
+
+# GHOSTTY TERMINAL
+# ----------------
+# Cmd+A                Select all
+# Cmd+C                Copy
+# Cmd+V                Paste
+# Cmd+W                Close pane/split
+# Cmd+D                Split right
+# Cmd+Shift+D          Split down
+# Cmd+T                New tab
+# Cmd+N                New window
+# Cmd+{/}              Previous/next tab
+# Cmd+=/–/0            Zoom in/out/reset
+
+# ZED EDITOR
+# ----------
+# Cmd+A                Select all
+# Cmd+C                Copy (Ctrl+C sends SIGINT in terminal)
+# Cmd+V                Paste
+# Cmd+X                Cut
+# Cmd+Z                Undo
+# Cmd+Shift+Z          Redo
+# Cmd+S                Save
+# Cmd+W                Close tab
+# Cmd+T                New file
+# Cmd+F                Find
+# Cmd+P                File finder
+# Cmd+Shift+P          Command palette
+# Cmd+N                New window
+# Cmd+O                Open
+
+# ALL OTHER APPS (via xremap)
+# ---------------------------
+# Cmd+A/C/V/X/Z        Select all / Copy / Paste / Cut / Undo
+# Cmd+Shift+Z          Redo
+# Cmd+T                New tab
+# Cmd+W                Close tab
+# Cmd+Shift+T          Reopen closed tab
+# Cmd+S                Save
+# Cmd+F                Find
+# Cmd+L                Address bar / Go to line
+# Cmd+Left/Right       Beginning/End of line
+# Cmd+Up/Down          Beginning/End of document
+# Cmd+=/–/0            Zoom in/out/reset
