@@ -87,6 +87,33 @@ Before restoring on a new system, you may want to review and customize:
 | Auto-suggestions    | ❌             | ✅           |
 | FZF integration     | ✅             | ✅           |
 | Modern CLI tools    | ✅             | ✅           |
+| Secret masking      | ❌             | ✅           |
+
+## Secret Masking
+
+The `cat` function (powered by bat) automatically masks sensitive values when viewing env-like files:
+
+```bash
+cat .env
+# Output:
+# DATABASE_URL=postgres://user:********@localhost/mydb
+# API_KEY=********
+# JWT_SECRET=********
+```
+
+**Masked patterns**:
+- Keys containing: KEY, TOKEN, SECRET, PASSWORD, PASS, PWD, PRIVATE, JWT, COOKIE, SESSION, API, CREDENTIAL, AUTH
+- Inline URL credentials: `://user:password@` → `://user:********@`
+
+**Affected files**: `.env`, `.env.*`, `*.env`, `.envrc`, `*.local`, `.staging`, `*.staging`
+
+**Scan all env files in a directory** (uses the shell function, so secrets are masked):
+
+```bash
+find ~/Development -maxdepth 4 -name '.env*' -type f | while read -r f; do echo "=== $f ==="; cat "$f"; echo; done
+```
+
+Note: Don't use `find -exec cat` as it bypasses the shell function and shows secrets in plain text.
 
 ## Sync Maintenance
 

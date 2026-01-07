@@ -52,7 +52,7 @@ Both Bash and Zsh configurations include:
 - **Syntax Highlighting**: Real-time command syntax validation
 - **Auto-suggestions**: Intelligent command completion
 - **FZF Integration**: Fuzzy file and history search
-- **Modern CLI Tools**: exa (ls replacement), bat (cat replacement), ripgrep, fd
+- **Modern CLI Tools**: eza (ls replacement), bat (cat replacement with automatic secret masking for .env files), ripgrep, fd
 
 ### Terminal Configuration (Kitty)
 

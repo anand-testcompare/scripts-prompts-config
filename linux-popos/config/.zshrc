@@ -45,12 +45,40 @@ else
     alias ls='ls --color=auto'
 fi
 
-# Use batcat on Ubuntu/Debian (it's installed as batcat to avoid conflicts)
-if command -v batcat &> /dev/null; then
-    alias cat='batcat'
-elif command -v bat &> /dev/null; then
-    alias cat='bat'
-fi
+# Use bat for cat, but mask secrets in env-like files
+# (batcat on Ubuntu/Debian, bat on Arch)
+cat() {
+  local bat_cmd
+  if command -v batcat &> /dev/null; then
+    bat_cmd="batcat"
+  elif command -v bat &> /dev/null; then
+    bat_cmd="bat"
+  else
+    command cat "$@"
+    return
+  fi
+
+  if [[ $# -eq 0 ]]; then
+    command $bat_cmd
+    return
+  fi
+
+  local file="$1"
+  local basename="${file:t}"
+
+  case "$basename" in
+    .env|.env.*|*.env|*.env.*|.envrc|*.local|.staging|*.staging|*.staging.*)
+      command $bat_cmd --style=plain "$file" \
+        | sed -E \
+          -e 's/^([[:space:]]*(export[[:space:]]+)?[^#=]*(KEY|TOKEN|SECRET|PASSWORD|PASS|PWD|PRIVATE|JWT|COOKIE|SESSION|API|CREDENTIAL|AUTH)[^=]*=).+/\1********/I' \
+          -e 's|(://[^/:]*:)[^@]+(@)|\1********\2|g' \
+        | command $bat_cmd --style=plain -l env --paging=never
+      ;;
+    *)
+      command $bat_cmd "$@"
+      ;;
+  esac
+}
 
 # Use fdfind on Ubuntu/Debian
 if command -v fdfind &> /dev/null; then
