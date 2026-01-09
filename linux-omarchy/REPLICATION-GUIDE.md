@@ -185,6 +185,31 @@ Find your keyboard name with: `xremap --list-devices`
 
 ## 4. Hyprland Customizations
 
+### Hyprland 0.53+ config compatibility (Omarchy defaults)
+
+If you see `config option <misc:new_window_takes_over_fullscreen> does not exist` or `invalid field` errors, update the defaults to 0.53+ syntax:
+
+```bash
+# ~/.local/share/omarchy/default/hypr/looknfeel.conf
+misc {
+    on_focus_under_fullscreen = 1
+}
+
+# ~/.local/share/omarchy/default/hypr/windows.conf and apps/*.conf
+# Replace legacy inline rules with windowrulev2
+windowrulev2 = opacity 0.97 0.9, class:.*
+
+# ~/.local/share/omarchy/default/hypr/apps/hyprshot.conf
+layerrule = match:namespace selection, no_anim on
+
+# ~/.local/share/omarchy/default/hypr/apps/walker.conf
+layerrule = match:namespace walker, no_anim on
+
+# ~/.config/hypr/input.conf (per-app scroll tweaks)
+windowrule = match:class (Alacritty|kitty), scroll_touchpad 1.5
+windowrule = match:class com.mitchellh.ghostty, scroll_touchpad 0.2
+```
+
 ### Remap close window to Super+Q (so Cmd+W works in apps)
 
 Add to `~/.config/hypr/bindings.conf`:
