@@ -1,8 +1,8 @@
-# Git Hooks
+# Universal Git Hooks
 
 ## commit-msg Hook
 
-This hook prevents commits containing Claude/Anthropic branding text.
+This hook prevents commits containing Claude/Anthropic branding text and is OS-agnostic.
 
 ### Installation
 

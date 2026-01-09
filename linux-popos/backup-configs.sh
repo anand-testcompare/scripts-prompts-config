@@ -5,7 +5,8 @@
 
 set -e
 
-BACKUP_DIR="/home/anandpant/scripts-prompts-config/linux/config"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BACKUP_DIR="$SCRIPT_DIR/config"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 
 echo "Configuration Backup Script"
@@ -15,7 +16,8 @@ echo "Timestamp: $TIMESTAMP"
 echo ""
 
 # Create backup directory structure
-mkdir -p "$BACKUP_DIR/.config/{kitty,ohmyposh}"
+mkdir -p "$BACKUP_DIR/.config/kitty"
+mkdir -p "$BACKUP_DIR/.config/ohmyposh"
 mkdir -p "$BACKUP_DIR/.claude"
 
 # Shell configurations
@@ -36,8 +38,7 @@ echo "Backing up application configurations..."
 [ -d ~/.config/kitty ] && cp -r ~/.config/kitty "$BACKUP_DIR/.config/"
 [ -d ~/.config/ohmyposh ] && cp -r ~/.config/ohmyposh "$BACKUP_DIR/.config/"
 [ -f ~/.claude/CLAUDE.md ] && cp ~/.claude/CLAUDE.md "$BACKUP_DIR/.claude/CLAUDE.md"
-[ -f ~/.mcp.json ] && cp ~/.mcp.json "$BACKUP_DIR/.mcp.json"
-[ -f ~/.claude.json ] && cp ~/.claude.json "$BACKUP_DIR/.claude.json"
+echo "Skipping .mcp.json and .claude.json (can contain tokens and chat history)"
 
 # Create a manifest file
 echo "Creating backup manifest..."

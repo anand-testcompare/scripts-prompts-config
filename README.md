@@ -9,13 +9,13 @@ A comprehensive configuration management system for development environments, su
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/scripts-prompts-config.git
-cd scripts-prompts-config/linux
+cd scripts-prompts-config/linux-popos
 
 # Restore all configurations
 ./restore-configs.sh
 
 # Configure your API keys
-cp ~/.shell_secrets.template ~/.shell_secrets
+cp linux-popos/config/.shell_secrets.template ~/.shell_secrets
 nano ~/.shell_secrets  # Add your actual API keys
 chmod 600 ~/.shell_secrets
 
@@ -27,7 +27,7 @@ source ~/.zshrc   # For zsh
 ### Backup Current Configurations
 
 ```bash
-cd scripts-prompts-config/linux
+cd scripts-prompts-config/linux-popos
 ./backup-configs.sh
 ```
 
@@ -69,35 +69,39 @@ scripts-prompts-config/
 ├── CLAUDE.md                   # AI assistant instructions
 ├── README.md                   # This file
 ├── TODO.md                     # Development tasks
-├── linux/
-│   ├── backup-configs.sh      # Backup script
-│   ├── restore-configs.sh     # Restore script
-│   ├── config/                # Configuration files
+├── linux-popos/
+│   ├── backup-configs.sh      # Backup script (Pop!_OS/Ubuntu)
+│   ├── restore-configs.sh     # Restore script (Pop!_OS/Ubuntu)
+│   ├── config/                # Configuration files (local backups)
 │   │   ├── README.md          # Linux-specific documentation
-│   │   ├── .bashrc            # Bash configuration
-│   │   ├── .zshrc             # Zsh configuration
-│   │   ├── .gitconfig         # Git settings
-│   │   ├── .gitignore_global  # Global gitignore
-│   │   ├── .claude/           # Claude AI settings
-│   │   ├── .config/           # Application configs
-│   │   └── ...
+│   │   └── .shell_secrets.template
 │   ├── prompts/               # AI maintenance prompts
 │   │   └── sync-shell-configs.md
 │   └── scripts/               # Utility scripts
 │       └── emulate_osx_setups.sh
-└── osx/                       # macOS configurations
-    ├── config/
-    ├── prompts/
-    └── scripts/               # macOS utility scripts
-        ├── kill-dev.sh        # Interactive dev process killer
-        └── update_packages.sh # System package updater
+├── linux-omarchy/             # Arch/Omarchy docs and scripts
+│   ├── REPLICATION-GUIDE.md
+│   ├── .shell_secrets.template
+│   └── scripts/
+│       └── emulate_osx_setups_arch_permanent.sh
+├── osx/                       # macOS configurations/scripts
+│   ├── README.md
+│   └── scripts/
+│       └── update_packages.sh
+└── universal/                 # Cross-platform scripts and hooks
+    ├── convert_to_svg.sh
+    ├── kill-dev.sh
+    ├── optimize_logos.sh
+    └── git-hooks/
+        ├── commit-msg
+        └── README.md
 ```
 
 ## Security
 
 ### Best Practices
 
-1. **Never commit `.shell_secrets`** - The `.gitignore` prevents this
+1. **Never commit `.shell_secrets`, `.mcp.json`, or `.claude.json`** - The repository `.gitignore` blocks these
 2. **Use the template** - `.shell_secrets.template` shows the structure without real values
 3. **Rotate exposed credentials** - Immediately rotate any accidentally exposed keys
 4. **Proper permissions** - Scripts automatically set 600 on sensitive files
@@ -116,7 +120,7 @@ Keep bash and zsh configurations synchronized using the included prompt:
 
 ```bash
 # Use the sync prompt with your AI assistant
-cat linux/prompts/sync-shell-configs.md
+cat linux-popos/prompts/sync-shell-configs.md
 ```
 
 This ensures consistent:
@@ -198,20 +202,20 @@ source ~/.bashrc
 
 ```bash
 # Fix script permissions
-chmod +x linux/*.sh
+chmod +x linux-popos/*.sh osx/scripts/*.sh universal/*.sh
 chmod 600 ~/.shell_secrets
 ```
 
 ## Utility Scripts
 
-### macOS Scripts
+### Universal Scripts
 
 #### kill-dev.sh
 
 Interactive development process killer with 5 escalating levels:
 
 ```bash
-./osx/scripts/kill-dev.sh
+./universal/kill-dev.sh
 ```
 
 **Levels:**
@@ -227,6 +231,8 @@ Interactive development process killer with 5 escalating levels:
 - Confirmation required for nuclear option
 - Color-coded output for clarity
 
+### macOS Scripts
+
 #### update_packages.sh
 
 Updates all package managers on macOS:
@@ -241,9 +247,14 @@ Updates all package managers on macOS:
 - Global pnpm packages
 - Checks for macOS system updates
 
+### Git Hooks
+
+Install the commit-msg hook from `universal/git-hooks/` (see `universal/git-hooks/README.md`).
+
 ## Platform-Specific Documentation
 
-- **Linux**: See [linux/config/README.md](linux/config/README.md) for detailed Linux configuration information
+- **Linux (Pop!_OS/Ubuntu)**: See [linux-popos/config/README.md](linux-popos/config/README.md) for detailed Linux configuration information
+- **Linux (Omarchy/Arch)**: See [linux-omarchy/REPLICATION-GUIDE.md](linux-omarchy/REPLICATION-GUIDE.md) for Omarchy setup details
 - **macOS**: Utility scripts available in `osx/scripts/`
 
 ## Contributing

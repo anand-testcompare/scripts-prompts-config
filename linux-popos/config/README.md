@@ -1,10 +1,10 @@
 # Linux Configuration Directory
 
-This directory contains the actual configuration files backed up from a Linux development environment. These files are used by the `restore-configs.sh` script to set up a new system.
+This directory is the target location for Linux backups created by `backup-configs.sh`. In this repository, only templates and documentation are committed by default; actual configs are created locally when you run a backup.
 
 ## Directory Contents
 
-### Shell Configurations
+### Shell Configurations (created locally by backups)
 
 - `.bashrc` - Bash shell configuration with development tools and aliases
 - `.bashrc_dev` - Additional development-specific bash configuration
@@ -16,21 +16,19 @@ This directory contains the actual configuration files backed up from a Linux de
 - `.gitconfig` - Git user settings, aliases, and preferences
 - `.gitignore_global` - Global gitignore patterns
 
-### Application Configurations
+### Application Configurations (created locally by backups)
 
-- `.claude.json` - Claude AI conversation history and settings
-- `.mcp.json` - MCP (Model Context Protocol) server configuration
 - `.claude/CLAUDE.md` - Personal Claude instructions and preferences
 - `.config/kitty/` - Kitty terminal emulator configuration
 - `.config/ohmyposh/` - Oh My Posh prompt themes and configurations
 
-### Backup Manifest
+### Backup Manifest (created locally by backups)
 
 - `BACKUP_MANIFEST.txt` - Auto-generated list of files in the last backup with timestamp and host information
 
 ## Security Status
 
-All files in this directory have been verified to be free of:
+Committed files in this directory are verified to be free of:
 
 - API keys or tokens
 - Passwords or credentials
@@ -38,6 +36,14 @@ All files in this directory have been verified to be free of:
 - Any other sensitive data
 
 Sensitive information should only be stored in `.shell_secrets` (not tracked) using the provided template as a guide.
+Review any locally generated backups for secrets before committing them.
+
+### Intentionally Excluded
+
+The backup/restore scripts skip these files because they can contain tokens or history:
+
+- `~/.mcp.json`
+- `~/.claude.json`
 
 ## Usage
 
