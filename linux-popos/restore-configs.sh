@@ -5,7 +5,8 @@
 
 set -e
 
-BACKUP_DIR="/home/anandpant/scripts-prompts-config/linux/config"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BACKUP_DIR="$SCRIPT_DIR/config"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 
 echo "Configuration Restore Script"
@@ -83,8 +84,6 @@ safe_restore_dir "$BACKUP_DIR/.config/ohmyposh" ~/.config/ohmyposh
 # Create claude directory if needed
 mkdir -p ~/.claude
 safe_restore "$BACKUP_DIR/.claude/CLAUDE.md" ~/.claude/CLAUDE.md
-safe_restore "$BACKUP_DIR/.mcp.json" ~/.mcp.json
-safe_restore "$BACKUP_DIR/.claude.json" ~/.claude.json
 
 echo ""
 echo "============================================"
