@@ -185,6 +185,31 @@ Find your keyboard name with: `xremap --list-devices`
 
 ## 4. Hyprland Customizations
 
+### Hyprland 0.53+ config compatibility (Omarchy defaults)
+
+If you see `config option <misc:new_window_takes_over_fullscreen> does not exist` or `invalid field` errors, update the defaults to 0.53+ syntax:
+
+```bash
+# ~/.local/share/omarchy/default/hypr/looknfeel.conf
+misc {
+    on_focus_under_fullscreen = 1
+}
+
+# ~/.local/share/omarchy/default/hypr/windows.conf and apps/*.conf
+# Replace legacy inline rules with windowrulev2
+windowrulev2 = opacity 0.97 0.9, class:.*
+
+# ~/.local/share/omarchy/default/hypr/apps/hyprshot.conf
+layerrule = match:namespace selection, no_anim on
+
+# ~/.local/share/omarchy/default/hypr/apps/walker.conf
+layerrule = match:namespace walker, no_anim on
+
+# ~/.config/hypr/input.conf (per-app scroll tweaks)
+windowrule = match:class (Alacritty|kitty), scroll_touchpad 1.5
+windowrule = match:class com.mitchellh.ghostty, scroll_touchpad 0.2
+```
+
 ### Remap close window to Super+Q (so Cmd+W works in apps)
 
 Add to `~/.config/hypr/bindings.conf`:
@@ -336,9 +361,89 @@ bind = , XF86Launch6, exec, hyprctl keyword monitor DP-1,preferred,auto,2
 
 **Note:** Keychron F13/F14/F15 send `XF86Tools`, `XF86Launch5`, `XF86Launch6`. Use `wev -f wl_keyboard:key` to find your keyboard's actual keycodes.
 
+### Scratchpad Window Management
+
+Omarchy includes a scratchpad (special workspace) with default bindings:
+- `Super+S` - Toggle scratchpad visibility
+- `Super+Alt+S` - Move window to scratchpad
+
+To add a toggle that moves windows to/from scratchpad:
+
+Create `~/.local/bin/toggle-scratchpad-window`:
+```bash
+#!/bin/bash
+# Toggle window between scratchpad and previous workspace
+
+workspace=$(hyprctl activewindow -j | jq -r '.workspace.name')
+
+if [[ "$workspace" == "special:scratchpad" ]]; then
+    # Move back to the most recent regular workspace
+    hyprctl dispatch movetoworkspace e+0
+else
+    # Move to scratchpad
+    hyprctl dispatch movetoworkspacesilent special:scratchpad
+fi
+```
+
+Make it executable:
+```bash
+chmod +x ~/.local/bin/toggle-scratchpad-window
+```
+
+Add to `~/.config/hypr/hyprland.conf`:
+```bash
+# Toggle window to/from scratchpad
+bind = SUPER SHIFT, S, exec, ~/.local/bin/toggle-scratchpad-window
+```
+
+Add visual indicator (teal border) for scratchpad windows in `~/.config/hypr/looknfeel.conf`:
+```bash
+# Teal border for scratchpad windows
+windowrulev2 = bordercolor rgb(00b5b5), onworkspace:special:scratchpad
+```
+
 ---
 
-## 5. Ghostty Terminal Config
+## 5. Voice Dictation (hyprwhspr)
+
+hyprwhspr provides system-wide voice-to-text using Whisper.
+
+### Install
+```bash
+yay -S hyprwhspr
+sudo pacman -S python-rich
+```
+
+### Configure
+
+Config file: `~/.config/hyprwhspr/config.json`
+```json
+{
+  "primary_shortcut": "SUPER+SHIFT+D",
+  "recording_mode": "toggle",
+  "model": "base",
+  "threads": 4,
+  "language": null,
+  "clipboard_behavior": false,
+  "paste_mode": "ctrl_shift",
+  "shift_paste": true,
+  "transcription_backend": "rest-api",
+  "rest_endpoint_url": "http://127.0.0.1:17980/transcribe",
+  "audio_feedback": true
+}
+```
+
+### Enable systemd service
+```bash
+systemctl --user enable --now hyprwhspr.service
+```
+
+### Usage
+- `Super+Shift+D` - Toggle recording (press once to start, again to stop and transcribe)
+
+---
+
+## 7. Ghostty Terminal Config
 
 Add to `~/.config/ghostty/config`:
 ```
@@ -367,7 +472,7 @@ keybind = shift+enter=text:\x1b\r
 
 ---
 
-## 6. Zed Editor Keybindings
+## 8. Zed Editor Keybindings
 
 Create `~/.config/zed/keymap.json`:
 ```json
@@ -406,7 +511,7 @@ Create `~/.config/zed/keymap.json`:
 
 ---
 
-## 7. VS Code Keybindings
+## 9. VS Code Keybindings
 
 Create `~/.config/Code/User/keybindings.json`:
 ```json
@@ -422,7 +527,7 @@ Create `~/.config/Code/User/keybindings.json`:
 
 ---
 
-## 8. Neovim (LazyVim)
+## 10. Neovim (LazyVim)
 
 The setup is mostly default LazyVim. Only customization:
 
@@ -444,6 +549,10 @@ vim.opt.relativenumber = false
 - [ ] Create hypr-move-window script
 - [ ] Add Hyprland zoom controls (cursor section in looknfeel.conf, bindings)
 - [ ] Add monitor scale presets (F13/F14/F15 for 4K scaling)
+- [ ] Create toggle-scratchpad-window script and add Super+Shift+S binding
+- [ ] Add teal border for scratchpad windows in looknfeel.conf
+- [ ] Install hyprwhspr (`yay -S hyprwhspr && sudo pacman -S python-rich`)
+- [ ] Configure hyprwhspr and enable systemd service
 - [ ] Configure Ghostty with Mac-style keybindings
 - [ ] Configure Zed with Mac-style keybindings
 - [ ] Configure VS Code shift+enter binding
