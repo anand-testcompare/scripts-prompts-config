@@ -1,23 +1,51 @@
-# Config files modified for Mac-style keybindings on Omarchy
+# Config files modified for Omarchy customizations (keybindings, terminals, theme, scripts)
 
-# Ghostty terminal - Mac-style shortcuts (Cmd+A, Cmd+C, Cmd+V, Cmd+W, Cmd+D, etc.)
+# Ghostty terminal - Uses Ctrl+Shift internally; Hyprland translates Super+key via ghostty-or-universal
 ~/.config/ghostty/config
 
-# Hyprland bindings - Remapped Super+W to Super+Q, added window movement
+# Alacritty terminal - tmux default shell, palette overrides, custom keybinds
+~/.config/alacritty/alacritty.toml
+
+# Tmux - prefix remap, plugins, history
+~/.tmux.conf
+
+# Hyprland bindings - Super+Q closes window, Super+C/V/W/D/T/N route through ghostty-or-universal
 ~/.config/hypr/bindings.conf
+
+# Hyprland main config - dropdown terminal rules, scratchpad toggle
+~/.config/hypr/hyprland.conf
 
 # Hyprland autostart - Launches xremap on login
 ~/.config/hypr/autostart.conf
 
 # xremap - System-wide Mac-style keybindings (Cmd→Ctrl for non-terminal apps)
-# Excludes: Ghostty, Zed (they handle Cmd keys natively)
+# Excludes: Ghostty, Zed (use regex patterns like /ghostty/ to match app_id com.mitchellh.ghostty)
 ~/.config/xremap/config.yml
+
+# Omarchy theme override - active border gradient
+~/.config/omarchy/current/theme/hyprland.conf
 
 # Zed editor - Mac-style keybindings (Cmd+A/C/V/etc, Ctrl+C for SIGINT in terminal)
 ~/.config/zed/keymap.json
 
+# Zed editor - Global settings
+~/.config/zed/settings.json
+
 # Window movement script (Magnet-style: move within tiles, then across monitors)
 ~/.local/bin/hypr-move-window
+
+# Scratchpad toggle helper
+~/.local/bin/toggle-scratchpad-window
+
+# Dropdown terminal toggle (Alacritty special workspace)
+~/.local/bin/toggle-dropdown-terminal
+
+# Auto-pause Spotify while dictating (hyprwhspr)
+~/.local/bin/hyprwhspr-spotify-toggle
+
+# Ghostty-aware shortcut router (Super+C/V/W routes to Ctrl+Shift in Ghostty, standard elsewhere)
+# Called by Hyprland bindings for Super+C/V/W/D/T/N
+~/.local/bin/ghostty-or-universal
 
 # System files (need sudo to recreate):
 # - /etc/udev/rules.d/99-uinput.rules  (uinput permissions for xremap)
@@ -25,6 +53,27 @@
 
 # Required packages: xremap-wlroots-bin (from AUR)
 # Required groups: user must be in 'input' group (sudo usermod -aG input $USER)
+
+# ============================================================================
+# TROUBLESHOOTING / KEY LEARNINGS
+# ============================================================================
+#
+# xremap app exclusion patterns:
+#   - Use regex patterns like /ghostty/ NOT plain strings like "ghostty"
+#   - Wayland app_ids are full paths (com.mitchellh.ghostty, dev.zed.Zed)
+#   - Plain string "ghostty" won't match "com.mitchellh.ghostty"
+#
+# Hyprland sendshortcut timing:
+#   - When triggered by keybind, modifier keys may still be held
+#   - Add 0.1s delay before sendshortcut to let keys release
+#   - Without delay: Super+Shift+D sends SUPER+SHIFT+CTRL+SHIFT+ALT+D (broken)
+#   - With delay: sends clean CTRL+SHIFT+ALT+D (works)
+#
+# ghostty-or-universal script:
+#   - Routes Super+key differently based on focused window
+#   - Ghostty: sends Ctrl+Shift+key (Ghostty's internal bindings)
+#   - Other apps: sends standard shortcuts (Ctrl+Insert for copy, etc.)
+#   - Includes 0.1s delay to handle modifier key timing
 
 # ============================================================================
 # KEYBINDINGS SUMMARY
@@ -50,6 +99,17 @@
 # Cmd+N                New window
 # Cmd+{/}              Previous/next tab
 # Cmd+=/–/0            Zoom in/out/reset
+
+# ALACRITTY TERMINAL
+# ------------------
+# Shift+Insert         Paste
+# Ctrl+Insert          Copy
+# Ctrl+Shift+=/–/0     Font size up/down/reset
+# Shift+Enter          Send ESC+Return (for REPL accept)
+
+# TMUX
+# ----
+# Prefix               Ctrl+Space (instead of Ctrl+B)
 
 # ZED EDITOR
 # ----------
