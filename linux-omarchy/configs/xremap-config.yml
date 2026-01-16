@@ -1,0 +1,61 @@
+# xremap config for Mac-like keybindings on Linux
+# Makes Cmd+key work like Ctrl+key in most apps, while preserving
+# Super key for Hyprland window management
+
+keymap:
+  - name: Passthrough for Hyprland window management
+    remap:
+      # Super+Alt combos (group navigation)
+      Super_L-Alt_L-Left: Super_L-Alt_L-Left
+      Super_L-Alt_L-Right: Super_L-Alt_L-Right
+      Super_L-Alt_L-Up: Super_L-Alt_L-Up
+      Super_L-Alt_L-Down: Super_L-Alt_L-Down
+      Super_L-Alt_L-Tab: Super_L-Alt_L-Tab
+      # Super+Ctrl combos (window movement)
+      Super_L-Ctrl_L-Left: Super_L-Ctrl_L-Left
+      Super_L-Ctrl_L-Right: Super_L-Ctrl_L-Right
+      Super_L-Ctrl_L-Up: Super_L-Ctrl_L-Up
+      Super_L-Ctrl_L-Down: Super_L-Ctrl_L-Down
+      # Super+Alt+S for scratchpad
+      Super_L-Alt_L-s: Super_L-Alt_L-s
+
+  - name: Mac-like shortcuts (global)
+    remap:
+      # Basic editing
+      Super_L-a: Ctrl-a          # Select all
+      Super_L-c: Ctrl-c          # Copy
+      Super_L-v: Ctrl-v          # Paste
+      Super_L-x: Ctrl-x          # Cut
+      Super_L-z: Ctrl-z          # Undo
+      Super_L-Shift-z: Ctrl-y    # Redo (Cmd+Shift+Z -> Ctrl+Y)
+      
+      # Tab/window management
+      Super_L-t: Ctrl-t          # New tab
+      Super_L-w: Ctrl-w          # Close tab
+      Super_L-Shift-t: Ctrl-Shift-t  # Reopen closed tab
+      Super_L-d: Ctrl-d          # Split right (Ghostty)
+      Super_L-Shift-d: Ctrl-Alt-d  # Split down (Ghostty)
+      
+      # Navigation
+      Super_L-l: Ctrl-l          # Focus address bar / go to line
+      Super_L-f: Ctrl-f          # Find
+      Super_L-g: Ctrl-g          # Find next
+      Super_L-Shift-g: Ctrl-Shift-g  # Find previous
+      
+      # Text navigation (Mac-style)
+      Super_L-Left: Home         # Beginning of line
+      Super_L-Right: End         # End of line
+      Super_L-Up: Ctrl-Home      # Beginning of document
+      Super_L-Down: Ctrl-End     # End of document
+      Super_L-Backspace: Ctrl-Shift-Backspace  # Delete to beginning of line
+      
+      # Other common shortcuts
+      # Super_L-s: Ctrl-s        # Save - DISABLED: Cmd+S toggles scratchpad (use Ctrl+S to save)
+      Super_L-o: Ctrl-o          # Open
+      Super_L-n: Ctrl-n          # New
+      Super_L-p: Ctrl-p          # Print / Command palette
+      Super_L-r: Ctrl-r          # Reload
+      Super_L-Shift-r: Ctrl-Shift-r  # Hard reload
+      Super_L-equal: Ctrl-equal  # Zoom in
+      Super_L-minus: Ctrl-minus  # Zoom out
+      Super_L-0: Ctrl-0          # Reset zoom

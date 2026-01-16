@@ -1,6 +1,6 @@
 # Config files modified for Omarchy customizations (keybindings, terminals, theme, scripts)
 
-# Ghostty terminal - Uses Ctrl+Shift internally; Hyprland translates Super+key via ghostty-or-universal
+# Ghostty terminal - Uses Ctrl+key internally; xremap converts Super+key globally
 ~/.config/ghostty/config
 
 # Alacritty terminal - tmux default shell, palette overrides, custom keybinds
@@ -9,7 +9,7 @@
 # Tmux - prefix remap, plugins, history
 ~/.tmux.conf
 
-# Hyprland bindings - Super+Q closes window, Super+C/V/W/D/T/N route through ghostty-or-universal
+# Hyprland bindings - Super+Q closes window, some keys route through ghostty-or-universal
 ~/.config/hypr/bindings.conf
 
 # Hyprland main config - dropdown terminal rules, scratchpad toggle
@@ -18,9 +18,12 @@
 # Hyprland autostart - Launches xremap on login
 ~/.config/hypr/autostart.conf
 
-# xremap - System-wide Mac-style keybindings (Cmd→Ctrl for non-terminal apps)
-# Excludes: Ghostty, Zed (use regex patterns like /ghostty/ to match app_id com.mitchellh.ghostty)
+# xremap - GLOBAL Mac-style keybindings (Super→Ctrl for ALL apps including Ghostty)
+# No app exclusions - works everywhere uniformly
 ~/.config/xremap/config.yml
+
+# xremap systemd service
+~/.config/systemd/user/xremap.service
 
 # Omarchy theme override - active border gradient
 ~/.config/omarchy/current/theme/hyprland.conf
@@ -43,8 +46,7 @@
 # Auto-pause Spotify while dictating (hyprwhspr)
 ~/.local/bin/hyprwhspr-spotify-toggle
 
-# Ghostty-aware shortcut router (Super+C/V/W routes to Ctrl+Shift in Ghostty, standard elsewhere)
-# Called by Hyprland bindings for Super+C/V/W/D/T/N
+# Ghostty-aware shortcut router (for Super+C/V/W/T/N in non-Ghostty apps)
 ~/.local/bin/ghostty-or-universal
 
 # System files (need sudo to recreate):
@@ -52,28 +54,34 @@
 # - /etc/modules-load.d/uinput.conf    (load uinput module at boot)
 
 # Required packages: xremap-wlroots-bin (from AUR)
+#   NOTE: xremap-hypr-bin crashes with Hyprland 0.53+ due to hyprland-rs incompatibility
 # Required groups: user must be in 'input' group (sudo usermod -aG input $USER)
 
 # ============================================================================
 # TROUBLESHOOTING / KEY LEARNINGS
 # ============================================================================
 #
-# xremap app exclusion patterns:
-#   - Use regex patterns like /ghostty/ NOT plain strings like "ghostty"
-#   - Wayland app_ids are full paths (com.mitchellh.ghostty, dev.zed.Zed)
-#   - Plain string "ghostty" won't match "com.mitchellh.ghostty"
+# xremap + Hyprland 0.53 compatibility:
+#   - Use xremap-wlroots-bin, NOT xremap-hypr-bin
+#   - xremap-hypr-bin uses hyprland-rs 0.3.13 which crashes with Hyprland 0.53+
+#   - wlroots variant works but app detection can be flaky on boot
+#   - Solution: removed all app exclusions, xremap now remaps globally
 #
-# Hyprland sendshortcut timing:
-#   - When triggered by keybind, modifier keys may still be held
-#   - Add 0.1s delay before sendshortcut to let keys release
-#   - Without delay: Super+Shift+D sends SUPER+SHIFT+CTRL+SHIFT+ALT+D (broken)
-#   - With delay: sends clean CTRL+SHIFT+ALT+D (works)
+# xremap startup timing:
+#   - xremap may start before Wayland compositor is fully ready
+#   - Symptoms: "Could not find wayland compositor" in logs
+#   - Fix: systemctl --user restart xremap (after login)
+#   - The service has a 2-second delay but may need manual restart sometimes
 #
-# ghostty-or-universal script:
-#   - Routes Super+key differently based on focused window
-#   - Ghostty: sends Ctrl+Shift+key (Ghostty's internal bindings)
-#   - Other apps: sends standard shortcuts (Ctrl+Insert for copy, etc.)
-#   - Includes 0.1s delay to handle modifier key timing
+# Ghostty keybindings approach:
+#   - OLD: Ghostty used Ctrl+Shift+key, Hyprland routed via ghostty-or-universal
+#   - NEW: Ghostty uses plain Ctrl+key, xremap converts Super→Ctrl globally
+#   - This is simpler and more reliable (no app detection needed)
+#
+# Hyprland binding conflicts:
+#   - Hyprland intercepts keys BEFORE xremap can remap them
+#   - If Hyprland has Super+D bound, xremap never sees Super+D
+#   - Solution: comment out Hyprland bindings for keys xremap should handle
 
 # ============================================================================
 # KEYBINDINGS SUMMARY
@@ -87,17 +95,17 @@
 # Super+Alt+Arrow      Navigate within groups
 # Super+Alt+Tab        Cycle through group
 
-# GHOSTTY TERMINAL
-# ----------------
+# GHOSTTY TERMINAL (via xremap Super→Ctrl)
+# ----------------------------------------
 # Cmd+A                Select all
 # Cmd+C                Copy
 # Cmd+V                Paste
 # Cmd+W                Close pane/split
 # Cmd+D                Split right
-# Cmd+Shift+D          Split down
+# Cmd+Shift+D          Split down (mapped to Ctrl+Alt+D)
 # Cmd+T                New tab
 # Cmd+N                New window
-# Cmd+{/}              Previous/next tab
+# Cmd+[/]              Previous/next tab
 # Cmd+=/–/0            Zoom in/out/reset
 
 # ALACRITTY TERMINAL
@@ -128,16 +136,18 @@
 # Cmd+N                New window
 # Cmd+O                Open
 
-# ALL OTHER APPS (via xremap)
-# ---------------------------
+# ALL APPS (via xremap - GLOBAL, no exclusions)
+# ---------------------------------------------
 # Cmd+A/C/V/X/Z        Select all / Copy / Paste / Cut / Undo
 # Cmd+Shift+Z          Redo
 # Cmd+T                New tab
 # Cmd+W                Close tab
+# Cmd+D                Split right (Ghostty) / varies by app
+# Cmd+Shift+D          Split down (Ghostty)
 # Cmd+Shift+T          Reopen closed tab
-# Cmd+S                Save
 # Cmd+F                Find
 # Cmd+L                Address bar / Go to line
 # Cmd+Left/Right       Beginning/End of line
 # Cmd+Up/Down          Beginning/End of document
 # Cmd+=/–/0            Zoom in/out/reset
+# NOTE: Cmd+S disabled in xremap (conflicts with scratchpad toggle)
