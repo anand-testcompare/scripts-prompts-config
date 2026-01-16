@@ -82,6 +82,7 @@
 #   - Hyprland intercepts keys BEFORE xremap can remap them
 #   - If Hyprland has Super+D bound, xremap never sees Super+D
 #   - Solution: comment out Hyprland bindings for keys xremap should handle
+#   - For hyprwhspr, add a Super+Alt+D passthrough in xremap so the combo isn't remapped
 
 # ============================================================================
 # KEYBINDINGS SUMMARY
@@ -94,6 +95,7 @@
 # Super+G              Toggle window group
 # Super+Alt+Arrow      Navigate within groups
 # Super+Alt+Tab        Cycle through group
+# Super+Alt+D          Toggle hyprwhspr recording
 
 # GHOSTTY TERMINAL (via xremap Super→Ctrl)
 # ----------------------------------------

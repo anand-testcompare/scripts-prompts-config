@@ -419,7 +419,7 @@ sudo pacman -S python-rich
 Config file: `~/.config/hyprwhspr/config.json`
 ```json
 {
-  "primary_shortcut": "SUPER+SHIFT+D",
+  "primary_shortcut": "SUPER+ALT+D",
   "recording_mode": "toggle",
   "model": "base",
   "threads": 4,
@@ -438,8 +438,19 @@ Config file: `~/.config/hyprwhspr/config.json`
 systemctl --user enable --now hyprwhspr.service
 ```
 
+### Hyprland binding
+Add to `~/.config/hypr/bindings.conf`:
+```
+bindd = SUPER ALT, D, Speech-to-text, exec, /usr/lib/hyprwhspr/config/hyprland/hyprwhspr-tray.sh record
+```
+
+If you use xremap, add a passthrough so Super+Alt+D reaches Hyprland:
+```
+Super_L-Alt_L-d: Super_L-Alt_L-d
+```
+
 ### Usage
-- `Super+Shift+D` - Toggle recording (press once to start, again to stop and transcribe)
+- `Super+Alt+D` - Toggle recording (press once to start, again to stop and transcribe)
 
 ---
 

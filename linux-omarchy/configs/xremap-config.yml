@@ -11,6 +11,8 @@ keymap:
       Super_L-Alt_L-Up: Super_L-Alt_L-Up
       Super_L-Alt_L-Down: Super_L-Alt_L-Down
       Super_L-Alt_L-Tab: Super_L-Alt_L-Tab
+      # Super+Alt+D passthrough (hyprwhspr toggle)
+      Super_L-Alt_L-d: Super_L-Alt_L-d
       # Super+Ctrl combos (window movement)
       Super_L-Ctrl_L-Left: Super_L-Ctrl_L-Left
       Super_L-Ctrl_L-Right: Super_L-Ctrl_L-Right
