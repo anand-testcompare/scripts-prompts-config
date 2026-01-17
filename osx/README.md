@@ -53,7 +53,8 @@ The following Omarchy-style aliases/functions were added to `~/.zshrc`:
 
 ## 3. Starship (clean prompt)
 
-Create `~/.config/starship.toml` to remove cloud context and keep a clean prompt:
+Create `~/.config/starship.toml` to remove cloud context and keep a clean prompt.
+You can copy the repo version from `osx/starship.toml`:
 ```toml
 format = "$directory$git_branch$git_status$nodejs$python$golang$rust$line_break$character"
 add_newline = true
@@ -72,6 +73,8 @@ format = " on [$branch]($style)"
 [git_status]
 style = "yellow"
 format = " [$all_status$ahead_behind]($style)"
+# Keep this a simple, valid format string to avoid parse errors.
+stashed = " stash:$count"
 
 [nodejs]
 symbol = ""

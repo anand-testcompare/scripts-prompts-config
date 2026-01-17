@@ -1,0 +1,52 @@
+format = "$directory$git_branch$git_status$nodejs$python$golang$rust$line_break$character"
+add_newline = true
+
+[directory]
+style = "bold cyan"
+truncation_length = 3
+truncation_symbol = "../"
+read_only = " ro"
+
+[git_branch]
+symbol = ""
+style = "bold purple"
+format = " on [$branch]($style)"
+
+[git_status]
+style = "yellow"
+format = " [$all_status$ahead_behind]($style)"
+# Keep this a simple, valid format string to avoid parse errors.
+stashed = " stash:$count"
+
+[nodejs]
+symbol = ""
+style = "green"
+format = " via [$version]($style)"
+
+[python]
+symbol = ""
+style = "blue"
+format = " via [$version]($style)"
+
+[golang]
+symbol = ""
+style = "blue"
+format = " via [$version]($style)"
+
+[rust]
+symbol = ""
+style = "red"
+format = " via [$version]($style)"
+
+[character]
+success_symbol = "> "
+error_symbol = "> "
+
+[aws]
+disabled = true
+
+[gcloud]
+disabled = true
+
+[kubernetes]
+disabled = true
