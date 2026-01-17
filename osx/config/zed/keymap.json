@@ -1,0 +1,16 @@
+[
+  {
+    "context": "Editor",
+    "bindings": {
+      "cmd-shift-l": "editor::Format",
+      "cmd-shift-alt-l": "editor::Format",
+      "ctrl-b": "workspace::ToggleLeftDock"
+    }
+  },
+  {
+    "bindings": {
+      "ctrl-b": "workspace::ToggleLeftDock",
+      "ctrl-i": "workspace::ToggleRightDock"
+    }
+  }
+]
