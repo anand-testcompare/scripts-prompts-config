@@ -1,0 +1,32 @@
+[
+  {
+    "bindings": {
+      "super-a": "editor::SelectAll",
+      "super-c": "editor::Copy",
+      "super-v": "editor::Paste",
+      "super-x": "editor::Cut",
+      "super-z": "editor::Undo",
+      "super-shift-z": "editor::Redo",
+      "super-s": "workspace::Save",
+      "super-w": "pane::CloseActiveItem",
+      "super-t": "workspace::NewFile",
+      "super-f": "buffer_search::Deploy",
+      "super-p": "file_finder::Toggle",
+      "super-shift-p": "command_palette::Toggle",
+      "super-n": "workspace::NewWindow",
+      "super-o": "workspace::Open",
+      "super-d": "pane::SplitRight",
+      "super-shift-d": "pane::SplitDown",
+      "ctrl-shift-r": "workspace::Reload"
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "shift-enter": ["terminal::SendText", "\u001b\r"],
+      "super-a": "terminal::SelectAll",
+      "super-c": "terminal::Copy",
+      "super-v": "terminal::Paste"
+    }
+  }
+]

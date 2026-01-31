@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+STATUS_FILE="${HOME}/.config/hyprwhspr/recording_status"
+STATE_FILE="${HOME}/.config/hyprwhspr/spotify_was_playing"
+STATUS_DIR="$(dirname "$STATUS_FILE")"
+STATUS_BASENAME="$(basename "$STATUS_FILE")"
+
+playerctl_spotify() {
+  playerctl -p spotify "$@" 2>/dev/null
+}
+
+is_spotify_playing() {
+  local status
+  status="$(playerctl_spotify status || true)"
+  [[ "$status" == "Playing" ]]
+}
+
+pause_spotify_if_playing() {
+  if is_spotify_playing; then
+    printf '1' >"$STATE_FILE"
+    playerctl_spotify pause || true
+  else
+    rm -f "$STATE_FILE"
+  fi
+}
+
+resume_spotify_if_needed() {
+  if [[ -f "$STATE_FILE" ]]; then
+    playerctl_spotify play || true
+    rm -f "$STATE_FILE"
+  fi
+}
+
+mkdir -p "$STATUS_DIR"
+
+# Handle current state on startup.
+if [[ -f "$STATUS_FILE" ]]; then
+  pause_spotify_if_playing
+fi
+
+inotifywait -m -e create -e delete -e moved_to -e moved_from -e close_write "$STATUS_DIR" | \
+while read -r _dir _events file; do
+  [[ "$file" == "$STATUS_BASENAME" ]] || continue
+  if [[ -f "$STATUS_FILE" ]]; then
+    pause_spotify_if_playing
+  else
+    resume_spotify_if_needed
+  fi
+done

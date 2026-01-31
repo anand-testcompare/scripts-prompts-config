@@ -1,0 +1,16 @@
+~/.config/ghostty/config
+~/.config/alacritty/alacritty.toml
+~/.tmux.conf
+~/.config/hypr/bindings.conf
+~/.config/hypr/hyprland.conf
+~/.config/hypr/autostart.conf
+~/.config/xremap/config.yml
+~/.config/systemd/user/xremap.service
+~/.config/omarchy/current/theme/hyprland.conf
+~/.config/zed/keymap.json
+~/.config/zed/settings.json
+~/.local/bin/hypr-move-window
+~/.local/bin/toggle-scratchpad-window
+~/.local/bin/toggle-dropdown-terminal
+~/.local/bin/hyprwhspr-spotify-toggle
+~/.local/bin/ghostty-or-universal

@@ -1,6 +1,6 @@
 # Config files modified for Omarchy customizations (keybindings, terminals, theme, scripts)
 
-# Ghostty terminal - Uses Ctrl+key internally; xremap converts Super+key globally
+# Ghostty terminal - Uses Super keybinds + Ghostty-specific xremap overrides
 ~/.config/ghostty/config
 
 # Alacritty terminal - tmux default shell, palette overrides, custom keybinds
@@ -18,7 +18,8 @@
 # Hyprland autostart - Launches xremap on login
 ~/.config/hypr/autostart.conf
 
-# xremap - GLOBAL Mac-style keybindings (Super→Ctrl for ALL apps including Ghostty)
+# xremap - GLOBAL Mac-style keybindings (Super→Ctrl for ALL apps)
+#          plus Ghostty-only overrides for Super+A/C/V/W/D
 # No app exclusions - works everywhere uniformly
 ~/.config/xremap/config.yml
 
@@ -74,9 +75,9 @@
 #   - The service has a 2-second delay but may need manual restart sometimes
 #
 # Ghostty keybindings approach:
-#   - OLD: Ghostty used Ctrl+Shift+key, Hyprland routed via ghostty-or-universal
-#   - NEW: Ghostty uses plain Ctrl+key, xremap converts Super→Ctrl globally
-#   - This is simpler and more reliable (no app detection needed)
+#   - Global Super→Ctrl for most apps
+#   - Ghostty-only xremap overrides map Super+A/C/V/W/D to Ctrl+Shift+… so
+#     terminal shortcuts like Ctrl+D / Ctrl+T stay intact
 #
 # Hyprland binding conflicts:
 #   - Hyprland intercepts keys BEFORE xremap can remap them
@@ -97,18 +98,18 @@
 # Super+Alt+Tab        Cycle through group
 # Super+Alt+D          Toggle hyprwhspr recording
 
-# GHOSTTY TERMINAL (via xremap Super→Ctrl)
+# GHOSTTY TERMINAL (via xremap + Ghostty-only overrides)
 # ----------------------------------------
-# Cmd+A                Select all
-# Cmd+C                Copy
-# Cmd+V                Paste
-# Cmd+W                Close pane/split
-# Cmd+D                Split right
-# Cmd+Shift+D          Split down (mapped to Ctrl+Alt+D)
-# Cmd+T                New tab
+# Cmd+A                Select all (Ctrl+Shift+A)
+# Cmd+C                Copy (Ctrl+Shift+C)
+# Cmd+V                Paste (Ctrl+Shift+V)
+# Cmd+W                Close pane/split (Ctrl+Shift+W)
+# Cmd+D                Split right (Ctrl+Shift+O)
+# Cmd+Shift+D          Split down (Ctrl+Shift+E)
 # Cmd+N                New window
 # Cmd+[/]              Previous/next tab
 # Cmd+=/–/0            Zoom in/out/reset
+# Cmd+T                Intentionally unbound (Ctrl+T reserved for OpenCode)
 
 # ALACRITTY TERMINAL
 # ------------------

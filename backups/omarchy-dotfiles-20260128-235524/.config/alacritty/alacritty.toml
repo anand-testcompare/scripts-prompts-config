@@ -1,0 +1,61 @@
+general.import = [ "~/.config/omarchy/current/theme/alacritty.toml" ]
+
+[colors.primary]
+background = "#0a0f1a"
+foreground = "#e8ede9"
+
+[colors.normal]
+black   = "#0a100b"
+red     = "#e09080"
+green   = "#5ec4a0"
+yellow  = "#e8d080"
+blue    = "#60b0e0"
+magenta = "#c090c0"
+cyan    = "#50d0d0"
+white   = "#e8ede9"
+
+[colors.bright]
+black   = "#607068"
+red     = "#f0a090"
+green   = "#70e0b8"
+yellow  = "#f8e8a0"
+blue    = "#80c8f0"
+magenta = "#e0a8e0"
+cyan    = "#60f0e8"
+white   = "#f8fcf8"
+
+[env]
+TERM = "xterm-256color"
+
+[terminal]
+shell = { program = "tmux", args = ["new-session", "-A", "-s", "main"] }
+
+[font]
+normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
+bold = { family = "JetBrainsMono Nerd Font", style = "Bold" }
+italic = { family = "JetBrainsMono Nerd Font", style = "Italic" }
+size = 9
+
+[window]
+padding.x = 14
+padding.y = 14
+decorations = "None"
+opacity = 0.85
+
+[cursor]
+style = { shape = "Block", blinking = "Never" }
+
+[keyboard]
+bindings = [
+  # Insert-based copy/paste
+  { key = "Insert", mods = "Shift", action = "Paste" },
+  { key = "Insert", mods = "Control", action = "Copy" },
+
+  # Font size controls (Ctrl+Shift to avoid Super conflicts)
+  { key = "Equals", mods = "Control|Shift", action = "IncreaseFontSize" },
+  { key = "Minus", mods = "Control|Shift", action = "DecreaseFontSize" },
+  { key = "Key0", mods = "Control|Shift", action = "ResetFontSize" },
+
+  # Shift+Enter sends escape sequence (like Ghostty)
+  { key = "Return", mods = "Shift", chars = "\u001b\r" }
+]

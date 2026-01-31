@@ -129,50 +129,16 @@ sudo udevadm control --reload-rules
 ```
 
 ### Create ~/.config/xremap/config.yml
-```yaml
-keymap:
-  - name: Passthrough for Hyprland window management
-    remap:
-      Super_L-Alt_L-Left: Super_L-Alt_L-Left
-      Super_L-Alt_L-Right: Super_L-Alt_L-Right
-      Super_L-Alt_L-Tab: Super_L-Alt_L-Tab
-      Super_L-Ctrl_L-Left: Super_L-Ctrl_L-Left
-      Super_L-Ctrl_L-Right: Super_L-Ctrl_L-Right
-      Super_L-Ctrl_L-Up: Super_L-Ctrl_L-Up
-      Super_L-Ctrl_L-Down: Super_L-Ctrl_L-Down
-
-  - name: Mac-like shortcuts for non-terminal apps
-    application:
-      not:
-        - ghostty
-        - kitty
-        - alacritty
-        - dev.zed.Zed
-        - dev.zed.Zed-Preview
-    remap:
-      Super_L-a: Ctrl-a
-      Super_L-c: Ctrl-c
-      Super_L-v: Ctrl-v
-      Super_L-x: Ctrl-x
-      Super_L-z: Ctrl-z
-      Super_L-Shift-z: Ctrl-y
-      Super_L-t: Ctrl-t
-      Super_L-w: Ctrl-w
-      Super_L-Shift-t: Ctrl-Shift-t
-      Super_L-l: Ctrl-l
-      Super_L-f: Ctrl-f
-      Super_L-Left: Home
-      Super_L-Right: End
-      Super_L-Up: Ctrl-Home
-      Super_L-Down: Ctrl-End
-      Super_L-o: Ctrl-o
-      Super_L-n: Ctrl-n
-      Super_L-p: Ctrl-p
-      Super_L-r: Ctrl-r
-      Super_L-equal: Ctrl-equal
-      Super_L-minus: Ctrl-minus
-      Super_L-0: Ctrl-0
+Use the full, versioned file in this repo (so diffs are easy to review later):
+```bash
+cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/xremap-config.yml ~/.config/xremap/config.yml
 ```
+
+Notes on the current layout:
+- Global Super→Ctrl mappings (no app exclusions).
+- Ghostty-only overrides for Super+A/C/V/W/D so Ghostty uses Ctrl+Shift+… shortcuts and avoids clobbering terminal keys like Ctrl+D and Ctrl+T.
+- Hyprland passthrough block for Super+Alt/Super+Ctrl combos.
+- Super+Alt+D passthrough for hyprwhspr.
 
 ### Autostart xremap (add to ~/.config/hypr/autostart.conf)
 ```bash
@@ -182,6 +148,15 @@ exec-once = xremap --device "YOUR_KEYBOARD_NAME" ~/.config/xremap/config.yml
 Find your keyboard name with: `xremap --list-devices`
 
 ---
+
+### Config Sync Checklist (Ghostty + xremap)
+- Update live configs: `~/.config/ghostty/config` and `~/.config/xremap/config.yml`
+- Restart xremap: `systemctl --user restart xremap`
+- Reload Ghostty: Ctrl+Shift+, (or restart Ghostty)
+- Copy into repo:
+  - `cp ~/.config/ghostty/config ~/scripts-prompts-config/linux-omarchy/configs/ghostty-config`
+  - `cp ~/.config/xremap/config.yml ~/scripts-prompts-config/linux-omarchy/configs/xremap-config.yml`
+- Sanity check keys in Ghostty: Super+A/C/V/W/D and Ctrl+T
 
 ## 4. Hyprland Customizations
 
@@ -456,30 +431,15 @@ Super_L-Alt_L-d: Super_L-Alt_L-d
 
 ## 7. Ghostty Terminal Config
 
-Add to `~/.config/ghostty/config`:
+Copy the full config so it stays in sync with the repo:
+```bash
+cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/ghostty-config ~/.config/ghostty/config
 ```
-# Font
-font-family = "JetBrainsMono Nerd Font"
-font-size = 9
 
-# Mac-style keybindings
-keybind = super+a=select_all
-keybind = super+c=copy_to_clipboard
-keybind = super+v=paste_from_clipboard
-keybind = super+d=new_split:right
-keybind = super+shift+d=new_split:down
-keybind = super+w=close_surface
-keybind = super+t=new_tab
-keybind = super+n=new_window
-keybind = super+shift+left_bracket=previous_tab
-keybind = super+shift+right_bracket=next_tab
-keybind = super+equal=increase_font_size:1
-keybind = super+minus=decrease_font_size:1
-keybind = super+zero=reset_font_size
-
-# Shift+Enter sends escape sequence (for Claude Code accept)
-keybind = shift+enter=text:\x1b\r
-```
+Notes:
+- Uses the Omarchy theme file via `config-file = ?"~/.config/omarchy/current/theme/ghostty.conf"`.
+- Super-based bindings remain in Ghostty, but Ghostty-specific xremap overrides map Super+A/C/V/W/D to Ctrl+Shift+… in Ghostty.
+- Ctrl+Shift+W is bound to `close_surface` so Super+W closes the current split (not the entire window).
 
 ---
 
