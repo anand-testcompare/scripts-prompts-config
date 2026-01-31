@@ -1,0 +1,71 @@
+#!/bin/bash
+# Move window in direction, crossing monitors when at edge
+
+direction="$1"
+
+# Get current window info
+window_info=$(hyprctl activewindow -j)
+current_monitor_id=$(echo "$window_info" | jq -r '.monitor')
+window_x=$(echo "$window_info" | jq -r '.at[0]')
+window_y=$(echo "$window_info" | jq -r '.at[1]')
+
+# Get monitor info
+monitors=$(hyprctl monitors -j)
+monitor_x=$(echo "$monitors" | jq -r ".[] | select(.id == $current_monitor_id) | .x")
+monitor_y=$(echo "$monitors" | jq -r ".[] | select(.id == $current_monitor_id) | .y")
+
+# Threshold for "at edge" detection (within 50 pixels of left/top edge)
+threshold=50
+
+case "$direction" in
+    l)
+        if [ "$window_x" -lt "$threshold" ]; then
+            target=$(echo "$monitors" | jq -r --argjson cx "$monitor_x" '[.[] | select(.x < $cx)] | sort_by(.x) | last | .name // empty')
+            if [ -n "$target" ] && [ "$target" != "null" ]; then
+                hyprctl dispatch movewindow mon:"$target"
+                exit 0
+            fi
+        fi
+        ;;
+    r)
+        # For right, check if window moved after attempting move
+        hyprctl dispatch movewindoworgroup r
+        sleep 0.05
+        new_x=$(hyprctl activewindow -j | jq -r '.at[0]')
+        if [ "$new_x" = "$window_x" ]; then
+            target=$(echo "$monitors" | jq -r --argjson cx "$monitor_x" '[.[] | select(.x > $cx)] | sort_by(.x) | first | .name // empty')
+            if [ -n "$target" ] && [ "$target" != "null" ]; then
+                hyprctl dispatch movewindow mon:"$target"
+                # Move to left side of new monitor
+                sleep 0.05
+                hyprctl dispatch movewindoworgroup l
+            fi
+        fi
+        exit 0
+        ;;
+    u)
+        if [ "$window_y" -lt "$threshold" ]; then
+            target=$(echo "$monitors" | jq -r --argjson cy "$monitor_y" '[.[] | select(.y < $cy)] | sort_by(.y) | last | .name // empty')
+            if [ -n "$target" ] && [ "$target" != "null" ]; then
+                hyprctl dispatch movewindow mon:"$target"
+                exit 0
+            fi
+        fi
+        ;;
+    d)
+        # For down, check if window moved after attempting move
+        hyprctl dispatch movewindoworgroup d
+        sleep 0.05
+        new_y=$(hyprctl activewindow -j | jq -r '.at[1]')
+        if [ "$new_y" = "$window_y" ]; then
+            target=$(echo "$monitors" | jq -r --argjson cy "$monitor_y" '[.[] | select(.y > $cy)] | sort_by(.y) | first | .name // empty')
+            if [ -n "$target" ] && [ "$target" != "null" ]; then
+                hyprctl dispatch movewindow mon:"$target"
+            fi
+        fi
+        exit 0
+        ;;
+esac
+
+# Move within workspace
+hyprctl dispatch movewindoworgroup "$direction"

@@ -1,0 +1,26 @@
+Backup created: /home/anandpant/scripts-prompts-config/backups/omarchy-dotfiles-20260128-235549
+Source list: /home/anandpant/scripts-prompts-config/linux-omarchy/keychron-omarchy-config-files.txt
+Extras: ~/.config/omarchy ~/.config/waybar
+Skipped (covered by extras):
+  ~/.config/omarchy/current/theme/hyprland.conf
+
+Copied (17):
+  ~/.config/ghostty/config
+  ~/.config/alacritty/alacritty.toml
+  ~/.tmux.conf
+  ~/.config/hypr/bindings.conf
+  ~/.config/hypr/hyprland.conf
+  ~/.config/hypr/autostart.conf
+  ~/.config/xremap/config.yml
+  ~/.config/systemd/user/xremap.service
+  ~/.config/zed/keymap.json
+  ~/.config/zed/settings.json
+  ~/.local/bin/hypr-move-window
+  ~/.local/bin/toggle-scratchpad-window
+  ~/.local/bin/toggle-dropdown-terminal
+  ~/.local/bin/hyprwhspr-spotify-toggle
+  ~/.local/bin/ghostty-or-universal
+  ~/.config/omarchy
+  ~/.config/waybar
+
+Missing (not found on disk) (0):
