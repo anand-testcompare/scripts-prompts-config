@@ -1,0 +1,9 @@
+{
+	"slug": "vault-deep-link-pass",
+	"name": "vault-deep-link-pass",
+	"schedule": "0 2 * * *",
+	"prompt": "opencode run --agent vault-master-scheduled --print-logs --log-level INFO \"Nightly deep link pass for recent inbox notes. Use bun .opencode/scripts/inbox-files.ts --root '/Users/anandpant/Documents/Remote Developer Vault' --since-seconds 86400 --limit 30 --format bullets to select files; if none, exit with a Status: skipped summary. Otherwise run @vault-connector-deep (write link plan) -> @vault-linker (apply plan), then update zz_config_backup/opencode-reports/_latest.md.\"",
+	"workdir": "~/Documents/Remote Developer Vault",
+	"createdAt": "2026-01-18T23:23:19.147Z",
+	"updatedAt": "2026-01-19T01:20:36.953Z"
+}

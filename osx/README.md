@@ -143,6 +143,27 @@ skhd --start-service
 
 ---
 
+## 5. Ghostty keybindings
+
+Backed up Ghostty config lives at:
+- `osx/config/.config/ghostty/config`
+
+Copy to your local machine:
+```bash
+mkdir -p ~/.config/ghostty
+cp osx/config/.config/ghostty/config ~/.config/ghostty/config
+```
+
+Keybindings included:
+- Cmd+D split right
+- Cmd+Shift+D split down
+- Cmd+T new tab
+- Cmd+N new window
+- Cmd+W close pane
+- Cmd+{/} previous/next tab
+
+---
+
 ## Summary Checklist
 
 - [ ] Install terminal tools (Homebrew list above)
@@ -151,3 +172,4 @@ skhd --start-service
 - [ ] Add Omarchy-style aliases/functions to `~/.zshrc`
 - [ ] Create `~/.config/starship.toml`
 - [ ] Install and configure `skhd`, enable Accessibility, start service
+- [ ] Copy Ghostty config and keybindings

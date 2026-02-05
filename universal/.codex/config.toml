@@ -1,0 +1,18 @@
+model = "gpt-5.3-codex"
+model_reasoning_effort = "high"
+suppress_unstable_features_warning = true
+web_search = "cached"
+personality = "pragmatic"
+sandbox_mode = "danger-full-access"
+approval_policy = "never"
+
+
+[notice]
+hide_full_access_warning = true
+hide_rate_limit_model_nudge = true
+
+[features]
+unified_exec = true
+shell_snapshot = true
+collab = true
+steer = true
