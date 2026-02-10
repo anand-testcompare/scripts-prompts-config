@@ -1,0 +1,212 @@
+{
+  // ═══════════════════════════════════════════════════════════════════════════
+  // EDITOR
+  // ═══════════════════════════════════════════════════════════════════════════
+  "editor.accessibilitySupport": "off",
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.formatOnSave": true,
+  "editor.largeFileOptimizations": false,
+  "editor.minimap.enabled": false,
+
+  // Language-specific formatters
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "vscode.markdown-language-features"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[python]": {
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnType": true,
+    "editor.wordBasedSuggestions": "off"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FILES & EXPLORER
+  // ═══════════════════════════════════════════════════════════════════════════
+  "files.autoSave": "afterDelay",
+  "files.exclude": {
+    "**/*.egg-info": true,
+    "**/__pycache__": true
+  },
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmPasteNative": false,
+  "extensions.ignoreRecommendations": true,
+  "security.workspace.trust.untrustedFiles": "open",
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // GIT
+  // ═══════════════════════════════════════════════════════════════════════════
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "github-actions.workflows.pinned.refresh.enabled": true,
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TERMINAL
+  // ═══════════════════════════════════════════════════════════════════════════
+  "terminal.external.linuxExec": "kitty",
+  "terminal.external.osxExec": "kitty.app",
+  "terminal.integrated.defaultLocation": "view",
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.env.osx": {
+    "Q_NEW_SESSION": "1"
+  },
+  "terminal.integrated.inheritEnv": false,
+  "terminal.integrated.persistentSessionScrollback": 100000,
+  "terminal.integrated.scrollback": 100000,
+  "terminal.integrated.tabs.showActiveTerminal": "always",
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // WORKBENCH & WINDOW
+  // ═══════════════════════════════════════════════════════════════════════════
+  "window.zoomLevel": 0,
+  "workbench.colorTheme": "Mermaid Dark",
+  "workbench.panel.opensMaximized": false,
+  "workbench.settings.applyToAllProfiles": [
+    "terminal.integrated.defaultProfile.osx"
+  ],
+  "workbench.statusBar.compact": "never",
+  "workbench.statusBar.visible": true,
+  "workbench.view.alwaysShowHeaderActions": true,
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // WINDSURF
+  // ═══════════════════════════════════════════════════════════════════════════
+  "windsurf.autoExecutionPolicy": "off",
+  "windsurf.autocompleteSpeed": "fast",
+  "windsurf.cascadeCommandsAllowList": [],
+  "windsurf.chatFontSize": "default",
+  "windsurf.explainAndFixInCurrentConversation": true,
+  "windsurf.openRecentConversation": true,
+  "windsurf.rememberLastModelSelection": true,
+  "windsurf.searchMaxWorkspaceFileCount": 0,
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // PEACOCK (workspace colors)
+  // ═══════════════════════════════════════════════════════════════════════════
+  "peacock.surpriseMeOnStartup": true,
+  "peacock.affectEditorGroupBorder": true,
+  "peacock.affectTabActiveBorder": true,
+  "peacock.darkenLightenPercentage": 10,
+  "peacock.elementAdjustments": {
+    "activityBar": "lighten",
+    "statusBar": "none",
+    "titleBar": "none"
+  },
+  "peacock.favoriteColors": [
+    { "name": "Angular Red", "value": "#dd0531" },
+    { "name": "Azure Blue", "value": "#007fff" },
+    { "name": "JavaScript Yellow", "value": "#f9e64f" },
+    { "name": "Mandalorian Blue", "value": "#1857a4" },
+    { "name": "Node Green", "value": "#215732" },
+    { "name": "React Blue", "value": "#61dafb" },
+    { "name": "Something Different", "value": "#832561" },
+    { "name": "Svelte Orange", "value": "#ff3d00" },
+    { "name": "Vue Green", "value": "#42b883" },
+    { "name": "TypeScript Blue", "value": "#3178c6" },
+    { "name": "Python Blue", "value": "#3776ab" },
+    { "name": "Python Gold", "value": "#ffd43b" },
+    { "name": "Go Cyan", "value": "#00add8" },
+    { "name": "Rust Orange", "value": "#ce422b" },
+    { "name": "Ruby Red", "value": "#cc342d" },
+    { "name": "Swift Orange", "value": "#fa7343" },
+    { "name": "Kotlin Purple", "value": "#7f52ff" },
+    { "name": "Tailwind Cyan", "value": "#06b6d4" },
+    { "name": "Vite Purple", "value": "#646cff" },
+    { "name": "Docker Blue", "value": "#2496ed" },
+    { "name": "Postgres Elephant", "value": "#336791" },
+    { "name": "Mongo Green", "value": "#47a248" },
+    { "name": "Redis Red", "value": "#dc382d" },
+    { "name": "GitHub Purple", "value": "#6e5494" },
+    { "name": "GitLab Orange", "value": "#fc6d26" },
+    { "name": "Figma Coral", "value": "#f24e1e" },
+    { "name": "Discord Blurple", "value": "#5865f2" },
+    { "name": "Spotify Green", "value": "#1db954" },
+    { "name": "Stripe Violet", "value": "#635bff" },
+    { "name": "Vercel Black", "value": "#000000" },
+    { "name": "Linear Purple", "value": "#5e6ad2" },
+    { "name": "Electric Lime", "value": "#ccff00" },
+    { "name": "Brutalist Pink", "value": "#ff006e" },
+    { "name": "Brutalist Cyan", "value": "#00f5d4" },
+    { "name": "Brutalist Yellow", "value": "#ffe600" },
+    { "name": "Signal Orange", "value": "#ff6600" },
+    { "name": "Acid Green", "value": "#b0ff00" },
+    { "name": "Hot Magenta", "value": "#ff00ff" },
+    { "name": "Neon Blue", "value": "#00d4ff" },
+    { "name": "Punch Red", "value": "#ff0844" },
+    { "name": "Highlighter Yellow", "value": "#ffff00" },
+    { "name": "Pastel Mint", "value": "#a8e6cf" },
+    { "name": "Pastel Lavender", "value": "#e6e6fa" },
+    { "name": "Pastel Peach", "value": "#ffdab9" },
+    { "name": "Pastel Sky", "value": "#87ceeb" },
+    { "name": "Pastel Rose", "value": "#ffb7c5" },
+    { "name": "Pastel Sage", "value": "#b2c9ab" },
+    { "name": "Pastel Butter", "value": "#fffacd" },
+    { "name": "Pastel Lilac", "value": "#dcd0ff" },
+    { "name": "CLI Mint", "value": "#98d8aa" },
+    { "name": "CLI Slate", "value": "#8892b0" },
+    { "name": "Terminal Green", "value": "#4ecca3" },
+    { "name": "iTerm Orange", "value": "#e67e22" },
+    { "name": "Alacritty Cyan", "value": "#7eb2b2" },
+    { "name": "Nord Polar", "value": "#88c0d0" },
+    { "name": "Nord Frost", "value": "#8fbcbb" },
+    { "name": "Dracula Purple", "value": "#bd93f9" },
+    { "name": "Dracula Pink", "value": "#ff79c6" },
+    { "name": "Catppuccin Mocha", "value": "#cba6f7" },
+    { "name": "Catppuccin Sky", "value": "#89dceb" },
+    { "name": "Tokyo Night Blue", "value": "#7aa2f7" },
+    { "name": "One Dark Orange", "value": "#e5c07b" },
+    { "name": "Gruvbox Orange", "value": "#fe8019" },
+    { "name": "Gruvbox Green", "value": "#b8bb26" },
+    { "name": "Solarized Cyan", "value": "#2aa198" },
+    { "name": "Solarized Blue", "value": "#268bd2" },
+    { "name": "Monokai Pro Orange", "value": "#fd971f" },
+    { "name": "Famous Tangerine", "value": "#ff9f43" },
+    { "name": "Famous Amethyst", "value": "#a29bfe" },
+    { "name": "Famous Emerald", "value": "#00b894" },
+    { "name": "Famous Yacht", "value": "#0984e3" }
+  ],
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // COLORIZE (color preview in files)
+  // ═══════════════════════════════════════════════════════════════════════════
+  "colorize.languages": [
+    "css",
+    "scss",
+    "sass",
+    "less",
+    "html",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "jsonc"
+  ],
+  "colorize.colorized_colors": [
+    "HEXA",
+    "BROWSERS_COLORS",
+    "RGB",
+    "HSL",
+    "OKLAB",
+    "OKLCH"
+  ]
+}

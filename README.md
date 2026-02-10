@@ -45,6 +45,7 @@ Both Bash and Zsh configurations include:
 - **System Info**: Memory (`meminfo`), CPU (`cpuinfo`), disk usage (`diskinfo`)
 - **Clipboard**: Cross-platform clipboard support (`pbcopy`, `pbpaste` via xclip)
 - **Secure Credentials**: Automatic loading from `.shell_secrets`
+- **Modern CLI Tools**: eza (ls replacement), bat (cat replacement with automatic secret masking for `.env` files), ripgrep, fd
 
 ### Zsh-Specific Enhancements
 
@@ -52,7 +53,6 @@ Both Bash and Zsh configurations include:
 - **Syntax Highlighting**: Real-time command syntax validation
 - **Auto-suggestions**: Intelligent command completion
 - **FZF Integration**: Fuzzy file and history search
-- **Modern CLI Tools**: eza (ls replacement), bat (cat replacement with automatic secret masking for .env files), ripgrep, fd
 
 ### Terminal Configuration (Kitty)
 

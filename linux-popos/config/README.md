@@ -93,11 +93,11 @@ Before restoring on a new system, you may want to review and customize:
 | Auto-suggestions    | ❌             | ✅           |
 | FZF integration     | ✅             | ✅           |
 | Modern CLI tools    | ✅             | ✅           |
-| Secret masking      | ❌             | ✅           |
+| Secret masking      | ✅             | ✅           |
 
 ## Secret Masking
 
-The `cat` function (powered by bat) automatically masks sensitive values when viewing env-like files:
+The `cat` function (powered by bat) automatically masks sensitive values when viewing env-like files in both bash and zsh:
 
 ```bash
 cat .env

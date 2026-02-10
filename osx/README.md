@@ -43,7 +43,7 @@ Notes:
 
 The following Omarchy-style aliases/functions were added to `~/.zshrc`:
 - `eza`-based `ls`, `lt`, `lta`
-- `bat` for `cat`
+- `bat` for `cat` (with secret masking for env-like files)
 - `ff` (fzf preview), `..`/`...`/`....` navigation
 - git aliases (`g`, `gcm`, `gcam`, `gcad`)
 - `n()` helper for `nvim`
