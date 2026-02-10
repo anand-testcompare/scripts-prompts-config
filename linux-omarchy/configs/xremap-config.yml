@@ -35,6 +35,10 @@ keymap:
       Super_L-Alt_L-s: Super_L-Alt_L-s
 
   - name: Mac-like shortcuts (global)
+    application:
+      not:
+        - ghostty
+        - com.mitchellh.ghostty
     remap:
       # Basic editing
       Super_L-a: Ctrl-a          # Select all

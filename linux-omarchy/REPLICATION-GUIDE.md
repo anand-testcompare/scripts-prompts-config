@@ -135,17 +135,27 @@ cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/xremap-config.ym
 ```
 
 Notes on the current layout:
-- Global Super→Ctrl mappings (no app exclusions).
+- Global Super→Ctrl mappings (excluding Ghostty so Ghostty-only overrides always win).
 - Ghostty-only overrides for Super+A/C/V/W/D so Ghostty uses Ctrl+Shift+… shortcuts and avoids clobbering terminal keys like Ctrl+D and Ctrl+T.
 - Hyprland passthrough block for Super+Alt/Super+Ctrl combos.
 - Super+Alt+D passthrough for hyprwhspr.
 
-### Autostart xremap (add to ~/.config/hypr/autostart.conf)
+### Autostart xremap (recommended: systemd --user)
+```bash
+mkdir -p ~/.config/systemd/user
+cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/xremap.service ~/.config/systemd/user/xremap.service
+
+systemctl --user daemon-reload
+systemctl --user enable --now xremap.service
+```
+
+If you need device names, use: `xremap --list-devices`
+
+Alternative (Hyprland autostart):
+- Add to `~/.config/hypr/autostart.conf`:
 ```bash
 exec-once = xremap --device "YOUR_KEYBOARD_NAME" ~/.config/xremap/config.yml
 ```
-
-Find your keyboard name with: `xremap --list-devices`
 
 ---
 

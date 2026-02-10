@@ -20,7 +20,7 @@
 
 # xremap - GLOBAL Mac-style keybindings (Super→Ctrl for ALL apps)
 #          plus Ghostty-only overrides for Super+A/C/V/W/D
-# No app exclusions - works everywhere uniformly
+# Global mappings exclude Ghostty so Ghostty-only overrides always win
 ~/.config/xremap/config.yml
 
 # xremap systemd service

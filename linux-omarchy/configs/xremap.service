@@ -1,13 +1,18 @@
 [Unit]
 Description=xremap key remapper
+# Start when the graphical (Hyprland) session is up, and stop when it ends.
+Wants=graphical-session.target
 After=graphical-session.target
+After=wayland-session@hyprland.desktop.target
+PartOf=graphical-session.target
 
 [Service]
 Type=simple
 ExecStartPre=/bin/sleep 2
-ExecStart=/usr/bin/xremap --device "Keychron Keychron Q12 Max" /home/anandpant/.config/xremap/config.yml
+# Use Hyprland-enabled xremap build (installed to ~/.local/bin without sudo).
+ExecStart=/home/anandpant/.local/bin/xremap-hypr --device "Keychron Keychron Q12 Max" --device "Logitech USB Receiver" /home/anandpant/.config/xremap/config.yml
 Restart=on-failure
 RestartSec=3
 
 [Install]
-WantedBy=default.target
+WantedBy=graphical-session.target
