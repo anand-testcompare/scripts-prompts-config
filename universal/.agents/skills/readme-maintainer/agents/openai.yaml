@@ -1,0 +1,4 @@
+interface:
+  display_name: "readme-maintainer"
+  short_description: "Create concise, verified README docs"
+  default_prompt: "Create or update README.md with verified badges, stack/services/deployment details, and explicit testing+CI coverage."
