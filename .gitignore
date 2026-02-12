@@ -1,6 +1,7 @@
 **/.shell_secrets
 **/.mcp.json
 **/.claude.json
+**/.DS_Store
 
 # local claude settings
 .claude/settings.local.json

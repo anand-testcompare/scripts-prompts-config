@@ -1,0 +1,4 @@
+interface:
+  display_name: "issue-grooming"
+  short_description: "Groom GitHub issues into implementation-ready specs"
+  default_prompt: "Turn a raw GitHub issue into a concise, implementation-ready spec with dependencies, test plan, and acceptance criteria. Use the provided templates; include valid GitHub Mermaid diagrams when 2+ systems are involved."
