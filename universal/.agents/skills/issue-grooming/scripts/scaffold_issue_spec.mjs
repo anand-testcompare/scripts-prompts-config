@@ -105,6 +105,16 @@ const parseArgs = (argv) => {
     help: false,
   };
 
+  const requiredValue = (flag, index) => {
+    const value = argv[index + 1];
+    if (!value || value.startsWith("-")) {
+      process.stderr.write(`Missing value for ${flag}\n\n`);
+      process.stderr.write(USAGE);
+      process.exit(2);
+    }
+    return value;
+  };
+
   for (let index = 0; index < argv.length; index += 1) {
     const token = argv[index];
 
@@ -119,25 +129,25 @@ const parseArgs = (argv) => {
     }
 
     if (token === "--issue") {
-      opts.issue = argv[index + 1] ?? null;
+      opts.issue = requiredValue("--issue", index);
       index += 1;
       continue;
     }
 
     if (token === "--kind") {
-      opts.kind = argv[index + 1] ?? null;
+      opts.kind = requiredValue("--kind", index);
       index += 1;
       continue;
     }
 
     if (token === "--repo") {
-      opts.repo = argv[index + 1] ?? null;
+      opts.repo = requiredValue("--repo", index);
       index += 1;
       continue;
     }
 
     if (token === "--out") {
-      opts.out = argv[index + 1] ?? null;
+      opts.out = requiredValue("--out", index);
       index += 1;
       continue;
     }
@@ -156,4 +166,3 @@ const resolveFromHere = (relativePath) => {
 };
 
 await main();
-

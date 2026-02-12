@@ -49,21 +49,47 @@ DEPLOY_FILE_MAP = {
     "Serverless": ["serverless.yml", "serverless.yaml"],
 }
 
+CUSTOM_SERVICE_HINT_FILES = [".readme-maintainer-services.json", ".readme-services.json"]
+
 SERVICE_PATTERNS = {
-    "PostgreSQL": [r"\bpostgres(?:ql)?\b", r"\bPOSTGRES(?:QL)?_"],
-    "MySQL": [r"\bmysql\b", r"\bMYSQL_"],
-    "MongoDB": [r"\bmongodb\b", r"\bMONGO(?:DB)?_"],
-    "Redis": [r"\bredis\b", r"\bREDIS_"],
-    "RabbitMQ": [r"\brabbitmq\b", r"\bAMQP_"],
-    "Kafka": [r"\bkafka\b", r"\bKAFKA_"],
-    "S3": [r"\bs3\b", r"\bAWS_S3"],
-    "Google Cloud Storage": [r"\bgcs\b", r"\bGOOGLE_CLOUD_STORAGE\b"],
-    "Sentry": [r"\bsentry\b", r"\bSENTRY_"],
-    "Datadog": [r"\bdatadog\b", r"\bDD_"],
-    "OpenAI": [r"\bopenai\b", r"\bOPENAI_"],
-    "Anthropic": [r"\banthropic\b", r"\bANTHROPIC_"],
-    "Stripe": [r"\bstripe\b", r"\bSTRIPE_"],
-    "Twilio": [r"\btwilio\b", r"\bTWILIO_"],
+    "PostgreSQL": [r"\bpostgres(?:ql)?\b", r"\bpostgres(?:ql)?_"],
+    "MySQL": [r"\bmysql\b", r"\bmysql_"],
+    "MongoDB": [r"\bmongodb\b", r"\bmongo(?:db)?_"],
+    "Redis": [r"\bredis\b", r"\bredis_"],
+    "RabbitMQ": [r"\brabbitmq\b", r"\bamqp_"],
+    "Kafka": [r"\bkafka\b", r"\bkafka_"],
+    "S3": [r"\bs3\b", r"\baws_s3(?:_|$)"],
+    "Google Cloud Storage": [r"\bgcs\b", r"\bgoogle_cloud_storage(?:_|$)"],
+    "Sentry": [r"\bsentry\b", r"\bsentry_"],
+    "Datadog": [r"\bdatadog\b", r"\bdd_"],
+    "OpenAI": [r"\bopenai\b", r"\bopenai_"],
+    "Anthropic": [r"\banthropic\b", r"\banthropic_"],
+    "OpenRouter": [r"\bopenrouter\b", r"\bopenrouter_"],
+    "Convex": [r"\bconvex\b", r"\bconvex_"],
+    "Browserbase": [r"\bbrowserbase\b", r"\bbrowserbase_"],
+    "Stripe": [r"\bstripe\b", r"\bstripe_"],
+    "Twilio": [r"\btwilio\b", r"\btwilio_"],
+}
+
+SERVICE_PACKAGE_HINTS = {
+    "PostgreSQL": ["postgres", "postgresql", "pg", "psycopg", "psycopg2", "asyncpg"],
+    "MySQL": ["mysql", "mysql2", "pymysql"],
+    "MongoDB": ["mongodb", "pymongo", "mongoose"],
+    "Redis": ["redis", "ioredis"],
+    "RabbitMQ": ["rabbitmq", "amqplib", "pika"],
+    "Kafka": ["kafka", "kafkajs", "confluent-kafka", "aiokafka"],
+    "S3": ["@aws-sdk/client-s3", "boto3", "minio"],
+    "Google Cloud Storage": ["@google-cloud/storage", "google-cloud-storage"],
+    "Sentry": ["sentry", "@sentry/"],
+    "Datadog": ["datadog", "dd-trace"],
+    "OpenAI": ["openai"],
+    "Anthropic": ["anthropic", "@anthropic-ai/sdk"],
+    "OpenRouter": ["openrouter", "@openrouter/ai-sdk-provider"],
+    "Convex": ["convex"],
+    "Browserbase": ["browserbase"],
+    "AI SDK": ["@ai-sdk/", "ai-sdk"],
+    "Stripe": ["stripe"],
+    "Twilio": ["twilio"],
 }
 
 TOOL_CATALOG = {
@@ -200,6 +226,63 @@ def load_toml(path: Path) -> dict:
     except Exception:
         return {}
     return data if isinstance(data, dict) else {}
+
+
+def load_custom_service_hints(repo: Path) -> tuple[dict[str, list[str]], dict[str, list[str]], dict[str, str]]:
+    custom_patterns: dict[str, list[str]] = {}
+    custom_packages: dict[str, list[str]] = {}
+    source_map: dict[str, str] = {}
+
+    for filename in CUSTOM_SERVICE_HINT_FILES:
+        path = repo / filename
+        if not path.exists():
+            continue
+        try:
+            payload = json.loads(path.read_text())
+        except Exception:
+            continue
+        services = payload.get("services", []) if isinstance(payload, dict) else []
+        if not isinstance(services, list):
+            continue
+
+        for item in services:
+            if not isinstance(item, dict):
+                continue
+            service = str(item.get("name", "")).strip()
+            if not service:
+                continue
+
+            raw_patterns = item.get("patterns", []) if isinstance(item.get("patterns"), list) else []
+            raw_packages = item.get("packages", []) if isinstance(item.get("packages"), list) else []
+
+            patterns = [str(p).strip().lower() for p in raw_patterns if isinstance(p, str) and p.strip()]
+            packages = [normalize_package_name(str(p)) for p in raw_packages if isinstance(p, str) and p.strip()]
+
+            if patterns:
+                bucket = custom_patterns.setdefault(service, [])
+                for pattern in patterns:
+                    if pattern not in bucket:
+                        bucket.append(pattern)
+
+            if packages:
+                bucket = custom_packages.setdefault(service, [])
+                for package in packages:
+                    if package not in bucket:
+                        bucket.append(package)
+
+            source_map[service] = filename
+        break
+
+    return custom_patterns, custom_packages, source_map
+
+
+def package_matches_token(package_name: str, token: str) -> bool:
+    normalized_token = normalize_package_name(token)
+    if not normalized_token:
+        return False
+    if normalized_token.endswith("/"):
+        return package_name.startswith(normalized_token)
+    return package_name == normalized_token or normalized_token in package_name
 
 
 def collect_versions(repo: Path) -> dict[str, PackageVersion]:
@@ -523,7 +606,9 @@ def detect_deploy(repo: Path) -> list[dict[str, str]]:
     return detected
 
 
-def detect_external_services(repo: Path, files: Iterable[Path]) -> list[dict[str, str]]:
+def detect_external_services(
+    repo: Path, files: Iterable[Path], versions: dict[str, PackageVersion]
+) -> list[dict[str, str]]:
     file_candidates: list[Path] = []
     for path in files:
         rel = relpath(path, repo)
@@ -538,21 +623,42 @@ def detect_external_services(repo: Path, files: Iterable[Path]) -> list[dict[str
             if path.suffix.lower() in {".py", ".js", ".ts", ".tsx", ".go", ".rs"}:
                 file_candidates.append(path)
 
-    observed: dict[str, str] = {}
+    custom_patterns, custom_packages, custom_sources = load_custom_service_hints(repo)
+
+    service_patterns = {name: list(patterns) for name, patterns in SERVICE_PATTERNS.items()}
+    for service, patterns in custom_patterns.items():
+        service_patterns.setdefault(service, [])
+        service_patterns[service].extend(pattern for pattern in patterns if pattern not in service_patterns[service])
+
+    package_hints = {name: list(tokens) for name, tokens in SERVICE_PACKAGE_HINTS.items()}
+    for service, tokens in custom_packages.items():
+        package_hints.setdefault(service, [])
+        package_hints[service].extend(token for token in tokens if token not in package_hints[service])
+
+    observed: dict[str, set[str]] = defaultdict(set)
     for path in file_candidates[:400]:
         text = read_text(path).lower()
         if not text:
             continue
         rel = relpath(path, repo)
-        for service, patterns in SERVICE_PATTERNS.items():
-            if service in observed:
-                continue
+        for service, patterns in service_patterns.items():
             for pattern in patterns:
                 if re.search(pattern, text):
-                    observed[service] = rel
+                    observed[service].add(rel)
                     break
 
-    return [{"name": name, "evidence": evidence} for name, evidence in sorted(observed.items())]
+    for package_name, package_version in versions.items():
+        for service, tokens in package_hints.items():
+            if any(package_matches_token(package_name, token) for token in tokens):
+                observed[service].add(f"dependency:{package_name} ({package_version.source})")
+                if service in custom_sources:
+                    observed[service].add(f"custom-hints:{custom_sources[service]}")
+
+    return [
+        {"name": name, "evidence": "; ".join(sorted(evidence))}
+        for name, evidence in sorted(observed.items())
+        if evidence
+    ]
 
 
 def detect_tests(repo: Path, files: list[Path], tools: list[dict[str, str]], ci_text: str) -> dict[str, dict[str, object]]:
@@ -701,7 +807,7 @@ def gather_facts(repo: Path, files: list[Path]) -> dict[str, object]:
     tools = augment_tools_from_files(repo, files, tools)
     ci, ci_text = detect_ci(repo)
     deployment = detect_deploy(repo)
-    services = detect_external_services(repo, files)
+    services = detect_external_services(repo, files, versions)
     tests = detect_tests(repo, files, tools, ci_text)
     api = detect_api_surface(repo, files)
 

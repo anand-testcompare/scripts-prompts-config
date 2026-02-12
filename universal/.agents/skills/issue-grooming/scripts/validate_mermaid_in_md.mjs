@@ -81,18 +81,11 @@ const extractMermaidBlocks = (markdown) => {
   /** @type {string[]} */
   const blocks = [];
 
-  // Capture fenced blocks: ```mermaid\n...\n```
-  const pattern = /```mermaid[^\n]*\n([\s\S]*?)\n```/g;
+  // Capture fenced blocks: ```mermaid\n...\n``` (also works when closing fence is at EOF).
+  const pattern = /```mermaid[^\n]*\n([\s\S]*?)```/g;
   let match = null;
   while ((match = pattern.exec(markdown)) !== null) {
     blocks.push(match[1].trimEnd());
-  }
-
-  // Handle EOF without trailing newline before closing fence (rare, but happens)
-  const eofPattern = /```mermaid[^\n]*\n([\s\S]*?)```/g;
-  while ((match = eofPattern.exec(markdown)) !== null) {
-    const candidate = match[1].trimEnd();
-    if (candidate.length > 0 && !blocks.includes(candidate)) blocks.push(candidate);
   }
 
   return blocks;
@@ -153,4 +146,3 @@ const parseArgs = (argv) => {
 };
 
 await main();
-

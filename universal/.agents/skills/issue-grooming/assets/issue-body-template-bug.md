@@ -70,6 +70,7 @@ sequenceDiagram
   - **Test**:
 
 ## Prevention
+
 | Failure Mode | Prevention |
 | --- | --- |
 | [What broke] | [linter/test/type check/monitoring/guardrail] |

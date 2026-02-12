@@ -72,7 +72,7 @@ Use `references/readme-patterns.md` for compact badge grouping and section templ
 ### 6) Final Quality Gate
 Before finalizing README changes:
 - Re-run `readme_facts.py` if code changed during editing.
-- Ensure every numeric badge value is source-backed.
-- Ensure missing tests/CI are explicit.
-- Ensure copyright and license lines are present when available.
-- Ensure prose is skimmable: short paragraphs, bullets, and tables.
+- Confirm every numeric badge value is source-backed.
+- Call out missing tests/CI explicitly.
+- Include copyright and license lines when available.
+- Keep prose skimmable: short paragraphs, bullets, and tables.
