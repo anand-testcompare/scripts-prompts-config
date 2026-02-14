@@ -12,11 +12,20 @@
 # Hyprland bindings - Super+Q closes window, some keys route through ghostty-or-universal
 ~/.config/hypr/bindings.conf
 
-# Hyprland main config - dropdown terminal rules, scratchpad toggle
+# Hyprland main config - sources Omarchy defaults + your overrides
 ~/.config/hypr/hyprland.conf
 
-# Hyprland autostart - Launches xremap on login
+# Hyprland autostart - optional extra autostart processes
 ~/.config/hypr/autostart.conf
+
+# Hyprland overrides (not included in Omarchy defaults)
+~/.config/hypr/monitors.conf
+~/.config/hypr/input.conf
+~/.config/hypr/looknfeel.conf
+~/.config/hypr/hypridle.conf
+~/.config/hypr/hyprlock.conf
+~/.config/hypr/hyprsunset.conf
+~/.config/hypr/xdph.conf
 
 # xremap - GLOBAL Mac-style keybindings (Super→Ctrl for ALL apps)
 #          plus Ghostty-only overrides for Super+A/C/V/W/D
@@ -28,6 +37,10 @@
 
 # Omarchy theme override - active border gradient
 ~/.config/omarchy/current/theme/hyprland.conf
+
+# Waybar - status bar customization
+~/.config/waybar/config.jsonc
+~/.config/waybar/style.css
 
 # Zed editor - Mac-style keybindings (Cmd+A/C/V/etc, Ctrl+C for SIGINT in terminal)
 ~/.config/zed/keymap.json
@@ -44,8 +57,14 @@
 # Dropdown terminal toggle (Alacritty special workspace)
 ~/.local/bin/toggle-dropdown-terminal
 
-# Auto-pause Spotify while dictating (hyprwhspr)
-~/.local/bin/hyprwhspr-spotify-toggle
+# Dictation command compatibility shim (hyprwhspr -> voxtype)
+~/.local/bin/hyprwhspr
+
+# Voxtype dictation config
+~/.config/voxtype/config.toml
+~/.config/systemd/user/voxtype.service
+~/.config/systemd/user/voxtype.service.d/backend.conf
+~/.config/systemd/user/voxtype.service.d/gpu.conf
 
 # Ghostty-aware shortcut router (for Super+C/V/W/T/N in non-Ghostty apps)
 ~/.local/bin/ghostty-or-universal
@@ -83,7 +102,7 @@
 #   - Hyprland intercepts keys BEFORE xremap can remap them
 #   - If Hyprland has Super+D bound, xremap never sees Super+D
 #   - Solution: comment out Hyprland bindings for keys xremap should handle
-#   - For hyprwhspr, add a Super+Alt+D passthrough in xremap so the combo isn't remapped
+#   - For voxtype dictation, add a Super+Alt+D passthrough in xremap so the combo isn't remapped
 
 # ============================================================================
 # KEYBINDINGS SUMMARY
@@ -96,7 +115,7 @@
 # Super+G              Toggle window group
 # Super+Alt+Arrow      Navigate within groups
 # Super+Alt+Tab        Cycle through group
-# Super+Alt+D          Toggle hyprwhspr recording
+# Super+Alt+D          Toggle voxtype recording
 
 # GHOSTTY TERMINAL (via xremap + Ghostty-only overrides)
 # ----------------------------------------

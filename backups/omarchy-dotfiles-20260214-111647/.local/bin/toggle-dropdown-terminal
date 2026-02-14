@@ -1,0 +1,10 @@
+#!/bin/bash
+# Toggle dropdown terminal - spawns if not running, toggles visibility if running
+
+if hyprctl clients -j | jq -e '.[] | select(.class == "alacritty-dropdown")' > /dev/null 2>&1; then
+    hyprctl dispatch togglespecialworkspace dropdown
+else
+    uwsm-app -- alacritty --class alacritty-dropdown &
+    sleep 0.3
+    hyprctl dispatch togglespecialworkspace dropdown
+fi

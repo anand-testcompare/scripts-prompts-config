@@ -1,0 +1,12 @@
+# Extra autostart processes
+# exec-once = uwsm-app -- my-service
+
+# Idle daemon for screensaver/sleep
+exec-once = hypridle
+
+# Status bar
+exec-once = uwsm-app -- waybar
+
+# Make Wayland env available to user services, then restart xremap
+exec-once = systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE DISPLAY HYPRLAND_INSTANCE_SIGNATURE
+exec-once = systemctl --user restart xremap
