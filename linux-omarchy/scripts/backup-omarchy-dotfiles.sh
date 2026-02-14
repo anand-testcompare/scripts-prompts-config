@@ -17,9 +17,18 @@ copied_txt="$backup_dir/copied.txt"
 missing_txt="$backup_dir/missing.txt"
 skipped_txt="$backup_dir/skipped.txt"
 
+display_path() {
+  local p="$1"
+  if [[ "$p" == "$REPO_ROOT/"* ]]; then
+    echo "${p#"$REPO_ROOT"/}"
+  else
+    echo "$p"
+  fi
+}
+
 {
-  echo "Backup created: backups/omarchy-dotfiles-$timestamp"
-  echo "Source list: linux-omarchy/keychron-omarchy-config-files.txt"
+  echo "Backup created: $(display_path "$backup_dir")"
+  echo "Source list: $(display_path "$SOURCE_LIST_FILE")"
   echo "Timestamp: $timestamp"
   echo
 } >"$manifest"
