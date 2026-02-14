@@ -3,6 +3,13 @@
 	"plugin": ["opencode-gemini-auth@latest", "opencode-anthropic-auth@latest"],
 	"model": "anthropic/claude-opus-4-6",
 	"small_model": "anthropic/claude-haiku-4-5",
+	"mcp": {
+		"gh_grep": {
+			"type": "remote",
+			"url": "https://mcp.grep.app",
+			"enabled": true
+		}
+	},
 	"permission": {
 		"bash": "allow",
 		"read": "allow",

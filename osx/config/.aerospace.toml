@@ -1,0 +1,116 @@
+# Place a copy of this config to ~/.aerospace.toml
+#
+# This is an Omarchy-inspired setup:
+# - cmd+1..9: focus workspace
+# - cmd+shift+1..9: move focused window to workspace AND follow it
+#
+# AeroSpace default config is located at:
+# /Applications/AeroSpace.app/Contents/Resources/default-config.toml
+
+config-version = 2
+
+# Start AeroSpace at login
+start-at-login = true
+
+after-startup-command = []
+
+# Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+# Layout defaults. See: https://nikitabobko.github.io/AeroSpace/guide#layouts
+accordion-padding = 30
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+# Keep workspaces alive even when empty (matches the numbered workspace workflow)
+persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+[key-mapping]
+    preset = 'qwerty'
+
+[gaps]
+    inner.horizontal = 8
+    inner.vertical = 8
+    outer.left = 8
+    outer.bottom = 8
+    outer.top = 8
+    outer.right = 8
+
+[mode.main.binding]
+    # Layout toggles (defaults)
+    alt-slash = 'layout tiles horizontal vertical'
+    alt-comma = 'layout accordion horizontal vertical'
+
+    # Focus (defaults)
+    alt-h = 'focus left'
+    alt-j = 'focus down'
+    alt-k = 'focus up'
+    alt-l = 'focus right'
+
+    # Move (defaults)
+    alt-shift-h = 'move left'
+    alt-shift-j = 'move down'
+    alt-shift-k = 'move up'
+    alt-shift-l = 'move right'
+
+    # Resize (defaults)
+    alt-minus = 'resize smart -50'
+    alt-equal = 'resize smart +50'
+
+    # Workspaces (Omarchy-style on macOS)
+    cmd-1 = 'workspace 1'
+    cmd-2 = 'workspace 2'
+    cmd-3 = 'workspace 3'
+    cmd-4 = 'workspace 4'
+    cmd-5 = 'workspace 5'
+    cmd-6 = 'workspace 6'
+    cmd-7 = 'workspace 7'
+    cmd-8 = 'workspace 8'
+    cmd-9 = 'workspace 9'
+
+    cmd-shift-1 = 'move-node-to-workspace --focus-follows-window 1'
+    cmd-shift-2 = 'move-node-to-workspace --focus-follows-window 2'
+    cmd-shift-3 = 'move-node-to-workspace --focus-follows-window 3'
+    cmd-shift-4 = 'move-node-to-workspace --focus-follows-window 4'
+    cmd-shift-5 = 'move-node-to-workspace --focus-follows-window 5'
+    cmd-shift-6 = 'move-node-to-workspace --focus-follows-window 6'
+    cmd-shift-7 = 'move-node-to-workspace --focus-follows-window 7'
+    cmd-shift-8 = 'move-node-to-workspace --focus-follows-window 8'
+    cmd-shift-9 = 'move-node-to-workspace --focus-follows-window 9'
+
+    # Backup bindings (in case cmd+1..9 is consumed by an app, e.g. browser tab switching)
+    alt-1 = 'workspace 1'
+    alt-2 = 'workspace 2'
+    alt-3 = 'workspace 3'
+    alt-4 = 'workspace 4'
+    alt-5 = 'workspace 5'
+    alt-6 = 'workspace 6'
+    alt-7 = 'workspace 7'
+    alt-8 = 'workspace 8'
+    alt-9 = 'workspace 9'
+
+    alt-shift-1 = 'move-node-to-workspace 1'
+    alt-shift-2 = 'move-node-to-workspace 2'
+    alt-shift-3 = 'move-node-to-workspace 3'
+    alt-shift-4 = 'move-node-to-workspace 4'
+    alt-shift-5 = 'move-node-to-workspace 5'
+    alt-shift-6 = 'move-node-to-workspace 6'
+    alt-shift-7 = 'move-node-to-workspace 7'
+    alt-shift-8 = 'move-node-to-workspace 8'
+    alt-shift-9 = 'move-node-to-workspace 9'
+
+    # Service mode (defaults)
+    alt-shift-semicolon = 'mode service'
+
+[mode.service.binding]
+    esc = ['reload-config', 'mode main']
+    r = ['flatten-workspace-tree', 'mode main'] # reset layout
+    f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
+    backspace = ['close-all-windows-but-current', 'mode main']
+
+    alt-shift-h = ['join-with left', 'mode main']
+    alt-shift-j = ['join-with down', 'mode main']
+    alt-shift-k = ['join-with up', 'mode main']
+    alt-shift-l = ['join-with right', 'mode main']
+

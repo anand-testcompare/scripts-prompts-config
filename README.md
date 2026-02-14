@@ -1,28 +1,34 @@
 # scripts-prompts-config
 
-A comprehensive configuration management system for development environments, supporting both Linux and macOS. This repository contains backup/restore scripts, shell configurations, development tools setup, and AI prompts for maintaining consistent development environments.
+A comprehensive configuration management system for development environments, supporting Linux and macOS. This repository contains backup/restore scripts, shell configurations, development tools setup, and AI prompts for maintaining consistent development environments.
+
+## Current Platform Focus
+
+- Primary: `osx/` and `linux-omarchy/`
+- Deprecated: `linux-popos/` (kept for historical reference; avoid adding new configs there)
 
 ## Quick Start
 
-### Linux Setup on New System
+### macOS Setup
 
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/scripts-prompts-config.git
-cd scripts-prompts-config/linux-popos
+cd scripts-prompts-config
 
-# Restore all configurations
-./restore-configs.sh
+# Apply backed-up macOS configs
+cp osx/config/.tmux.conf ~/.tmux.conf
+mkdir -p ~/.config/ghostty
+cp osx/config/.config/ghostty/config ~/.config/ghostty/config
 
-# Configure your API keys
-cp linux-popos/config/.shell_secrets.template ~/.shell_secrets
-nano ~/.shell_secrets  # Add your actual API keys
-chmod 600 ~/.shell_secrets
-
-# Apply configurations
-source ~/.bashrc  # For bash
-source ~/.zshrc   # For zsh
+# Reload tmux config
+tmux source-file ~/.tmux.conf
 ```
+
+### Legacy Pop!_OS Scripts (Deprecated)
+
+The `linux-popos/` directory remains available, but is deprecated for ongoing updates.
+Prefer `osx/` and `linux-omarchy/` for new changes.
 
 ### Backup Current Configurations
 
@@ -69,7 +75,7 @@ scripts-prompts-config/
 ├── CLAUDE.md                   # AI assistant instructions
 ├── README.md                   # This file
 ├── TODO.md                     # Development tasks
-├── linux-popos/
+├── linux-popos/             # Deprecated (legacy Pop!_OS/Ubuntu)
 │   ├── backup-configs.sh      # Backup script (Pop!_OS/Ubuntu)
 │   ├── restore-configs.sh     # Restore script (Pop!_OS/Ubuntu)
 │   ├── config/                # Configuration files (local backups)
@@ -253,7 +259,7 @@ Install the commit-msg hook from `universal/git-hooks/` (see `universal/git-hook
 
 ## Platform-Specific Documentation
 
-- **Linux (Pop!_OS/Ubuntu)**: See [linux-popos/config/README.md](linux-popos/config/README.md) for detailed Linux configuration information
+- **Linux (Pop!_OS/Ubuntu, deprecated)**: See [linux-popos/config/README.md](linux-popos/config/README.md) (legacy)
 - **Linux (Omarchy/Arch)**: See [linux-omarchy/REPLICATION-GUIDE.md](linux-omarchy/REPLICATION-GUIDE.md) for Omarchy setup details
 - **macOS**: Utility scripts available in `osx/scripts/`
 

@@ -164,6 +164,50 @@ Keybindings included:
 
 ---
 
+## 6. Tmux (Omarchy-style on macOS)
+
+Backed up tmux config lives at:
+- `osx/config/.tmux.conf`
+
+Copy to your local machine:
+```bash
+cp osx/config/.tmux.conf ~/.tmux.conf
+tmux source-file ~/.tmux.conf
+```
+
+Includes:
+- `Ctrl+Space` prefix (`C-b` unbound)
+- Omarchy-style statusline and pane colors
+- Vim pane movement/resizing + mouse support
+- Ghostty truecolor compatibility (`xterm-ghostty:RGB`)
+- TPM plugins: sensible, resurrect, continuum
+
+---
+
+## 7. AeroSpace (tiling + workspaces)
+
+AeroSpace is an i3-like tiling window manager for macOS.
+
+Install:
+```bash
+brew install --cask nikitabobko/tap/aerospace
+```
+
+Copy the Omarchy-style config (Cmd+1..9 focus workspace, Cmd+Shift+1..9 move window and follow):
+```bash
+cp osx/config/.aerospace.toml ~/.aerospace.toml
+```
+
+Then launch `AeroSpace.app` and grant it Accessibility permissions:
+- System Settings -> Privacy & Security -> Accessibility -> enable `AeroSpace`
+
+Reload config after edits:
+```bash
+aerospace reload-config
+```
+
+---
+
 ## Summary Checklist
 
 - [ ] Install terminal tools (Homebrew list above)
@@ -173,3 +217,5 @@ Keybindings included:
 - [ ] Create `~/.config/starship.toml`
 - [ ] Install and configure `skhd`, enable Accessibility, start service
 - [ ] Copy Ghostty config and keybindings
+- [ ] Copy tmux config and reload tmux
+- [ ] Install AeroSpace + copy `~/.aerospace.toml` and enable Accessibility
