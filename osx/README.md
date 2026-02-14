@@ -164,6 +164,26 @@ Keybindings included:
 
 ---
 
+## 6. Tmux (Omarchy-style on macOS)
+
+Backed up tmux config lives at:
+- `osx/config/.tmux.conf`
+
+Copy to your local machine:
+```bash
+cp osx/config/.tmux.conf ~/.tmux.conf
+tmux source-file ~/.tmux.conf
+```
+
+Includes:
+- `Ctrl+Space` prefix (`C-b` unbound)
+- Omarchy-style statusline and pane colors
+- Vim pane movement/resizing + mouse support
+- Ghostty truecolor compatibility (`xterm-ghostty:RGB`)
+- TPM plugins: sensible, resurrect, continuum
+
+---
+
 ## Summary Checklist
 
 - [ ] Install terminal tools (Homebrew list above)
@@ -173,3 +193,4 @@ Keybindings included:
 - [ ] Create `~/.config/starship.toml`
 - [ ] Install and configure `skhd`, enable Accessibility, start service
 - [ ] Copy Ghostty config and keybindings
+- [ ] Copy tmux config and reload tmux
