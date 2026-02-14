@@ -4,6 +4,18 @@ This guide documents how to replicate the quality-of-life improvements made on t
 
 ---
 
+## 0. Backup (Before Reinstall)
+
+Create a backup snapshot of the Omarchy-related dotfiles/configs:
+
+```bash
+/home/anandpant/scripts-prompts-config/linux-omarchy/scripts/backup-omarchy-dotfiles.sh
+```
+
+This creates a timestamped folder under `backups/omarchy-dotfiles-*`.
+
+---
+
 ## 1. Terminal QoL Tools
 
 These tools provide autocomplete, better history, and smarter navigation.
@@ -138,7 +150,7 @@ Notes on the current layout:
 - Global Super→Ctrl mappings (excluding Ghostty so Ghostty-only overrides always win).
 - Ghostty-only overrides for Super+A/C/V/W/D so Ghostty uses Ctrl+Shift+… shortcuts and avoids clobbering terminal keys like Ctrl+D and Ctrl+T.
 - Hyprland passthrough block for Super+Alt/Super+Ctrl combos.
-- Super+Alt+D passthrough for hyprwhspr.
+- Super+Alt+D passthrough for dictation (`voxtype`).
 
 ### Autostart xremap (recommended: systemd --user)
 ```bash
@@ -389,53 +401,64 @@ windowrulev2 = bordercolor rgb(00b5b5), onworkspace:special:scratchpad
 
 ---
 
-## 5. Voice Dictation (hyprwhspr)
+## 5. Voice Dictation (voxtype + GPU)
 
-hyprwhspr provides system-wide voice-to-text using Whisper.
+`voxtype` provides system-wide voice-to-text and is configured here to run on Vulkan (GPU).
 
 ### Install
 ```bash
-yay -S hyprwhspr
-sudo pacman -S python-rich
+yay -S voxtype-bin
 ```
 
 ### Configure
 
-Config file: `~/.config/hyprwhspr/config.json`
-```json
-{
-  "primary_shortcut": "SUPER+ALT+D",
-  "recording_mode": "toggle",
-  "model": "base",
-  "threads": 4,
-  "language": null,
-  "clipboard_behavior": false,
-  "paste_mode": "ctrl_shift",
-  "shift_paste": true,
-  "transcription_backend": "rest-api",
-  "rest_endpoint_url": "http://127.0.0.1:17980/transcribe",
-  "audio_feedback": true
-}
+Quick apply from repo (recommended):
+```bash
+/home/anandpant/scripts-prompts-config/linux-omarchy/scripts/setup-voxtype-dictation.sh
 ```
 
-### Enable systemd service
+Or copy manually:
+
+Copy the versioned files from this repo:
 ```bash
-systemctl --user enable --now hyprwhspr.service
+mkdir -p ~/.config/voxtype ~/.config/systemd/user/voxtype.service.d ~/.local/bin
+cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/voxtype-config.toml ~/.config/voxtype/config.toml
+cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/voxtype.service ~/.config/systemd/user/voxtype.service
+cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/voxtype-backend.conf ~/.config/systemd/user/voxtype.service.d/backend.conf
+cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/voxtype-gpu.conf ~/.config/systemd/user/voxtype.service.d/gpu.conf
+cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/hyprwhspr-compat ~/.local/bin/hyprwhspr
+chmod +x ~/.local/bin/hyprwhspr
+```
+
+Notes:
+- `backend.conf` forces the Vulkan binary (`/usr/lib/voxtype/voxtype-vulkan daemon`).
+- `gpu.conf` pins GPU selection to NVIDIA (`VOXTYPE_VULKAN_DEVICE=nvidia`).
+- `hyprwhspr-compat` keeps old `hyprwhspr` command muscle memory working by forwarding to `voxtype`.
+
+### Enable systemd service (persists across restart/login)
+```bash
+systemctl --user daemon-reload
+systemctl --user enable --now voxtype.service
+systemctl --user is-enabled voxtype.service
 ```
 
 ### Hyprland binding
 Add to `~/.config/hypr/bindings.conf`:
 ```
-bindd = SUPER ALT, D, Speech-to-text, exec, /usr/lib/hyprwhspr/config/hyprland/hyprwhspr-tray.sh record
+bindd = SUPER ALT, D, Dictation, exec, voxtype record toggle
 ```
 
-If you use xremap, add a passthrough so Super+Alt+D reaches Hyprland:
+If you use xremap, keep passthroughs so Super+Alt+D reaches Hyprland:
 ```
 Super_L-Alt_L-d: Super_L-Alt_L-d
+Super_L-Alt_R-d: Super_L-Alt_R-d
+Super_R-Alt_L-d: Super_R-Alt_L-d
+Super_R-Alt_R-d: Super_R-Alt_R-d
 ```
 
 ### Usage
 - `Super+Alt+D` - Toggle recording (press once to start, again to stop and transcribe)
+- `hyprwhspr toggle` - Compatibility alias for old workflow
 
 ---
 
@@ -532,8 +555,8 @@ vim.opt.relativenumber = false
 - [ ] Add monitor scale presets (F13/F14/F15 for 4K scaling)
 - [ ] Create toggle-scratchpad-window script and add Super+Shift+S binding
 - [ ] Add teal border for scratchpad windows in looknfeel.conf
-- [ ] Install hyprwhspr (`yay -S hyprwhspr && sudo pacman -S python-rich`)
-- [ ] Configure hyprwhspr and enable systemd service
+- [ ] Install voxtype (`yay -S voxtype-bin`)
+- [ ] Copy voxtype config/service/drop-ins and enable `voxtype.service`
 - [ ] Configure Ghostty with Mac-style keybindings
 - [ ] Configure Zed with Mac-style keybindings
 - [ ] Configure VS Code shift+enter binding

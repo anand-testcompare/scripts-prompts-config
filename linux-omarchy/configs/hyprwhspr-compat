@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Compatibility shim: hyprwhspr -> voxtype
+# Preserves old muscle-memory/scripts after migrating to voxtype.
+
+case "${1:-toggle}" in
+  record)
+    shift
+    action="${1:-toggle}"
+    case "$action" in
+      start|stop|toggle)
+        exec voxtype record "$action"
+        ;;
+      *)
+        echo "Usage: hyprwhspr [toggle|start|stop|status|record {toggle|start|stop}]" >&2
+        exit 2
+        ;;
+    esac
+    ;;
+  toggle)
+    exec voxtype record toggle
+    ;;
+  start)
+    exec voxtype record start
+    ;;
+  stop)
+    exec voxtype record stop
+    ;;
+  status)
+    exec voxtype status
+    ;;
+  *)
+    exec voxtype "$@"
+    ;;
+esac

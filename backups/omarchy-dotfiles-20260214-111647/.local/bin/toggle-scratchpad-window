@@ -1,0 +1,12 @@
+#!/bin/bash
+# Toggle window between scratchpad and previous workspace
+
+workspace=$(hyprctl activewindow -j | jq -r '.workspace.name')
+
+if [[ "$workspace" == "special:scratchpad" ]]; then
+    # Move back to the most recent regular workspace
+    hyprctl dispatch movetoworkspace e+0
+else
+    # Move to scratchpad
+    hyprctl dispatch movetoworkspacesilent special:scratchpad
+fi

@@ -1,0 +1,28 @@
+#!/bin/bash
+action="$1"
+focused_class=$(hyprctl activewindow -j | jq -r '.class // ""')
+
+# Small delay to let modifier keys release
+sleep 0.1
+
+if [[ "$focused_class" == "com.mitchellh.ghostty" ]]; then
+    case "$action" in
+        copy)        hyprctl dispatch sendshortcut "CTRL SHIFT, C, activewindow" ;;
+        paste)       hyprctl dispatch sendshortcut "CTRL SHIFT, V, activewindow" ;;
+        close)       hyprctl dispatch sendshortcut "CTRL SHIFT, W, activewindow" ;;
+        split-right) hyprctl dispatch sendshortcut "CTRL SHIFT, D, activewindow" ;;
+        split-down)  hyprctl dispatch sendshortcut "CTRL SHIFT ALT, D, activewindow" ;;
+        new-tab)     hyprctl dispatch sendshortcut "CTRL SHIFT, T, activewindow" ;;
+        new-window)  hyprctl dispatch sendshortcut "CTRL SHIFT, N, activewindow" ;;
+        select-all)  hyprctl dispatch sendshortcut "CTRL SHIFT, A, activewindow" ;;
+    esac
+else
+    case "$action" in
+        copy)        hyprctl dispatch sendshortcut "CTRL, Insert, activewindow" ;;
+        paste)       hyprctl dispatch sendshortcut "SHIFT, Insert, activewindow" ;;
+        close)       hyprctl dispatch killactive ;;
+        new-tab)     hyprctl dispatch sendshortcut "CTRL, T, activewindow" ;;
+        new-window)  hyprctl dispatch sendshortcut "CTRL, N, activewindow" ;;
+        select-all)  hyprctl dispatch sendshortcut "CTRL, A, activewindow" ;;
+    esac
+fi

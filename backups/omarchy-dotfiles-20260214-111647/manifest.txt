@@ -1,0 +1,46 @@
+Backup created: <HOME>/scripts-prompts-config/backups/omarchy-dotfiles-20260214-111647
+Source list: <HOME>/scripts-prompts-config/linux-omarchy/keychron-omarchy-config-files.txt
+Timestamp: 20260214-111647
+
+Extras:
+  <HOME>/.config/omarchy
+  <HOME>/.config/hypr
+  <HOME>/.config/waybar
+
+Copied (32):
+  ~/.config/ghostty/config
+  ~/.config/alacritty/alacritty.toml
+  ~/.tmux.conf
+  ~/.config/hypr/bindings.conf
+  ~/.config/hypr/hyprland.conf
+  ~/.config/hypr/autostart.conf
+  ~/.config/hypr/monitors.conf
+  ~/.config/hypr/input.conf
+  ~/.config/hypr/looknfeel.conf
+  ~/.config/hypr/hypridle.conf
+  ~/.config/hypr/hyprlock.conf
+  ~/.config/hypr/hyprsunset.conf
+  ~/.config/hypr/xdph.conf
+  ~/.config/xremap/config.yml
+  ~/.config/systemd/user/xremap.service
+  ~/.config/omarchy/current/theme/hyprland.conf
+  ~/.config/waybar/config.jsonc
+  ~/.config/waybar/style.css
+  ~/.config/zed/keymap.json
+  ~/.config/zed/settings.json
+  ~/.local/bin/hypr-move-window
+  ~/.local/bin/toggle-scratchpad-window
+  ~/.local/bin/toggle-dropdown-terminal
+  ~/.local/bin/hyprwhspr
+  ~/.config/voxtype/config.toml
+  ~/.config/systemd/user/voxtype.service
+  ~/.config/systemd/user/voxtype.service.d/backend.conf
+  ~/.config/systemd/user/voxtype.service.d/gpu.conf
+  ~/.local/bin/ghostty-or-universal
+  ~/.config/omarchy
+  ~/.config/hypr
+  ~/.config/waybar
+
+Missing (not found on disk) (0):
+
+Skipped (0):
