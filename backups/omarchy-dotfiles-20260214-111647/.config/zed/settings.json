@@ -12,7 +12,7 @@
   },
   "autosave": "on_focus_change",
   "prettier": {
-    "allowed": false,
+    "allowed": false
   },
   "agent": {
     "default_profile": "yolo",
@@ -56,17 +56,17 @@
     },
     "default_model": {
       "provider": "zed.dev",
-      "model": "gemini-3-flash",
+      "model": "gemini-3-flash"
     },
     "always_allow_tool_actions": true,
     "inline_assistant_model": {
       "provider": "zed.dev",
-      "model": "gemini-3-flash",
+      "model": "gemini-3-flash"
     },
-    "model_parameters": [],
+    "model_parameters": []
   },
   "search": {
-    "include_ignored": false,
+    "include_ignored": false
   },
   "file_scan_exclusions": [
     "**/.git",
@@ -110,24 +110,24 @@
   ],
   "agent_servers": {
     "claude": {
-      "default_mode": "bypassPermissions",
-    },
+      "default_mode": "bypassPermissions"
+    }
   },
   "lsp": {},
   "project_panel": {
     "hide_hidden": false,
-    "hide_gitignore": false,
+    "hide_gitignore": false
   },
   "context_servers": {
     "mcp-server-context7": {
       "enabled": true,
-      "settings": {},
-    },
+      "settings": {}
+    }
   },
   "icon_theme": {
     "mode": "system",
     "light": "Zed (Default)",
-    "dark": "Catppuccin Frappé",
+    "dark": "Catppuccin Frappé"
   },
   "base_keymap": "Cursor",
   "ui_font_size": 16,
@@ -136,5 +136,5 @@
     "mode": "system",
     "light": "One Light",
     "dark": "Catppuccin Mocha"
-  },
+  }
 }

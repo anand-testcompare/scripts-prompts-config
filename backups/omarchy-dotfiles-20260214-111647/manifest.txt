@@ -1,11 +1,11 @@
-Backup created: /home/anandpant/scripts-prompts-config/backups/omarchy-dotfiles-20260214-111647
-Source list: /home/anandpant/scripts-prompts-config/linux-omarchy/keychron-omarchy-config-files.txt
+Backup created: <HOME>/scripts-prompts-config/backups/omarchy-dotfiles-20260214-111647
+Source list: <HOME>/scripts-prompts-config/linux-omarchy/keychron-omarchy-config-files.txt
 Timestamp: 20260214-111647
 
 Extras:
-  /home/anandpant/.config/omarchy
-  /home/anandpant/.config/hypr
-  /home/anandpant/.config/waybar
+  <HOME>/.config/omarchy
+  <HOME>/.config/hypr
+  <HOME>/.config/waybar
 
 Copied (32):
   ~/.config/ghostty/config

@@ -18,8 +18,8 @@ missing_txt="$backup_dir/missing.txt"
 skipped_txt="$backup_dir/skipped.txt"
 
 {
-  echo "Backup created: $backup_dir"
-  echo "Source list: $SOURCE_LIST_FILE"
+  echo "Backup created: backups/omarchy-dotfiles-$timestamp"
+  echo "Source list: linux-omarchy/keychron-omarchy-config-files.txt"
   echo "Timestamp: $timestamp"
   echo
 } >"$manifest"
@@ -30,28 +30,29 @@ skipped_txt="$backup_dir/skipped.txt"
 
 copy_rel_to_home() {
   local expanded_path="$1"
+  local rel
+  local display
 
-  if [[ "$expanded_path" != "$HOME/"* && "$expanded_path" != "$HOME" ]]; then
+  if [[ "$expanded_path" == "$HOME" ]]; then
+    rel="."
+    display="~"
+  elif [[ "$expanded_path" == "$HOME/"* ]]; then
+    rel="${expanded_path#"$HOME"/}"
+    display="~/$rel"
+  else
     echo "$expanded_path" >>"$skipped_txt"
     return 0
   fi
 
   if [[ ! -e "$expanded_path" ]]; then
-    echo "$expanded_path" >>"$missing_txt"
+    echo "$display" >>"$missing_txt"
     return 0
-  fi
-
-  local rel
-  if [[ "$expanded_path" == "$HOME" ]]; then
-    rel="."
-  else
-    rel="${expanded_path#"$HOME"/}"
   fi
 
   # Preserve the path relative to $HOME inside the backup folder, matching prior backups:
   # e.g. ~/.config/hypr/bindings.conf -> $backup_dir/.config/hypr/bindings.conf
   rsync -a --relative "$HOME/./$rel" "$backup_dir/" >/dev/null
-  echo "~/$rel" >>"$copied_txt"
+  echo "$display" >>"$copied_txt"
 }
 
 while IFS= read -r line || [[ -n "$line" ]]; do
@@ -80,7 +81,7 @@ extras=(
 
 {
   echo "Extras:"
-  printf "  %s\n" "${extras[@]}"
+  printf "  %s\n" "~/.config/omarchy" "~/.config/hypr" "~/.config/waybar"
   echo
 } >>"$manifest"
 
