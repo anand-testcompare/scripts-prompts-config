@@ -184,6 +184,30 @@ Includes:
 
 ---
 
+## 7. AeroSpace (tiling + workspaces)
+
+AeroSpace is an i3-like tiling window manager for macOS.
+
+Install:
+```bash
+brew install --cask nikitabobko/tap/aerospace
+```
+
+Copy the Omarchy-style config (Cmd+1..9 focus workspace, Cmd+Shift+1..9 move window and follow):
+```bash
+cp osx/config/.aerospace.toml ~/.aerospace.toml
+```
+
+Then launch `AeroSpace.app` and grant it Accessibility permissions:
+- System Settings -> Privacy & Security -> Accessibility -> enable `AeroSpace`
+
+Reload config after edits:
+```bash
+aerospace reload-config
+```
+
+---
+
 ## Summary Checklist
 
 - [ ] Install terminal tools (Homebrew list above)
@@ -194,3 +218,4 @@ Includes:
 - [ ] Install and configure `skhd`, enable Accessibility, start service
 - [ ] Copy Ghostty config and keybindings
 - [ ] Copy tmux config and reload tmux
+- [ ] Install AeroSpace + copy `~/.aerospace.toml` and enable Accessibility
