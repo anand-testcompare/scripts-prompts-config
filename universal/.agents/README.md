@@ -6,6 +6,7 @@ These are maintained in this folder under `skills/`:
 
 - `issue-grooming`
 - `readme-maintainer`
+- `workos-convex-authkit`
 
 ## Upstream Skills (Install Instead of Copying)
 
