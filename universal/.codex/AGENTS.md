@@ -25,4 +25,4 @@
 - If we pivot approaches we must deprecate the old approach completely and the cleanup shouyld be done as part of the change
 
 ## Tools
-- you have: gh, vercel, gcloud, convex, and others installed in the cli. most projects arent public and need to be accessed with authed tools
+- you have: gh, vercel, gcloud, convex, d3k, sentry-cli, and others installed in the cli. most projects arent public and need to be accessed with authed tools.
