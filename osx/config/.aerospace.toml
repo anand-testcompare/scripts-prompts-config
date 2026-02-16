@@ -40,7 +40,8 @@ persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 [mode.main.binding]
     # Layout toggles (defaults)
     alt-slash = 'layout tiles horizontal vertical'
-    alt-comma = 'layout accordion horizontal vertical'
+    # Keep alt-comma on tiles too to avoid accidental accordion mode.
+    alt-comma = 'layout tiles horizontal vertical'
 
     # Focus (defaults)
     alt-h = 'focus left'
@@ -60,6 +61,12 @@ persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     cmd-ctrl-up = 'swap up'
     cmd-ctrl-right = 'swap right'
 
+    # Move focused window to another monitor and follow it (tiling-safe).
+    cmd-shift-left = 'move-node-to-monitor --focus-follows-window --wrap-around left'
+    cmd-shift-right = 'move-node-to-monitor --focus-follows-window --wrap-around right'
+    cmd-shift-up = 'move-node-to-monitor --focus-follows-window --wrap-around up'
+    cmd-shift-down = 'move-node-to-monitor --focus-follows-window --wrap-around down'
+
     # Resize (defaults)
     alt-minus = 'resize smart -50'
     alt-equal = 'resize smart +50'
@@ -75,6 +82,8 @@ persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     cmd-8 = 'workspace 8'
     cmd-9 = 'workspace 9'
 
+    # Cmd+Shift+3/4 conflict with macOS screenshot shortcuts by default.
+    # Run osx/scripts/configure_screenshot_shortcuts.sh to free these for AeroSpace.
     cmd-shift-1 = 'move-node-to-workspace --focus-follows-window 1'
     cmd-shift-2 = 'move-node-to-workspace --focus-follows-window 2'
     cmd-shift-3 = 'move-node-to-workspace --focus-follows-window 3'
@@ -109,10 +118,14 @@ persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     # Service mode (defaults)
     alt-shift-semicolon = 'mode service'
 
+    # Emergency fix when a window ends up floating.
+    alt-shift-t = 'layout tiling'
+
 [mode.service.binding]
     esc = ['reload-config', 'mode main']
-    r = ['flatten-workspace-tree', 'mode main'] # reset layout
+    r = ['layout tiles horizontal vertical', 'flatten-workspace-tree', 'mode main'] # reset layout
     f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
+    a = ['layout accordion horizontal vertical', 'mode main']
     backspace = ['close-all-windows-but-current', 'mode main']
 
     alt-shift-h = ['join-with left', 'mode main']
