@@ -206,6 +206,52 @@ Reload config after edits:
 aerospace reload-config
 ```
 
+Includes:
+- `Cmd+Shift+Left/Right/Up/Down` move window to another monitor and follow
+- `Alt+Shift+;`, then `r` force reset to tiled layout + flatten tree
+- `Alt+Shift+;`, then `a` explicit accordion mode (only when intended)
+
+Important:
+- By default macOS uses `Cmd+Shift+3/4` for screenshots.
+- This conflicts with AeroSpace `Cmd+Shift+3/4` workspace move bindings.
+- Run `osx/scripts/configure_screenshot_shortcuts.sh` (below) to resolve this.
+
+---
+
+## 8. Zed keybindings (global dock toggles)
+
+Backed up keymap lives at:
+- `osx/config/zed/keymap.json`
+
+Copy to your local machine:
+```bash
+mkdir -p ~/.config/zed
+cp osx/config/zed/keymap.json ~/.config/zed/keymap.json
+```
+
+Keybindings included:
+- `Ctrl+B` toggle left dock
+- `Ctrl+I` toggle right dock
+
+---
+
+## 9. Screenshot shortcut conflict fix (for AeroSpace)
+
+This script configures macOS screenshot shortcuts to avoid conflict with AeroSpace:
+- Disable macOS `Cmd+Shift+3` screenshot hotkey
+- Remap screenshot-region hotkey from `Cmd+Shift+4` to `Ctrl+Shift+4`
+- Disable screenshot toolbar `Cmd+Shift+5`
+- Leave `Cmd+Shift+4` free for AeroSpace workspace move
+
+Run:
+```bash
+chmod +x osx/scripts/configure_screenshot_shortcuts.sh
+./osx/scripts/configure_screenshot_shortcuts.sh
+```
+
+The script creates a backup at:
+- `~/Library/Preferences/com.apple.symbolichotkeys.plist.bak-YYYYMMDD-HHMMSS`
+
 ---
 
 ## Summary Checklist
@@ -219,3 +265,5 @@ aerospace reload-config
 - [ ] Copy Ghostty config and keybindings
 - [ ] Copy tmux config and reload tmux
 - [ ] Install AeroSpace + copy `~/.aerospace.toml` and enable Accessibility
+- [ ] Copy Zed keymap
+- [ ] Run screenshot shortcut remap script for AeroSpace (`Cmd+Shift+3/4` conflicts)

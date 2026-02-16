@@ -18,8 +18,14 @@ cd scripts-prompts-config
 
 # Apply backed-up macOS configs
 cp osx/config/.tmux.conf ~/.tmux.conf
+cp osx/config/.aerospace.toml ~/.aerospace.toml
 mkdir -p ~/.config/ghostty
 cp osx/config/.config/ghostty/config ~/.config/ghostty/config
+mkdir -p ~/.config/zed
+cp osx/config/zed/keymap.json ~/.config/zed/keymap.json
+
+# Resolve macOS screenshot shortcut conflicts with AeroSpace Cmd+Shift+3/4
+./osx/scripts/configure_screenshot_shortcuts.sh
 
 # Reload tmux config
 tmux source-file ~/.tmux.conf
@@ -93,6 +99,7 @@ scripts-prompts-config/
 ├── osx/                       # macOS configurations/scripts
 │   ├── README.md
 │   └── scripts/
+│       ├── configure_screenshot_shortcuts.sh
 │       └── update_packages.sh
 └── universal/                 # Cross-platform scripts and hooks
     ├── convert_to_svg.sh
@@ -252,6 +259,19 @@ Updates all package managers on macOS:
 - Global npm packages
 - Global pnpm packages
 - Checks for macOS system updates
+
+#### configure_screenshot_shortcuts.sh
+
+Remaps screenshot shortcuts so AeroSpace can own `Cmd+Shift+3/4`:
+
+```bash
+./osx/scripts/configure_screenshot_shortcuts.sh
+```
+
+**Applies:**
+- Disable `Cmd+Shift+3` screenshot hotkey
+- Remap screenshot region from `Cmd+Shift+4` to `Ctrl+Shift+4`
+- Disable screenshot toolbar `Cmd+Shift+5`
 
 ### Git Hooks
 
