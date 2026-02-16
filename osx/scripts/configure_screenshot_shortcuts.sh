@@ -31,7 +31,7 @@ plutil -convert json -o "$src_json" "$src_plist"
 
 jq '
   .AppleSymbolicHotKeys["28"] = {
-    "enabled": 0,
+    "enabled": false,
     "value": {
       "type": "standard",
       "parameters": [51, 20, 1179648]
@@ -45,7 +45,7 @@ jq '
     }
   }
   | .AppleSymbolicHotKeys["184"] = {
-    "enabled": 0,
+    "enabled": false,
     "value": {
       "type": "standard",
       "parameters": [53, 23, 1179648]
