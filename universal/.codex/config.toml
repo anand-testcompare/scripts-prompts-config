@@ -16,3 +16,4 @@ unified_exec = true
 shell_snapshot = true
 collab = true
 steer = true
+personality = false

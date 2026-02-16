@@ -21,6 +21,8 @@
 - Avoid hacks and messy code; do things “right” without adding unnecessary behavior/complexity.
 - If my request is overly elaborate, propose a simpler option.
 - Prefer readability: descriptive names; docstrings are fine to capture intent/“why”, not to justify existence.
+- Do not recommend solutions that add complexity for backwards compatibility unless explicitly requested. 
+- If we pivot approaches we must deprecate the old approach completely and the cleanup shouyld be done as part of the change
 
 ## Tools
-- you have: gh, vercel, gcloud, convex, and others installed in the cli. most projects arent public and need to be accessed with authed tools
+- you have: gh, vercel, gcloud, convex, d3k, sentry-cli, and others installed in the cli. most projects arent public and need to be accessed with authed tools.
