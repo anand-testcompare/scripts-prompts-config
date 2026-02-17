@@ -126,14 +126,14 @@ cmd + shift - t [
   "Google Chrome" ~
   "Arc" ~
   "Safari" ~
-  * : open -a Ghostty
+  * : open -a WezTerm
 ]
 cmd + shift - b : open -a "Google Chrome"
 cmd + shift - f : open -a Finder
 cmd + shift - a : open -a ChatGPT
 
 # If you want true Omarchy, but it conflicts with send/submit in apps:
-# cmd - return : open -a Ghostty
+# cmd - return : open -a WezTerm
 ```
 
 Start the service and grant Accessibility permissions to `skhd`:
@@ -164,6 +164,37 @@ Keybindings included:
 
 ---
 
+## 5b. WezTerm (tmux-first alternative)
+
+Backed up WezTerm config lives at:
+- `osx/config/.config/wezterm/wezterm.lua`
+
+Install:
+```bash
+brew install --cask wezterm
+```
+
+Copy to your local machine:
+```bash
+mkdir -p ~/.config/wezterm
+cp osx/config/.config/wezterm/wezterm.lua ~/.config/wezterm/wezterm.lua
+```
+
+Behavior:
+- Always launches into `tmux new-session -A -s main`
+- Cmd+D split right (tmux pane)
+- Cmd+Shift+D split down (tmux pane)
+- Cmd+T new tmux window
+- Cmd+W kill tmux pane
+- Cmd+Shift+{/} previous/next tmux window
+- Cmd+N new macOS WezTerm window (reattaches to `main`)
+- Cmd+= / Cmd+- / Cmd+0 font zoom controls
+
+Notes:
+- This assumes your tmux prefix is `Ctrl+Space` (matches `osx/config/.tmux.conf`).
+
+---
+
 ## 6. Tmux (Omarchy-style on macOS)
 
 Backed up tmux config lives at:
@@ -179,7 +210,7 @@ Includes:
 - `Ctrl+Space` prefix (`C-b` unbound)
 - Omarchy-style statusline and pane colors
 - Vim pane movement/resizing + mouse support
-- Ghostty truecolor compatibility (`xterm-ghostty:RGB`)
+- Truecolor compatibility for Ghostty and WezTerm (`xterm-ghostty:RGB`, `wezterm:RGB`)
 - TPM plugins: sensible, resurrect, continuum
 
 ---
@@ -262,7 +293,7 @@ The script creates a backup at:
 - [ ] Add Omarchy-style aliases/functions to `~/.zshrc`
 - [ ] Create `~/.config/starship.toml`
 - [ ] Install and configure `skhd`, enable Accessibility, start service
-- [ ] Copy Ghostty config and keybindings
+- [ ] Copy Ghostty config and keybindings (or WezTerm config)
 - [ ] Copy tmux config and reload tmux
 - [ ] Install AeroSpace + copy `~/.aerospace.toml` and enable Accessibility
 - [ ] Copy Zed keymap

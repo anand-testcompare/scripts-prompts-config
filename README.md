@@ -21,6 +21,8 @@ cp osx/config/.tmux.conf ~/.tmux.conf
 cp osx/config/.aerospace.toml ~/.aerospace.toml
 mkdir -p ~/.config/ghostty
 cp osx/config/.config/ghostty/config ~/.config/ghostty/config
+mkdir -p ~/.config/wezterm
+cp osx/config/.config/wezterm/wezterm.lua ~/.config/wezterm/wezterm.lua
 mkdir -p ~/.config/zed
 cp osx/config/zed/keymap.json ~/.config/zed/keymap.json
 
