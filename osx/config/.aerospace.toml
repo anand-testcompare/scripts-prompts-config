@@ -37,6 +37,13 @@ persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     outer.top = 8
     outer.right = 8
 
+[[on-window-detected]]
+    # Keep common app windows responsive in tiling mode when they are created.
+    # This helps avoid a "nothing happens until I click" state after opening/closing
+    # terminals or browsers from app shortcuts.
+    if.app-name-regex-substring = 'Ghostty|Google Chrome|Zed|Cursor|Windsurf|Antigravity'
+    run = 'layout tiling'
+
 [mode.main.binding]
     # Layout toggles (defaults)
     alt-slash = 'layout tiles horizontal vertical'
@@ -55,11 +62,17 @@ persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     alt-shift-k = 'move up'
     alt-shift-l = 'move right'
 
-    # Omarchy-esque "move window around" on arrow keys (swap positions)
-    cmd-ctrl-left = 'swap left'
-    cmd-ctrl-down = 'swap down'
-    cmd-ctrl-up = 'swap up'
-    cmd-ctrl-right = 'swap right'
+    # Move focused window with cmd+ctrl+arrows.
+    cmd-ctrl-left = 'move left'
+    cmd-ctrl-down = 'move down'
+    cmd-ctrl-up = 'move up'
+    cmd-ctrl-right = 'move right'
+
+    # Keep swap behavior available on cmd+ctrl+shift+arrows.
+    cmd-ctrl-shift-left = 'swap left'
+    cmd-ctrl-shift-down = 'swap down'
+    cmd-ctrl-shift-up = 'swap up'
+    cmd-ctrl-shift-right = 'swap right'
 
     # Move focused window to another monitor and follow it (tiling-safe).
     cmd-shift-left = 'move-node-to-monitor --focus-follows-window --wrap-around left'
