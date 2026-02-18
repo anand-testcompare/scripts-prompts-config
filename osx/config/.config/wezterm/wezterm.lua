@@ -36,8 +36,8 @@ config.default_prog = {
 }
 
 config.font = wezterm.font_with_fallback({
-  "JetBrainsMono Nerd Font Mono",
-  "JetBrainsMono Nerd Font",
+  "JetBrains Mono",
+  "Symbols Nerd Font Mono",
   "Menlo",
 })
 config.font_size = 14.0
