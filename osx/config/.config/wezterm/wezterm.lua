@@ -3,13 +3,13 @@ local act = wezterm.action
 
 local config = wezterm.config_builder()
 
+-- tmux prefix is Ctrl+Space, which is ASCII NUL (\x00) on the PTY.
+local function tmux_prefix(sequence)
+  return act.SendString("\x00" .. sequence)
+end
+
 local function tmux_command(command)
-  return act.Multiple({
-    act.SendKey({ key = "Space", mods = "CTRL" }),
-    act.SendKey({ key = ":" }),
-    act.SendString(command),
-    act.SendKey({ key = "Enter" }),
-  })
+  return act.SendString("\x00:" .. command .. "\r")
 end
 
 local builtin_schemes = wezterm.get_builtin_color_schemes()
@@ -37,7 +37,8 @@ config.default_prog = {
 
 config.font = wezterm.font_with_fallback({
   "JetBrainsMono Nerd Font Mono",
-  "JetBrainsMono Nerd Font",
+  "JetBrains Mono",
+  "Symbols Nerd Font Mono",
   "Menlo",
 })
 config.font_size = 14.0
@@ -62,16 +63,16 @@ config.keys = {
   { key = "v", mods = "CMD", action = act.PasteFrom("Clipboard") },
 
   -- Keep Ghostty muscle-memory, but route to tmux-native commands.
-  { key = "d", mods = "CMD", action = tmux_command([[split-window -h -c "#{pane_current_path}"]]) },
+  { key = "d", mods = "CMD", action = tmux_prefix("%") },
   {
     key = "d",
     mods = "CMD|SHIFT",
-    action = tmux_command([[split-window -v -c "#{pane_current_path}"]]),
+    action = tmux_prefix('"'),
   },
   { key = "w", mods = "CMD", action = tmux_command("kill-pane") },
-  { key = "t", mods = "CMD", action = tmux_command([[new-window -c "#{pane_current_path}"]]) },
-  { key = "[", mods = "CMD|SHIFT", action = tmux_command("previous-window") },
-  { key = "]", mods = "CMD|SHIFT", action = tmux_command("next-window") },
+  { key = "t", mods = "CMD", action = tmux_prefix("c") },
+  { key = "[", mods = "CMD|SHIFT", action = tmux_prefix("p") },
+  { key = "]", mods = "CMD|SHIFT", action = tmux_prefix("n") },
 
   -- Keep macOS-style behavior for new terminal windows and zoom.
   { key = "n", mods = "CMD", action = act.SpawnWindow },
