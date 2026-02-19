@@ -271,9 +271,9 @@ Remaps screenshot shortcuts so AeroSpace can own `Cmd+Shift+3/4`:
 ```
 
 **Applies:**
-- Disable `Cmd+Shift+3` screenshot hotkey
-- Remap screenshot region from `Cmd+Shift+4` to `Ctrl+Shift+4`
-- Disable screenshot toolbar `Cmd+Shift+5`
+- Remap screenshot full screen to `Cmd+Ctrl+3`
+- Remap screenshot region to `Cmd+Ctrl+4`
+- Remap screenshot toolbar to `Cmd+Ctrl+5`
 
 ### Git Hooks
 

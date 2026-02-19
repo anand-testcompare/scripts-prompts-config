@@ -31,24 +31,24 @@ plutil -convert json -o "$src_json" "$src_plist"
 
 jq '
   .AppleSymbolicHotKeys["28"] = {
-    "enabled": false,
+    "enabled": true,
     "value": {
       "type": "standard",
-      "parameters": [51, 20, 1179648]
+      "parameters": [51, 20, 1310720]
     }
   }
   | .AppleSymbolicHotKeys["30"] = {
     "enabled": true,
     "value": {
       "type": "standard",
-      "parameters": [52, 21, 393216]
+      "parameters": [52, 21, 1310720]
     }
   }
   | .AppleSymbolicHotKeys["184"] = {
-    "enabled": false,
+    "enabled": true,
     "value": {
       "type": "standard",
-      "parameters": [53, 23, 1179648]
+      "parameters": [53, 23, 1310720]
     }
   }
 ' "$src_json" > "$out_json"
@@ -56,14 +56,15 @@ jq '
 plutil -convert xml1 -o "$out_plist" "$out_json"
 defaults import "$domain" "$out_plist"
 killall cfprefsd 2>/dev/null || true
+killall SystemUIServer 2>/dev/null || true
 
 echo "Updated screenshot shortcuts in $domain:"
 defaults export "$domain" - \
   | plutil -convert json -o - - \
   | jq '{
-      cmd_shift_3: .AppleSymbolicHotKeys["28"],
-      screenshot_region: .AppleSymbolicHotKeys["30"],
-      cmd_shift_5_toolbar: .AppleSymbolicHotKeys["184"]
+      cmd_ctrl_3: .AppleSymbolicHotKeys["28"],
+      cmd_ctrl_4: .AppleSymbolicHotKeys["30"],
+      cmd_ctrl_5: .AppleSymbolicHotKeys["184"]
     }'
 
 echo "Backup saved to: $backup_path"

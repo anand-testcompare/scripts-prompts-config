@@ -243,7 +243,7 @@ Includes:
 - `Alt+Shift+;`, then `a` explicit accordion mode (only when intended)
 
 Important:
-- By default macOS uses `Cmd+Shift+3/4` for screenshots.
+- By default macOS uses `Cmd+Shift+3/4/5` for screenshots.
 - This conflicts with AeroSpace `Cmd+Shift+3/4` workspace move bindings.
 - Run `osx/scripts/configure_screenshot_shortcuts.sh` (below) to resolve this.
 
@@ -269,10 +269,10 @@ Keybindings included:
 ## 9. Screenshot shortcut conflict fix (for AeroSpace)
 
 This script configures macOS screenshot shortcuts to avoid conflict with AeroSpace:
-- Disable macOS `Cmd+Shift+3` screenshot hotkey
-- Remap screenshot-region hotkey from `Cmd+Shift+4` to `Ctrl+Shift+4`
-- Disable screenshot toolbar `Cmd+Shift+5`
-- Leave `Cmd+Shift+4` free for AeroSpace workspace move
+- Remap screenshot full-screen from `Cmd+Shift+3` to `Cmd+Ctrl+3`
+- Remap screenshot region from `Cmd+Shift+4` to `Cmd+Ctrl+4`
+- Remap screenshot toolbar from `Cmd+Shift+5` to `Cmd+Ctrl+5`
+- Leave `Cmd+Shift+3/4/5` free for tiling-manager bindings
 
 Run:
 ```bash
@@ -282,6 +282,7 @@ chmod +x osx/scripts/configure_screenshot_shortcuts.sh
 
 The script creates a backup at:
 - `~/Library/Preferences/com.apple.symbolichotkeys.plist.bak-YYYYMMDD-HHMMSS`
+- `osx/config/screenshot-shortcuts-cmd-ctrl-345.json` (tracked snapshot of the intended mapping)
 
 ---
 
@@ -297,4 +298,4 @@ The script creates a backup at:
 - [ ] Copy tmux config and reload tmux
 - [ ] Install AeroSpace + copy `~/.aerospace.toml` and enable Accessibility
 - [ ] Copy Zed keymap
-- [ ] Run screenshot shortcut remap script for AeroSpace (`Cmd+Shift+3/4` conflicts)
+- [ ] Run screenshot shortcut remap script for AeroSpace (`Cmd+Shift+3/4/5` conflicts)

@@ -1,0 +1,37 @@
+{
+  "AppleSymbolicHotKeys": {
+    "28": {
+      "enabled": true,
+      "value": {
+        "type": "standard",
+        "parameters": [
+          51,
+          20,
+          1310720
+        ]
+      }
+    },
+    "30": {
+      "enabled": true,
+      "value": {
+        "type": "standard",
+        "parameters": [
+          52,
+          21,
+          1310720
+        ]
+      }
+    },
+    "184": {
+      "enabled": true,
+      "value": {
+        "type": "standard",
+        "parameters": [
+          53,
+          23,
+          1310720
+        ]
+      }
+    }
+  }
+}
