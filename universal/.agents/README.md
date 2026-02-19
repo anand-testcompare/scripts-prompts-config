@@ -4,6 +4,7 @@
 
 These are maintained in this folder under `skills/`:
 
+- `convex-delete-deployments`
 - `issue-grooming`
 - `preview-cleanup`
 - `readme-maintainer`
