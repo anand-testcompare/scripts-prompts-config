@@ -5,6 +5,7 @@
 These are maintained in this folder under `skills/`:
 
 - `issue-grooming`
+- `preview-cleanup`
 - `readme-maintainer`
 - `workos-convex-authkit`
 
