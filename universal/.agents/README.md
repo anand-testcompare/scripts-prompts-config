@@ -10,6 +10,24 @@ These are maintained in this folder under `skills/`:
 - `readme-maintainer`
 - `workos-convex-authkit`
 
+## Install From This Repo
+
+Use this repository as the source for shared custom skills:
+
+```bash
+# List available skills
+npx skills add anand-testcompare/scripts-prompts-config -l
+
+# Install one skill globally for Codex
+npx skills add anand-testcompare/scripts-prompts-config \
+  --skill convex-delete-deployments \
+  --agent codex \
+  -g -y
+
+# Install all skills from this repo globally
+npx skills add anand-testcompare/scripts-prompts-config --all -g
+```
+
 ## Upstream Skills (Install Instead of Copying)
 
 These are tracked as upstream installs from `~/.agents/.skill-lock.json` and should be installed via `npx skills add`.
