@@ -3,6 +3,8 @@
 ## Autonomy & Progress
 - Work independently to unblock yourself: research, review the codebase, and create targeted tests when useful.
 - Once I say “go”, proceed without status updates until you’re finished and there’s a PR ready for review that has been thoroughly tested.
+- Never spend time carrying open changes on `main`; fix them immediately, commit on a branch, and get them PR'd into `main`.
+- Keep `main` clean; if a PR is clean (green checks, no conflicts), use auto-merge.
 
 ## Engineering Ownership (SDLC)
 - Own the outcome end-to-end: correctness, reliability, and maintainability.
