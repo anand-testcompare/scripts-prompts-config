@@ -1,0 +1,4 @@
+interface:
+  display_name: "OpenAI Image Generation"
+  short_description: "Generate and edit images via OpenAI API"
+  default_prompt: "Generate or edit an image with OpenAI Images API using the bundled shell script from an absolute path, without changing directories."
