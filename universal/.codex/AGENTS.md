@@ -28,3 +28,7 @@
 
 ## Tools
 - you have: gh, vercel, gcloud, convex, d3k, sentry-cli, and others installed in the cli. most projects arent public and need to be accessed with authed tools.
+
+
+## Branching types
+feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert
