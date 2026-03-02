@@ -51,15 +51,36 @@ kill_by_name() {
     done
 }
 
+kill_d3k_headless_chrome() {
+    local patterns=(
+        "\\.d3k/.*/chrome-profile"
+        "@d3k/.*/bin/dev3000"
+        "dev3000 .* --headless"
+    )
+    local did_print=false
+
+    for pattern in "${patterns[@]}"; do
+        local pids=$(pgrep -f "$pattern" 2>/dev/null || true)
+        if [ -n "$pids" ]; then
+            if [ "$did_print" = false ]; then
+                echo -e "${YELLOW}Killing d3k/headless Chrome processes${NC}"
+                did_print=true
+            fi
+            pkill -f "$pattern" 2>/dev/null || true
+        fi
+    done
+}
+
 level_1() {
     echo -e "${GREEN}Level 1: Killing dev server ports${NC}"
     kill_by_port 3000 3001 3002 5173 8080 4000 8000
 }
 
 level_2() {
-    echo -e "${GREEN}Level 2: Killing dev servers + Node processes${NC}"
+    echo -e "${GREEN}Level 2: Killing dev servers + Node + d3k headless Chrome${NC}"
     FORCE_KILL=true level_1
     kill_by_name "node" "npm" "yarn" "pnpm"
+    kill_d3k_headless_chrome
 }
 
 level_3() {
@@ -88,7 +109,7 @@ interactive_mode() {
         echo -e "${BLUE}Development Process Killer${NC}"
         echo "Select kill level:"
         echo "1) Dev servers only (ports 3000-3002, 5173, 8080)"
-        echo "2) + Node/npm/yarn processes"
+        echo "2) + Node/npm/yarn + d3k headless Chrome cleanup"
         echo "3) + Vite/Next.js/Playwright/build tools"
         echo "4) + IDEs (VSCode, WebStorm, Cursor, Zed)"
         echo "5) Nuclear option (everything including Docker, DBs)"

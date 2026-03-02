@@ -19,12 +19,16 @@ cd scripts-prompts-config
 # Apply backed-up macOS configs
 cp osx/config/.tmux.conf ~/.tmux.conf
 cp osx/config/.aerospace.toml ~/.aerospace.toml
+cp osx/config/.skhdrc ~/.skhdrc
 mkdir -p ~/.config/ghostty
 cp osx/config/.config/ghostty/config ~/.config/ghostty/config
 mkdir -p ~/.config/wezterm
 cp osx/config/.config/wezterm/wezterm.lua ~/.config/wezterm/wezterm.lua
 mkdir -p ~/.config/zed
 cp osx/config/zed/keymap.json ~/.config/zed/keymap.json
+
+# Apply macOS defaults that fit AeroSpace workflows
+./osx/scripts/configure_macos_defaults.sh
 
 # Resolve macOS screenshot shortcut conflicts with AeroSpace Cmd+Shift+3/4
 ./osx/scripts/configure_screenshot_shortcuts.sh
@@ -101,6 +105,7 @@ scripts-prompts-config/
 ├── osx/                       # macOS configurations/scripts
 │   ├── README.md
 │   └── scripts/
+│       ├── configure_macos_defaults.sh
 │       ├── configure_screenshot_shortcuts.sh
 │       └── update_packages.sh
 └── universal/                 # Cross-platform scripts and hooks
@@ -235,7 +240,7 @@ Interactive development process killer with 5 escalating levels:
 
 **Levels:**
 1. **Dev servers only** - Kills processes on common dev ports (3000-3002, 5173, 8080, 4000, 8000)
-2. **+ Node processes** - Adds Node, npm, yarn, pnpm processes
+2. **+ Node processes** - Adds Node, npm, yarn, pnpm and d3k/headless-Chrome cleanup
 3. **+ Build tools** - Adds Vite, Next.js, Playwright, Jest, Vitest, Webpack
 4. **+ IDEs** - Adds VSCode, WebStorm, IntelliJ IDEA, Cursor, Zed
 5. **Nuclear option** - Everything including Docker, databases (Redis, PostgreSQL, MongoDB)
@@ -247,6 +252,24 @@ Interactive development process killer with 5 escalating levels:
 - Color-coded output for clarity
 
 ### macOS Scripts
+
+#### configure_macos_defaults.sh
+
+Applies macOS defaults that improve AeroSpace workspace behavior:
+
+```bash
+./osx/scripts/configure_macos_defaults.sh
+```
+
+**Applies:**
+- Disable app-triggered Space switching (`workspaces-auto-swoosh = false`)
+- Keep Spaces in fixed order (`mru-spaces = false`)
+- Group windows by app in Mission Control (`expose-group-apps = true`)
+
+**Optional:**
+- `./osx/scripts/configure_macos_defaults.sh --disable-separate-spaces`
+  - Also disables `Displays have separate Spaces` (`spans-displays = true`)
+  - Requires logout/login to fully apply
 
 #### update_packages.sh
 

@@ -120,26 +120,40 @@ brew tap koekeishiya/formulae
 brew install skhd
 ```
 
-Create `~/.skhdrc`:
+Backed up `skhd` config lives at:
+- `osx/config/.skhdrc`
+
+Copy to your local machine:
+```bash
+cp osx/config/.skhdrc ~/.skhdrc
+```
+
+Config includes:
 ```sh
 cmd + shift - t [
   "Google Chrome" ~
   "Arc" ~
   "Safari" ~
-  * : open -a WezTerm
+  * : open -na /Applications/Ghostty.app
 ]
-cmd + shift - b : open -a "Google Chrome"
+cmd + shift - b : open -na /Applications/Helium.app
 cmd + shift - f : open -a Finder
 cmd + shift - a : open -a ChatGPT
 
 # If you want true Omarchy, but it conflicts with send/submit in apps:
-# cmd - return : open -a WezTerm
+# cmd - return : open -na /Applications/Ghostty.app
 ```
 
 Start the service and grant Accessibility permissions to `skhd`:
 ```bash
 skhd --start-service
+launchctl kickstart -k gui/$(id -u)/com.koekeishiya.skhd
 ```
+
+Notes:
+- The launcher uses `open -na` on purpose so new windows open in your current workspace instead of jumping to an existing app window in another macOS Space.
+- Expected tradeoff: each fresh app instance shows as its own icon in the Dock while running.
+- If you prefer single Dock app grouping, switch those bindings back to `open -a ...`, but macOS may jump to another Space.
 
 ---
 
@@ -241,6 +255,17 @@ Includes:
 - `Cmd+Shift+Left/Right/Up/Down` move window to another monitor and follow
 - `Alt+Shift+;`, then `r` force reset to tiled layout + flatten tree
 - `Alt+Shift+;`, then `a` explicit accordion mode (only when intended)
+- `Alt+Enter` open a fresh Ghostty app instance (`open -na`) for new workspace sessions
+
+Recommended macOS defaults for AeroSpace workflows:
+```bash
+./osx/scripts/configure_macos_defaults.sh
+```
+
+This sets:
+- Disable "When switching to an application, switch to a Space with open windows"
+- Keep Spaces in fixed order (disable automatic rearranging)
+- Enable "Group windows by application" in Mission Control
 
 Important:
 - By default macOS uses `Cmd+Shift+3/4/5` for screenshots.
@@ -266,7 +291,28 @@ Keybindings included:
 
 ---
 
-## 9. Screenshot shortcut conflict fix (for AeroSpace)
+## 9. macOS defaults script (for AeroSpace)
+
+Apply macOS defaults that work better with AeroSpace workspace behavior:
+
+```bash
+chmod +x osx/scripts/configure_macos_defaults.sh
+./osx/scripts/configure_macos_defaults.sh
+```
+
+Optional (multi-monitor): disable `Displays have separate Spaces` as well:
+
+```bash
+./osx/scripts/configure_macos_defaults.sh --disable-separate-spaces
+```
+
+Notes:
+- The script restarts Dock automatically.
+- If you pass `--disable-separate-spaces`, logout/login is required.
+
+---
+
+## 10. Screenshot shortcut conflict fix (for AeroSpace)
 
 This script configures macOS screenshot shortcuts to avoid conflict with AeroSpace:
 - Remap screenshot full-screen from `Cmd+Shift+3` to `Cmd+Ctrl+3`
@@ -293,9 +339,10 @@ The script creates a backup at:
 - [ ] Keep native `pbcopy/pbpaste/open`
 - [ ] Add Omarchy-style aliases/functions to `~/.zshrc`
 - [ ] Create `~/.config/starship.toml`
-- [ ] Install and configure `skhd`, enable Accessibility, start service
+- [ ] Install `skhd`, copy `~/.skhdrc`, enable Accessibility, restart service
 - [ ] Copy Ghostty config and keybindings (or WezTerm config)
 - [ ] Copy tmux config and reload tmux
 - [ ] Install AeroSpace + copy `~/.aerospace.toml` and enable Accessibility
+- [ ] Run `osx/scripts/configure_macos_defaults.sh` (AeroSpace-friendly macOS defaults)
 - [ ] Copy Zed keymap
 - [ ] Run screenshot shortcut remap script for AeroSpace (`Cmd+Shift+3/4/5` conflicts)
