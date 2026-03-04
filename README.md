@@ -305,7 +305,7 @@ Install the commit-msg hook from `universal/git-hooks/` (see `universal/git-hook
 ## Platform-Specific Documentation
 
 - **Linux (Pop!_OS/Ubuntu, deprecated)**: See [linux-popos/config/README.md](linux-popos/config/README.md) (legacy)
-- **Linux (Omarchy/Arch)**: See [linux-omarchy/REPLICATION-GUIDE.md](linux-omarchy/REPLICATION-GUIDE.md) for Omarchy setup details
+- **Linux (Omarchy/Arch)**: See [linux-omarchy/REPLICATION-GUIDE.md](linux-omarchy/REPLICATION-GUIDE.md) for Omarchy setup details. Screenshot shortcuts are `Ctrl+Shift+3/4/5`.
 - **macOS**: Utility scripts available in `osx/scripts/`
 
 ## Contributing
