@@ -216,6 +216,15 @@ unbind = SUPER, W
 bindd = SUPER, Q, Close window, killactive,
 ```
 
+### Screenshot shortcuts (Ctrl+Shift+3/4/5)
+
+Add to `~/.config/hypr/bindings.conf`:
+```bash
+bindd = CTRL SHIFT, 3, Screenshot fullscreen to clipboard, exec, omarchy-cmd-screenshot fullscreen clipboard
+bindd = CTRL SHIFT, 4, Screenshot region to clipboard, exec, omarchy-cmd-screenshot region clipboard
+bindd = CTRL SHIFT, 5, Screenshot smart to clipboard, exec, omarchy-cmd-screenshot smart clipboard
+```
+
 ### Magnet-style window movement across monitors
 
 Create `~/.local/bin/hypr-move-window`:
