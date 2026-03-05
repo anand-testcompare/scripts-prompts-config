@@ -108,10 +108,11 @@ scripts-prompts-config/
 │       ├── configure_macos_defaults.sh
 │       ├── configure_screenshot_shortcuts.sh
 │       └── update_packages.sh
-└── universal/                 # Cross-platform scripts and hooks
+└── universal/                 # Cross-platform scripts, hooks, and troubleshooting playbooks
     ├── convert_to_svg.sh
     ├── kill-dev.sh
     ├── optimize_logos.sh
+    ├── pi-google-code-assist-antigravity-troubleshooting.md
     └── git-hooks/
         ├── commit-msg
         └── README.md
@@ -307,6 +308,7 @@ Install the commit-msg hook from `universal/git-hooks/` (see `universal/git-hook
 - **Linux (Pop!_OS/Ubuntu, deprecated)**: See [linux-popos/config/README.md](linux-popos/config/README.md) (legacy)
 - **Linux (Omarchy/Arch)**: See [linux-omarchy/REPLICATION-GUIDE.md](linux-omarchy/REPLICATION-GUIDE.md) for Omarchy setup details. Screenshot shortcuts are `Ctrl+Shift+3/4/5`.
 - **macOS**: Utility scripts available in `osx/scripts/`
+- **Universal tooling**: Pi + Google provider troubleshooting guide at [universal/pi-google-code-assist-antigravity-troubleshooting.md](universal/pi-google-code-assist-antigravity-troubleshooting.md)
 
 ## Contributing
 
