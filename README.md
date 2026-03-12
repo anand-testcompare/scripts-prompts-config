@@ -17,7 +17,6 @@ git clone https://github.com/yourusername/scripts-prompts-config.git
 cd scripts-prompts-config
 
 # Apply backed-up macOS configs
-cp osx/config/.tmux.conf ~/.tmux.conf
 cp osx/config/.aerospace.toml ~/.aerospace.toml
 cp osx/config/.skhdrc ~/.skhdrc
 mkdir -p ~/.config/ghostty
@@ -32,9 +31,6 @@ cp osx/config/zed/keymap.json ~/.config/zed/keymap.json
 
 # Resolve macOS screenshot shortcut conflicts with AeroSpace Cmd+Shift+3/4
 ./osx/scripts/configure_screenshot_shortcuts.sh
-
-# Reload tmux config
-tmux source-file ~/.tmux.conf
 ```
 
 ### Legacy Pop!_OS Scripts (Deprecated)

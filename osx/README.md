@@ -178,7 +178,7 @@ Keybindings included:
 
 ---
 
-## 5b. WezTerm (tmux-first alternative)
+## 5b. WezTerm (native-first default)
 
 Backed up WezTerm config lives at:
 - `osx/config/.config/wezterm/wezterm.lua`
@@ -195,21 +195,24 @@ cp osx/config/.config/wezterm/wezterm.lua ~/.config/wezterm/wezterm.lua
 ```
 
 Behavior:
-- Always launches into `tmux new-session -A -s main`
-- Cmd+D split right (tmux pane)
-- Cmd+Shift+D split down (tmux pane)
-- Cmd+T new tmux window
-- Cmd+W kill tmux pane
-- Cmd+Shift+{/} previous/next tmux window
-- Cmd+N new macOS WezTerm window (reattaches to `main`)
+- Connects the GUI to a local WezTerm mux domain named `main`
+- Native panes/tabs/workspaces, no tmux required
+- Cmd+D split right
+- Cmd+Shift+D split down
+- Cmd+T new tab
+- Cmd+W close current pane
+- Cmd+Shift+{/} previous/next tab
+- Cmd+Shift+L launcher for tabs/workspaces
+- Cmd+Shift+P pane picker
+- Cmd+N new macOS WezTerm window (attached to the same local mux domain)
 - Cmd+= / Cmd+- / Cmd+0 font zoom controls
 
 Notes:
-- This assumes your tmux prefix is `Ctrl+Space` (matches `osx/config/.tmux.conf`).
+- Using a local mux domain gives you durable local tabs/workspaces without layering tmux inside WezTerm.
 
 ---
 
-## 6. Tmux (Omarchy-style on macOS)
+## 6. Tmux (optional legacy path)
 
 Backed up tmux config lives at:
 - `osx/config/.tmux.conf`
@@ -226,6 +229,8 @@ Includes:
 - Vim pane movement/resizing + mouse support
 - Truecolor compatibility for Ghostty and WezTerm (`xterm-ghostty:RGB`, `wezterm:RGB`)
 - TPM plugins: sensible, resurrect, continuum
+
+Use this only if you explicitly want tmux for remote persistence or a terminal-agnostic workflow. The main macOS path in this repo is now WezTerm-native.
 
 ---
 
@@ -340,8 +345,7 @@ The script creates a backup at:
 - [ ] Add Omarchy-style aliases/functions to `~/.zshrc`
 - [ ] Create `~/.config/starship.toml`
 - [ ] Install `skhd`, copy `~/.skhdrc`, enable Accessibility, restart service
-- [ ] Copy Ghostty config and keybindings (or WezTerm config)
-- [ ] Copy tmux config and reload tmux
+- [ ] Copy Ghostty config and keybindings or WezTerm config
 - [ ] Install AeroSpace + copy `~/.aerospace.toml` and enable Accessibility
 - [ ] Run `osx/scripts/configure_macos_defaults.sh` (AeroSpace-friendly macOS defaults)
 - [ ] Copy Zed keymap
