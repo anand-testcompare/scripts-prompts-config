@@ -3,6 +3,15 @@ local act = wezterm.action
 
 local config = wezterm.config_builder()
 
+-- tmux prefix is Ctrl+Space, which is ASCII NUL (\x00) on the PTY.
+local function tmux_prefix(sequence)
+  return act.SendString("\x00" .. sequence)
+end
+
+local function tmux_command(command)
+  return act.SendString("\x00:" .. command .. "\r")
+end
+
 local builtin_schemes = wezterm.get_builtin_color_schemes()
 if builtin_schemes["Tokyo Night Storm"] then
   config.color_scheme = "Tokyo Night Storm"
@@ -19,12 +28,12 @@ else
   }
 end
 
-config.unix_domains = {
-  {
-    name = "main",
-  },
+config.default_prog = {
+  os.getenv("SHELL") or "/bin/zsh",
+  "-l",
+  "-c",
+  "exec tmux new-session -A -s main",
 }
-config.default_gui_startup_args = { "connect", "main" }
 
 config.font = wezterm.font_with_fallback({
   "JetBrainsMono Nerd Font Mono",
@@ -49,52 +58,21 @@ config.macos_window_background_blur = 20
 config.native_macos_fullscreen_mode = true
 config.automatically_reload_config = true
 
-wezterm.on("update-right-status", function(window, _)
-  local workspace = window:active_workspace()
-  window:set_right_status(wezterm.format({
-    { Foreground = { Color = "#607068" } },
-    { Text = "workspace " },
-    { Foreground = { Color = "#5ec4a0" } },
-    { Text = workspace },
-    { Text = " " },
-  }))
-end)
-
 config.keys = {
   { key = "c", mods = "CMD", action = act.CopyTo("Clipboard") },
   { key = "v", mods = "CMD", action = act.PasteFrom("Clipboard") },
 
-  -- Keep Ghostty muscle-memory, but use WezTerm-native panes/tabs.
-  {
-    key = "d",
-    mods = "CMD",
-    action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }),
-  },
+  -- Keep Ghostty muscle-memory, but route to tmux-native commands.
+  { key = "d", mods = "CMD", action = tmux_prefix("%") },
   {
     key = "d",
     mods = "CMD|SHIFT",
-    action = act.SplitVertical({ domain = "CurrentPaneDomain" }),
+    action = tmux_prefix('"'),
   },
-  {
-    key = "w",
-    mods = "CMD",
-    action = act.CloseCurrentPane({ confirm = false }),
-  },
-  { key = "t", mods = "CMD", action = act.SpawnTab("CurrentPaneDomain") },
-  { key = "[", mods = "CMD|SHIFT", action = act.ActivateTabRelative(-1) },
-  { key = "]", mods = "CMD|SHIFT", action = act.ActivateTabRelative(1) },
-  {
-    key = "l",
-    mods = "CMD|SHIFT",
-    action = act.ShowLauncherArgs({
-      flags = "FUZZY|TABS|WORKSPACES|LAUNCH_MENU_ITEMS",
-    }),
-  },
-  {
-    key = "p",
-    mods = "CMD|SHIFT",
-    action = act.PaneSelect,
-  },
+  { key = "w", mods = "CMD", action = tmux_command("kill-pane") },
+  { key = "t", mods = "CMD", action = tmux_prefix("c") },
+  { key = "[", mods = "CMD|SHIFT", action = tmux_prefix("p") },
+  { key = "]", mods = "CMD|SHIFT", action = tmux_prefix("n") },
 
   -- Keep macOS-style behavior for new terminal windows and zoom.
   { key = "n", mods = "CMD", action = act.SpawnWindow },
