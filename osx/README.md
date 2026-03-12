@@ -134,14 +134,14 @@ cmd + shift - t [
   "Google Chrome" ~
   "Arc" ~
   "Safari" ~
-  * : open -na /Applications/Ghostty.app
+  * : open -na /Applications/WezTerm.app
 ]
 cmd + shift - b : open -na /Applications/Helium.app
 cmd + shift - f : open -a Finder
 cmd + shift - a : open -a ChatGPT
 
 # If you want true Omarchy, but it conflicts with send/submit in apps:
-# cmd - return : open -na /Applications/Ghostty.app
+# cmd - return : open -na /Applications/WezTerm.app
 ```
 
 Start the service and grant Accessibility permissions to `skhd`:
