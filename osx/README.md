@@ -194,6 +194,12 @@ mkdir -p ~/.config/wezterm
 cp osx/config/.config/wezterm/wezterm.lua ~/.config/wezterm/wezterm.lua
 ```
 
+Enable shell integration so splits inherit the shell's current working directory:
+```bash
+printf '\nif [[ "$TERM_PROGRAM" == "WezTerm" && -f /Applications/WezTerm.app/Contents/Resources/wezterm.sh ]]; then\n  source /Applications/WezTerm.app/Contents/Resources/wezterm.sh\nfi\n' >> ~/.zshrc
+exec zsh
+```
+
 Behavior:
 - Connects the GUI to a local WezTerm mux domain named `main`
 - Native panes/tabs/workspaces, no tmux required
@@ -209,6 +215,7 @@ Behavior:
 
 Notes:
 - Using a local mux domain gives you durable local tabs/workspaces without layering tmux inside WezTerm.
+- Shell integration keeps WezTerm's tracked cwd in sync after `cd`, which is what makes `Cmd+D` and `Cmd+Shift+D` open in the directory you're actually working in.
 
 ---
 
