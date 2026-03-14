@@ -60,6 +60,37 @@ wezterm.on("update-right-status", function(window, _)
   }))
 end)
 
+local function pane_cwd_path(pane)
+  local cwd = pane:get_current_working_dir()
+  if not cwd then
+    return nil
+  end
+
+  if type(cwd) == "table" or type(cwd) == "userdata" then
+    if cwd.scheme == "file" and cwd.file_path then
+      return cwd.file_path
+    end
+    return nil
+  end
+
+  return cwd
+end
+
+local function split_in_current_cwd(direction)
+  return wezterm.action_callback(function(_, pane)
+    local split_opts = {
+      direction = direction,
+    }
+
+    local cwd = pane_cwd_path(pane)
+    if cwd then
+      split_opts.cwd = cwd
+    end
+
+    pane:split(split_opts)
+  end)
+end
+
 config.keys = {
   { key = "c", mods = "CMD", action = act.CopyTo("Clipboard") },
   { key = "v", mods = "CMD", action = act.PasteFrom("Clipboard") },
@@ -68,12 +99,12 @@ config.keys = {
   {
     key = "d",
     mods = "CMD",
-    action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }),
+    action = split_in_current_cwd("Right"),
   },
   {
     key = "d",
     mods = "CMD|SHIFT",
-    action = act.SplitVertical({ domain = "CurrentPaneDomain" }),
+    action = split_in_current_cwd("Down"),
   },
   {
     key = "w",
