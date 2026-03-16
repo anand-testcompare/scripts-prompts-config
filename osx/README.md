@@ -134,14 +134,16 @@ cmd + shift - t [
   "Google Chrome" ~
   "Arc" ~
   "Safari" ~
-  * : open -na /Applications/WezTerm.app
+  "Helium" ~
+  * : open -na /Applications/Ghostty.app
 ]
+cmd + shift - return : open -na /Applications/Ghostty.app
 cmd + shift - b : open -na /Applications/Helium.app
 cmd + shift - f : open -a Finder
 cmd + shift - a : open -a ChatGPT
 
 # If you want true Omarchy, but it conflicts with send/submit in apps:
-# cmd - return : open -na /Applications/WezTerm.app
+# cmd - return : open -na /Applications/Ghostty.app
 ```
 
 Start the service and grant Accessibility permissions to `skhd`:
@@ -151,6 +153,8 @@ launchctl kickstart -k gui/$(id -u)/com.koekeishiya.skhd
 ```
 
 Notes:
+- `Cmd+Shift+T` now launches a fresh Ghostty window by default, but passes through unchanged in Chrome, Arc, Safari, and Helium so those apps can keep their tab restore behavior.
+- `Cmd+Shift+Return` is an explicit backup shortcut for opening a fresh Ghostty window.
 - The launcher uses `open -na` on purpose so new windows open in your current workspace instead of jumping to an existing app window in another macOS Space.
 - Expected tradeoff: each fresh app instance shows as its own icon in the Dock while running.
 - If you prefer single Dock app grouping, switch those bindings back to `open -a ...`, but macOS may jump to another Space.
