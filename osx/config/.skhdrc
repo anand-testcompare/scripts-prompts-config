@@ -1,15 +1,18 @@
 # Omarchy-style app launchers on macOS.
 # Use `open -na` to force fresh app instances in the current workspace.
 # Tradeoff: each instance appears as its own Dock icon.
+# Keep tabbed apps on passthrough so Cmd+Shift+T can reopen tabs there.
 cmd + shift - t [
   "Google Chrome" ~
   "Arc" ~
   "Safari" ~
-  * : open -na /Applications/WezTerm.app
+  "Helium" ~
+  * : open -na /Applications/Ghostty.app
 ]
+cmd + shift - return : open -na /Applications/Ghostty.app
 cmd + shift - b : open -na /Applications/Helium.app
 cmd + shift - f : open -a Finder
 cmd + shift - a : open -a ChatGPT
 
 # Optional true Omarchy style:
-# cmd - return : open -na /Applications/WezTerm.app
+# cmd - return : open -na /Applications/Ghostty.app
