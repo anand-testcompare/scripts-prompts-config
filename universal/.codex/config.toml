@@ -11,6 +11,11 @@ approval_policy = "never"
 hide_full_access_warning = true
 hide_rate_limit_model_nudge = true
 
+[mcp_servers.exa]
+command = "npx"
+args = ["-y", "exa-mcp-server"]
+env_vars = ["EXA_API_KEY"]
+
 [features]
 unified_exec = true
 shell_snapshot = true
