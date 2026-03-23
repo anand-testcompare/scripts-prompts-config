@@ -22,3 +22,7 @@ shell_snapshot = true
 multi_agent = true
 steer = true
 personality = false
+
+[mcp_servers.exa]
+url = "https://mcp.exa.ai/mcp?tools=web_search_exa,web_search_advanced_exa,get_code_context_exa,crawling_exa,company_research_exa,people_search_exa"
+bearer_token_env_var = "EXA_API_KEY"
