@@ -33,6 +33,13 @@
 
 - you have: gh, vercel, gcloud, convex, d3k, sentry-cli, and others installed in the cli. most projects arent public and need to be accessed with authed tools.
 
+## Git Workflow
+
+- Do not leave the repository on a local-only branch or other local variation when the task is complete unless the user explicitly asks for that.
+- Prefer a short-lived PR branch only for the duration needed to commit and open the PR. Assume owner PRs should auto-merge when the repository is configured for it.
+- After the PR is merged, switch back to `main`, pull the latest remote state, and restore any preserved local working changes so the repo ends in a clean, current base state.
+- If branch switching is blocked by unrelated local edits, preserve them safely first, complete the PR flow, then restore them after returning to `main`.
+
 ## Memory
 
 - Store temporary data in repository `.memory/` directory (gitignored, but add a .ignore with !.memory/** so the agent can still view it). Create the .memory folder if it doesn't exist, do not use /tmp
