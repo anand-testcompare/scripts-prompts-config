@@ -59,6 +59,7 @@ Both Bash and Zsh configurations include:
 - **System Info**: Memory (`meminfo`), CPU (`cpuinfo`), disk usage (`diskinfo`)
 - **Clipboard**: Cross-platform clipboard support (`pbcopy`, `pbpaste` via xclip)
 - **Secure Credentials**: Automatic loading from `.shell_secrets`
+- **Exa MCP**: Set `EXA_API_KEY` in `~/.shell_secrets` for Codex/OpenCode Exa support
 - **Modern CLI Tools**: eza (ls replacement), bat (cat replacement with automatic secret masking for `.env` files), ripgrep, fd
 
 ### Zsh-Specific Enhancements
