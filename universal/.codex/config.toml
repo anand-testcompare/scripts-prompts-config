@@ -13,7 +13,11 @@ hide_rate_limit_model_nudge = true
 
 [mcp_servers.exa]
 command = "npx"
-args = ["-y", "exa-mcp-server"]
+args = [
+  "-y",
+  "exa-mcp-server",
+  "tools=web_search_exa,web_search_advanced_exa,get_code_context_exa,crawling_exa,company_research_exa,people_search_exa,deep_researcher_start,deep_researcher_check",
+]
 # Set EXA_API_KEY in ~/.shell_secrets (already sourced from ~/.zshrc).
 env_vars = ["EXA_API_KEY"]
 
