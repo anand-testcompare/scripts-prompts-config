@@ -31,6 +31,9 @@ cp osx/config/zed/keymap.json ~/.config/zed/keymap.json
 
 # Resolve macOS screenshot shortcut conflicts with AeroSpace Cmd+Shift+3/4
 ./osx/scripts/configure_screenshot_shortcuts.sh
+
+# Or sync the window-manager stack in one step
+./osx/scripts/apply_window_manager_setup.sh
 ```
 
 ### Legacy Pop!_OS Scripts (Deprecated)
@@ -285,16 +288,16 @@ Updates all package managers on macOS:
 
 #### configure_screenshot_shortcuts.sh
 
-Remaps screenshot shortcuts so AeroSpace can own `Cmd+Shift+3/4`:
+Remaps screenshot shortcuts to `Ctrl+Cmd+3/4/5` so AeroSpace can own `Cmd+Shift+3/4`:
 
 ```bash
 ./osx/scripts/configure_screenshot_shortcuts.sh
 ```
 
 **Applies:**
-- Remap screenshot full screen to `Cmd+Ctrl+3`
-- Remap screenshot region to `Cmd+Ctrl+4`
-- Remap screenshot toolbar to `Cmd+Ctrl+5`
+- Remap screenshot full screen to `Ctrl+Cmd+3`
+- Remap screenshot region to `Ctrl+Cmd+4`
+- Remap screenshot toolbar to `Ctrl+Cmd+5`
 
 ### Git Hooks
 

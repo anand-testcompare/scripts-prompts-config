@@ -12,7 +12,7 @@ config-version = 2
 # Start AeroSpace at login
 start-at-login = true
 
-after-startup-command = []
+after-startup-command = ['exec-and-forget /bin/sh -lc "$HOME/scripts-prompts-config/osx/scripts/reapply_aerospace_layouts.sh"']
 
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
 enable-normalization-flatten-containers = true
@@ -30,12 +30,12 @@ persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     preset = 'qwerty'
 
 [gaps]
-    inner.horizontal = 8
-    inner.vertical = 8
-    outer.left = 8
-    outer.bottom = 8
-    outer.top = 8
-    outer.right = 8
+    inner.horizontal = 2
+    inner.vertical = 2
+    outer.left = 0
+    outer.bottom = 0
+    outer.top = 0
+    outer.right = 0
 
 [[on-window-detected]]
     # Keep common app windows responsive in tiling mode when they are created.
@@ -83,6 +83,9 @@ persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     # Resize (defaults)
     alt-minus = 'resize smart -50'
     alt-equal = 'resize smart +50'
+
+    # Maximize the focused window without creating a separate macOS fullscreen Space.
+    cmd-ctrl-f = 'fullscreen --no-outer-gaps'
 
     # Open a fresh Ghostty instance in the current workspace.
     # Pair this with macOS Mission Control setting "switch to an application"

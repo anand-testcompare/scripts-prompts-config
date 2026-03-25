@@ -29,6 +29,10 @@ out_plist="$tmp_dir/updated.plist"
 defaults export "$domain" - > "$src_plist"
 plutil -convert json -o "$src_json" "$src_plist"
 
+# Note:
+# On this macOS 26 machine, Ctrl+Shift+3/4/5 can be persisted in
+# com.apple.symbolichotkeys but was not honored at runtime. Keep the known-good
+# Ctrl+Cmd+3/4/5 mapping here unless that OS-level behavior changes.
 jq '
   .AppleSymbolicHotKeys["28"] = {
     "enabled": true,
@@ -62,9 +66,9 @@ echo "Updated screenshot shortcuts in $domain:"
 defaults export "$domain" - \
   | plutil -convert json -o - - \
   | jq '{
-      cmd_ctrl_3: .AppleSymbolicHotKeys["28"],
-      cmd_ctrl_4: .AppleSymbolicHotKeys["30"],
-      cmd_ctrl_5: .AppleSymbolicHotKeys["184"]
+      ctrl_cmd_3: .AppleSymbolicHotKeys["28"],
+      ctrl_cmd_4: .AppleSymbolicHotKeys["30"],
+      ctrl_cmd_5: .AppleSymbolicHotKeys["184"]
     }'
 
 echo "Backup saved to: $backup_path"

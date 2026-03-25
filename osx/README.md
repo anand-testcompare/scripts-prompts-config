@@ -267,11 +267,18 @@ Reload config after edits:
 aerospace reload-config
 ```
 
+One-command sync for the backed-up macOS window-manager configs:
+```bash
+./osx/scripts/apply_window_manager_setup.sh
+```
+
 Includes:
 - `Cmd+Shift+Left/Right/Up/Down` move window to another monitor and follow
+- `Cmd+Ctrl+F` maximize the focused window without using macOS native fullscreen
 - `Alt+Shift+;`, then `r` force reset to tiled layout + flatten tree
 - `Alt+Shift+;`, then `a` explicit accordion mode (only when intended)
 - `Alt+Enter` open a fresh Ghostty app instance (`open -na`) for new workspace sessions
+- A login-time retiling pass to clean up stacked/restored windows after reboot
 
 Recommended macOS defaults for AeroSpace workflows:
 ```bash
@@ -331,10 +338,11 @@ Notes:
 ## 10. Screenshot shortcut conflict fix (for AeroSpace)
 
 This script configures macOS screenshot shortcuts to avoid conflict with AeroSpace:
-- Remap screenshot full-screen from `Cmd+Shift+3` to `Cmd+Ctrl+3`
-- Remap screenshot region from `Cmd+Shift+4` to `Cmd+Ctrl+4`
-- Remap screenshot toolbar from `Cmd+Shift+5` to `Cmd+Ctrl+5`
+- Remap screenshot full-screen from `Cmd+Shift+3` to `Ctrl+Cmd+3`
+- Remap screenshot region from `Cmd+Shift+4` to `Ctrl+Cmd+4`
+- Remap screenshot toolbar from `Cmd+Shift+5` to `Ctrl+Cmd+5`
 - Leave `Cmd+Shift+3/4/5` free for tiling-manager bindings
+- Brief finding: on this macOS 26 machine, `Ctrl+Shift+3/4/5` persisted in `com.apple.symbolichotkeys` but did not fire reliably at runtime, so the repo keeps the known-good `Ctrl+Cmd` mapping.
 
 Run:
 ```bash
