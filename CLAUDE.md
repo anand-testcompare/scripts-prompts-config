@@ -1,61 +1,39 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Claude Code should follow the repository guidance in `AGENTS.md`. This file mirrors the same repo-specific rules so Claude keeps the same workflow expectations even if it does not load `AGENTS.md`.
 
-## Repository Overview
+## Git Hygiene
 
-This repository (`scripts-prompts-config`) is a configuration management system for development environments, supporting Linux (Pop!_OS/Ubuntu and Omarchy/Arch) plus macOS. It contains backup/restore scripts for shell configurations, development tools, and application settings.
+- Avoid random stashes, local-only branches, and other local-only state hanging around after a task.
+- Avoid important files existing only locally. If a file matters, commit it and get it into the remote; otherwise delete it or add a `.gitignore` rule in the same change.
+- Prefer small, focused PRs that move real config changes into the remote quickly instead of batching unrelated local tweaks for later.
 
-## Key Scripts and Commands
+## Repo Focus
 
-### Configuration Management
+- Prefer `osx/` and `linux-omarchy/` for current work.
+- Treat `linux-popos/` as legacy unless the task explicitly targets it.
 
-- **Backup configurations**: `./linux-popos/backup-configs.sh` - Backs up current system configurations to the repository
-- **Restore configurations**: `./linux-popos/restore-configs.sh` - Restores configurations from repository to system
-- **Test restore**: Always create backups before restoring (script does this automatically)
+## Change Rules
 
-### Directory Structure
+- Keep bash and zsh behavior in sync when editing shared shell config.
+- Preserve safety-first restore behavior if touching backup/restore scripts.
+- Keep committed configs free of machine-specific secrets unless a file is explicitly intended as a template.
 
-```bash
-scripts-prompts-config/
-├── linux-popos/
-│   ├── backup-configs.sh      # Pop!_OS backup script
-│   ├── restore-configs.sh     # Pop!_OS restore script
-│   ├── config/                # Backed up configuration files (local)
-│   ├── prompts/               # AI prompts for maintenance
-│   └── scripts/               # Utility scripts
-├── linux-omarchy/             # Arch/Omarchy docs and scripts
-├── osx/                       # macOS configurations/scripts
-└── universal/                 # Cross-platform scripts and hooks
-```
+## Config Sync
 
-## Architecture and Design
+- Commit only portable, intentional config copied from local machines.
+- Do not commit auth tokens, OAuth state, machine-specific caches, history, or other ephemeral local data.
+- If a useful local file should stay machine-specific, keep it out of the repo explicitly with `.gitignore`.
 
-### Backup/Restore System
+## Secrets
 
-- Scripts use `safe_restore()` functions to prevent accidental data loss
-- Automatic timestamped backups of existing configs before restore
-- Manifest file generation for tracking backed-up files
-- Excludes sensitive files (`.shell_secrets`, `.mcp.json`, `.claude.json`) from backups
+- Never commit real values in `.shell_secrets`, `.mcp.json`, or `.claude.json`.
+- Use `.shell_secrets.template` for examples.
+- Sensitive files should stay permissioned for user-only access (`600`).
 
-### Security Considerations
+## Useful Locations
 
-- Never commit `.shell_secrets` - use `.shell_secrets.template` instead
-- Scripts set proper permissions (600) on sensitive files
-- Committed files are kept free of sensitive data by default
-
-### Shell Configuration Sync
-
-The repository maintains synchronized configurations between bash and zsh for:
-
-- Development tools (NVM, Bun, language version managers)
-- PATH modifications and environment variables
-- Aliases and utility functions
-- Third-party tool integrations (FZF, Docker, cloud CLIs)
-
-## Important Notes
-
-1. **Security**: Never include actual API keys, tokens, or passwords in any files committed to this repository
-2. **Testing**: After restoring configurations, source the shell files (`source ~/.bashrc` or `source ~/.zshrc`)
-3. **Compatibility**: Scripts are OS-specific; use `linux-popos/`, `linux-omarchy/`, `osx/`, and `universal/` as appropriate
-4. **Backup First**: The restore script automatically creates backups, but manual backups are recommended for critical systems
+- `osx/` - active macOS configs and scripts
+- `linux-omarchy/` - active Linux/Omarchy docs and configs
+- `linux-popos/` - legacy backup/restore flow and shell-sync prompt
+- `universal/` - cross-platform scripts and shared tooling
