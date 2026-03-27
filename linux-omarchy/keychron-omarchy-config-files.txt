@@ -57,14 +57,8 @@
 # Dropdown terminal toggle (Alacritty special workspace)
 ~/.local/bin/toggle-dropdown-terminal
 
-# Dictation command compatibility shim (hyprwhspr -> voxtype)
-~/.local/bin/hyprwhspr
-
-# Voxtype dictation config
-~/.config/voxtype/config.toml
-~/.config/systemd/user/voxtype.service
-~/.config/systemd/user/voxtype.service.d/backend.conf
-~/.config/systemd/user/voxtype.service.d/gpu.conf
+# hyprwhspr dictation config
+~/.config/hyprwhspr/config.json
 
 # Ghostty-aware shortcut router (for Super+C/V/W/T/N in non-Ghostty apps)
 ~/.local/bin/ghostty-or-universal
@@ -102,7 +96,7 @@
 #   - Hyprland intercepts keys BEFORE xremap can remap them
 #   - If Hyprland has Super+D bound, xremap never sees Super+D
 #   - Solution: comment out Hyprland bindings for keys xremap should handle
-#   - For voxtype dictation, add a Super+Alt+D passthrough in xremap so the combo isn't remapped
+#   - For hyprwhspr dictation, add a Super+Alt+D passthrough in xremap so the combo isn't remapped
 
 # ============================================================================
 # KEYBINDINGS SUMMARY
@@ -115,7 +109,7 @@
 # Super+G              Toggle window group
 # Super+Alt+Arrow      Navigate within groups
 # Super+Alt+Tab        Cycle through group
-# Super+Alt+D          Toggle voxtype recording
+# Super+Alt+D          Toggle hyprwhspr recording
 
 # GHOSTTY TERMINAL (via xremap + Ghostty-only overrides)
 # ----------------------------------------

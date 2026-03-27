@@ -24,7 +24,7 @@ keymap:
       Super_L-Alt_L-Up: Super_L-Alt_L-Up
       Super_L-Alt_L-Down: Super_L-Alt_L-Down
       Super_L-Alt_L-Tab: Super_L-Alt_L-Tab
-      # Super+Alt+D passthrough (Hyprland dictation toggle)
+      # Super+Alt+D passthrough (Hyprland dictation toggle / hyprwhspr)
       Super_L-Alt_L-d: Super_L-Alt_L-d
       Super_L-Alt_R-d: Super_L-Alt_R-d
       Super_R-Alt_L-d: Super_R-Alt_L-d
