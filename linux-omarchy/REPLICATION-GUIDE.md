@@ -150,7 +150,7 @@ Notes on the current layout:
 - Global Super→Ctrl mappings (excluding Ghostty so Ghostty-only overrides always win).
 - Ghostty-only overrides for Super+A/C/V/W/D so Ghostty uses Ctrl+Shift+… shortcuts and avoids clobbering terminal keys like Ctrl+D and Ctrl+T.
 - Hyprland passthrough block for Super+Alt/Super+Ctrl combos.
-- Super+Alt+D passthrough for dictation (`voxtype`).
+- Super+Alt+D passthrough for dictation (`hyprwhspr`).
 
 ### Autostart xremap (recommended: systemd --user)
 ```bash
@@ -319,6 +319,10 @@ cursor {
 
 Add to `~/.config/hypr/bindings.conf`:
 ```bash
+# Disable Omarchy's default SUPER+scroll workspace cycling
+unbind = SUPER, mouse_down
+unbind = SUPER, mouse_up
+
 # Reduce scroll delay for responsive mouse wheel zoom
 binds {
     scroll_event_delay = 50
@@ -342,7 +346,8 @@ bind = SUPER CTRL SHIFT, mouse_down, exec, hyprctl -q keyword cursor:zoom_factor
 
 **Notes:**
 - Zoom only magnifies (values > 1.0). Values below 1.0 have no visual effect.
-- Mouse scroll uses SUPER+CTRL (not just SUPER) because SUPER+scroll is already bound to workspace switching in Omarchy defaults.
+- Mouse scroll uses SUPER+CTRL so zoom stays separate from workspace switching.
+- If you do not want workspace switching on `SUPER+scroll`, keep the two `unbind = SUPER, mouse_*` lines above.
 
 ### Monitor Scale Presets (4K displays)
 
@@ -410,51 +415,37 @@ windowrulev2 = bordercolor rgb(00b5b5), onworkspace:special:scratchpad
 
 ---
 
-## 5. Voice Dictation (voxtype + GPU)
+## 5. Voice Dictation (hyprwhspr + ElevenLabs Scribe v2)
 
-`voxtype` provides system-wide voice-to-text and is configured here to run on Vulkan (GPU).
+`hyprwhspr` provides system-wide voice-to-text here, using ElevenLabs realtime transcription with `scribe_v2_realtime`.
 
 ### Install
 ```bash
-yay -S voxtype-bin
+yay -S hyprwhspr
 ```
 
 ### Configure
-
-Quick apply from repo (recommended):
 ```bash
-/home/anandpant/scripts-prompts-config/linux-omarchy/scripts/setup-voxtype-dictation.sh
-```
-
-Or copy manually:
-
-Copy the versioned files from this repo:
-```bash
-mkdir -p ~/.config/voxtype ~/.config/systemd/user/voxtype.service.d ~/.local/bin
-cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/voxtype-config.toml ~/.config/voxtype/config.toml
-cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/voxtype.service ~/.config/systemd/user/voxtype.service
-cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/voxtype-backend.conf ~/.config/systemd/user/voxtype.service.d/backend.conf
-cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/voxtype-gpu.conf ~/.config/systemd/user/voxtype.service.d/gpu.conf
-cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/hyprwhspr-compat ~/.local/bin/hyprwhspr
-chmod +x ~/.local/bin/hyprwhspr
+mkdir -p ~/.config/hyprwhspr
+cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/hyprwhspr-config.json ~/.config/hyprwhspr/config.json
 ```
 
 Notes:
-- `backend.conf` forces the Vulkan binary (`/usr/lib/voxtype/voxtype-vulkan daemon`).
-- `gpu.conf` pins GPU selection to NVIDIA (`VOXTYPE_VULKAN_DEVICE=nvidia`).
-- `hyprwhspr-compat` keeps old `hyprwhspr` command muscle memory working by forwarding to `voxtype`.
+- The tracked config uses the realtime websocket backend.
+- `websocket_provider` is `elevenlabs`.
+- `websocket_model` is `scribe_v2_realtime`.
 
 ### Enable systemd service (persists across restart/login)
 ```bash
 systemctl --user daemon-reload
-systemctl --user enable --now voxtype.service
-systemctl --user is-enabled voxtype.service
+systemctl --user enable --now hyprwhspr.service
+systemctl --user is-enabled hyprwhspr.service
 ```
 
 ### Hyprland binding
 Add to `~/.config/hypr/bindings.conf`:
 ```
-bindd = SUPER ALT, D, Dictation, exec, voxtype record toggle
+bindd = SUPER ALT, D, Speech-to-text, exec, /usr/lib/hyprwhspr/config/hyprland/hyprwhspr-tray.sh record
 ```
 
 If you use xremap, keep passthroughs so Super+Alt+D reaches Hyprland:
@@ -466,8 +457,10 @@ Super_R-Alt_R-d: Super_R-Alt_R-d
 ```
 
 ### Usage
-- `Super+Alt+D` - Toggle recording (press once to start, again to stop and transcribe)
-- `hyprwhspr toggle` - Compatibility alias for old workflow
+- `Super+Alt+D` - Toggle recording (press once to start, again to stop and inject transcript)
+- Waybar microphone icon - Click to toggle dictation, right-click to start `hyprwhspr` if it is not running, middle-click to restart it
+- `hyprwhspr status` - Confirm the service, backend, and input pipeline are healthy
+- `journalctl --user -u hyprwhspr.service -f` - Tail live logs while testing
 
 ---
 
@@ -564,8 +557,8 @@ vim.opt.relativenumber = false
 - [ ] Add monitor scale presets (F13/F14/F15 for 4K scaling)
 - [ ] Create toggle-scratchpad-window script and add Super+Shift+S binding
 - [ ] Add teal border for scratchpad windows in looknfeel.conf
-- [ ] Install voxtype (`yay -S voxtype-bin`)
-- [ ] Copy voxtype config/service/drop-ins and enable `voxtype.service`
+- [ ] Install hyprwhspr (`yay -S hyprwhspr`)
+- [ ] Copy `~/.config/hyprwhspr/config.json` and enable `hyprwhspr.service`
 - [ ] Configure Ghostty with Mac-style keybindings
 - [ ] Configure Zed with Mac-style keybindings
 - [ ] Configure VS Code shift+enter binding

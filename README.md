@@ -84,6 +84,7 @@ Both Bash and Zsh configurations include:
 
 ```
 scripts-prompts-config/
+├── AGENTS.md                   # Shared repo workflow for coding agents
 ├── CLAUDE.md                   # AI assistant instructions
 ├── README.md                   # This file
 ├── TODO.md                     # Development tasks

@@ -4,6 +4,7 @@
     "bindings": {
       "cmd-shift-l": "editor::Format",
       "cmd-shift-alt-l": "editor::Format",
+      "ctrl-shift-m": "markdown::OpenPreviewToTheSide",
       "ctrl-b": "workspace::ToggleLeftDock"
     }
   },
