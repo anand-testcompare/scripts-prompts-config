@@ -10,13 +10,22 @@ read_only = " ro"
 [git_branch]
 symbol = ""
 style = "bold purple"
-format = " on [$branch]($style)"
+format = " [$branch]($style)"
 
 [git_status]
 style = "yellow"
-format = " [$all_status$ahead_behind]($style)"
-# Keep this a simple, valid format string to avoid parse errors.
-stashed = " stash:$count"
+format = " [$staged$modified$untracked$deleted$renamed$conflicted$stashed$ahead_behind]($style)"
+staged = "+$count "
+modified = "!$count "
+untracked = "?$count "
+deleted = "x$count "
+renamed = ">$count "
+conflicted = "=$count "
+stashed = "*$count "
+ahead = "^$count "
+behind = "v$count "
+diverged = "^$ahead_count v$behind_count "
+up_to_date = ""
 
 [nodejs]
 symbol = ""

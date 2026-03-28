@@ -68,13 +68,22 @@ read_only = " ro"
 [git_branch]
 symbol = ""
 style = "bold purple"
-format = " on [$branch]($style)"
+format = " [$branch]($style)"
 
 [git_status]
 style = "yellow"
-format = " [$all_status$ahead_behind]($style)"
-# Keep this a simple, valid format string to avoid parse errors.
-stashed = " stash:$count"
+format = " [$staged$modified$untracked$deleted$renamed$conflicted$stashed$ahead_behind]($style)"
+staged = "+$count "
+modified = "!$count "
+untracked = "?$count "
+deleted = "x$count "
+renamed = ">$count "
+conflicted = "=$count "
+stashed = "*$count "
+ahead = "^$count "
+behind = "v$count "
+diverged = "^$ahead_count v$behind_count "
+up_to_date = ""
 
 [nodejs]
 symbol = ""
@@ -109,6 +118,35 @@ disabled = true
 [kubernetes]
 disabled = true
 ```
+
+---
+
+## 3b. Claude Code status line
+
+Keep Claude's own bottom status line compact and useful by pointing it at the tracked script in this repo:
+
+```json
+{
+  "statusLine": {
+    "type": "command",
+    "command": "/Users/anandpant/scripts-prompts-config/universal/claude-statusline.sh"
+  }
+}
+```
+
+The script lives at:
+- `universal/claude-statusline.sh`
+
+It shows:
+- model
+- shortened working directory
+- git branch plus compact dirty/ahead-behind counts
+- context usage
+- Claude.ai 5-hour and 7-day usage when available
+
+Notes:
+- It caches git lookups for 5 seconds so the status line stays responsive in large repos.
+- Claude Code reads `statusLine` from `~/.claude/settings.json`.
 
 ---
 
@@ -363,6 +401,7 @@ The script creates a backup at:
 - [ ] Keep native `pbcopy/pbpaste/open`
 - [ ] Add Omarchy-style aliases/functions to `~/.zshrc`
 - [ ] Create `~/.config/starship.toml`
+- [ ] Point `~/.claude/settings.json` at `universal/claude-statusline.sh`
 - [ ] Install `skhd`, copy `~/.skhdrc`, enable Accessibility, restart service
 - [ ] Copy Ghostty config and keybindings or WezTerm config
 - [ ] Install AeroSpace + copy `~/.aerospace.toml` and enable Accessibility
