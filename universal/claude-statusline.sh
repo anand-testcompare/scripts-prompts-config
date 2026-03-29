@@ -134,18 +134,10 @@ title_case_words() {
   '
 }
 
-configured_effort() {
-  settings_file=$HOME/.claude/settings.json
-  [ -f "$settings_file" ] || return 0
-
-  jq -r '.effortLevel // empty' "$settings_file" 2>/dev/null
-}
-
 format_model_label() {
   display_name=$1
   model_identifier=$2
   context_size=$3
-  effort_label=$4
 
   base_label=$display_name
 
@@ -172,14 +164,6 @@ format_model_label() {
 
   if [ "$context_size" = "1000000" ]; then
     tag_suffix='1m'
-  fi
-
-  if [ -n "$effort_label" ]; then
-    if [ -n "$tag_suffix" ]; then
-      tag_suffix="$tag_suffix/$effort_label"
-    else
-      tag_suffix="$effort_label"
-    fi
   fi
 
   if [ -n "$tag_suffix" ]; then
@@ -272,8 +256,7 @@ EOF
   IFS='|' read -r git_branch git_ahead git_behind git_staged git_modified git_untracked git_conflicted git_added git_removed < "$cache_file"
 fi
 
-effort=$(configured_effort)
-model_label=$(format_model_label "$model" "$model_id" "$ctx_size" "$effort")
+model_label=$(format_model_label "$model" "$model_id" "$ctx_size")
 
 line=$(printf '%s%s%s' "$BLUE" "$model_label" "$RESET")
 
