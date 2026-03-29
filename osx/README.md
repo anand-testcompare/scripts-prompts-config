@@ -141,11 +141,13 @@ It shows:
 - model
 - shortened working directory
 - git branch plus compact dirty/ahead-behind counts
+- tracked line additions/removals versus `HEAD`
 - context usage
 - Claude.ai 5-hour and 7-day usage when available
 
 Notes:
 - It caches git lookups for 5 seconds so the status line stays responsive in large repos.
+- It uses two lines: repo identity/health on line 1, quantitative usage on line 2.
 - Claude Code reads `statusLine` from `~/.claude/settings.json`.
 
 ---

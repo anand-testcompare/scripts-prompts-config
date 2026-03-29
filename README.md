@@ -62,7 +62,7 @@ Both Bash and Zsh configurations include:
 - **System Info**: Memory (`meminfo`), CPU (`cpuinfo`), disk usage (`diskinfo`)
 - **Clipboard**: Cross-platform clipboard support (`pbcopy`, `pbpaste` via xclip)
 - **Secure Credentials**: Automatic loading from `.shell_secrets`
-- **Exa MCP**: Set `EXA_API_KEY` in `~/.shell_secrets`; tracked Codex/OpenCode configs enable web search, advanced search, code context, crawling, company research, people search, and deep research
+- **Exa MCP**: Set `EXA_API_KEY` in `~/.shell_secrets`; tracked Codex/OpenCode configs enable web search, advanced search, code context, crawling, company research, people search, and deep research. The tracked OpenCode config now lives at `universal/.config/opencode/opencode.jsonc`
 - **Modern CLI Tools**: eza (ls replacement), bat (cat replacement with automatic secret masking for `.env` files), ripgrep, fd
 
 ### Zsh-Specific Enhancements

@@ -32,6 +32,14 @@ count_lines() {
   wc -l | tr -d ' '
 }
 
+sum_numstat() {
+  awk '
+    $1 ~ /^[0-9]+$/ { added += $1 }
+    $2 ~ /^[0-9]+$/ { removed += $2 }
+    END { printf "%s|%s\n", added + 0, removed + 0 }
+  '
+}
+
 file_mtime() {
   stat -f %m "$1" 2>/dev/null || stat -c %Y "$1" 2>/dev/null || printf '0'
 }
@@ -111,6 +119,30 @@ format_pct() {
   printf '%s%s:%s%%%s' "$color" "$label" "$int_value" "$RESET"
 }
 
+format_line_delta() {
+  added=${1:-0}
+  removed=${2:-0}
+
+  [ "$added" -eq 0 ] && [ "$removed" -eq 0 ] && return 0
+
+  segment=''
+
+  if [ "$added" -gt 0 ]; then
+    segment=$(printf '%s+%s%s' "$GREEN" "$added" "$RESET")
+  fi
+
+  if [ "$removed" -gt 0 ]; then
+    removed_segment=$(printf '%s-%s%s' "$RED" "$removed" "$RESET")
+    if [ -n "$segment" ]; then
+      segment="$segment/$removed_segment"
+    else
+      segment="$removed_segment"
+    fi
+  fi
+
+  printf 'lines:%s' "$segment"
+}
+
 git_branch=''
 git_ahead=0
 git_behind=0
@@ -118,6 +150,8 @@ git_staged=0
 git_modified=0
 git_untracked=0
 git_conflicted=0
+git_added=0
+git_removed=0
 
 if [ -n "$cwd" ] && git -C "$cwd" rev-parse --git-dir >/dev/null 2>&1; then
   cache_root=${TMPDIR:-/tmp}/claude-statusline-git
@@ -140,17 +174,32 @@ if [ -n "$cwd" ] && git -C "$cwd" rev-parse --git-dir >/dev/null 2>&1; then
     git_untracked=$(git -C "$cwd" ls-files --others --exclude-standard 2>/dev/null | count_lines)
     git_conflicted=$(git -C "$cwd" diff --name-only --diff-filter=U 2>/dev/null | count_lines)
 
-    printf '%s|%s|%s|%s|%s|%s|%s\n' \
+    if git -C "$cwd" rev-parse --verify HEAD >/dev/null 2>&1; then
+      IFS='|' read -r git_added git_removed <<EOF
+$(git -C "$cwd" diff --numstat HEAD -- 2>/dev/null | sum_numstat)
+EOF
+    else
+      IFS='|' read -r git_added git_removed <<EOF
+$({
+  git -C "$cwd" diff --cached --numstat 2>/dev/null
+  git -C "$cwd" diff --numstat 2>/dev/null
+} | sum_numstat)
+EOF
+    fi
+
+    printf '%s|%s|%s|%s|%s|%s|%s|%s|%s\n' \
       "$git_branch" \
       "$git_ahead" \
       "$git_behind" \
       "$git_staged" \
       "$git_modified" \
       "$git_untracked" \
-      "$git_conflicted" > "$cache_file"
+      "$git_conflicted" \
+      "$git_added" \
+      "$git_removed" > "$cache_file"
   fi
 
-  IFS='|' read -r git_branch git_ahead git_behind git_staged git_modified git_untracked git_conflicted < "$cache_file"
+  IFS='|' read -r git_branch git_ahead git_behind git_staged git_modified git_untracked git_conflicted git_added git_removed < "$cache_file"
 fi
 
 line=$(printf '%s%s%s' "$BLUE" "$model" "$RESET")
@@ -170,12 +219,36 @@ if [ -n "$git_branch" ]; then
 fi
 
 ctx_segment=$(format_pct ctx "$ctx_pct")
-[ -n "$ctx_segment" ] && line="$line $ctx_segment"
+line2=$(format_line_delta "$git_added" "$git_removed")
+
+[ -n "$ctx_segment" ] && {
+  if [ -n "$line2" ]; then
+    line2="$line2 $ctx_segment"
+  else
+    line2="$ctx_segment"
+  fi
+}
 
 five_hr_segment=$(format_pct 5h "$five_hr")
-[ -n "$five_hr_segment" ] && line="$line $five_hr_segment"
+[ -n "$five_hr_segment" ] && {
+  if [ -n "$line2" ]; then
+    line2="$line2 $five_hr_segment"
+  else
+    line2="$five_hr_segment"
+  fi
+}
 
 seven_day_segment=$(format_pct 7d "$seven_day")
-[ -n "$seven_day_segment" ] && line="$line $seven_day_segment"
+[ -n "$seven_day_segment" ] && {
+  if [ -n "$line2" ]; then
+    line2="$line2 $seven_day_segment"
+  else
+    line2="$seven_day_segment"
+  fi
+}
 
-printf '%b\n' "$line"
+if [ -n "$line2" ]; then
+  printf '%b\n%b\n' "$line" "$line2"
+else
+  printf '%b\n' "$line"
+fi
