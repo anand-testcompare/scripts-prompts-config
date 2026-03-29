@@ -8,11 +8,13 @@ fi
 input=$(cat)
 tab=$(printf '\t')
 
-IFS="$tab" read -r model cwd ctx_pct five_hr seven_day <<EOF
+IFS="$tab" read -r model model_id cwd ctx_size ctx_pct five_hr seven_day <<EOF
 $(printf '%s' "$input" | jq -r '
   [
     .model.display_name // "Claude",
+    .model.id // "",
     .workspace.current_dir // .cwd // "",
+    (.context_window.context_window_size // ""),
     (.context_window.used_percentage // ""),
     (.rate_limits.five_hour.used_percentage // ""),
     (.rate_limits.seven_day.used_percentage // "")
@@ -119,6 +121,74 @@ format_pct() {
   printf '%s%s:%s%%%s' "$color" "$label" "$int_value" "$RESET"
 }
 
+title_case_words() {
+  printf '%s' "$1" | awk '
+    BEGIN { FS = "-" }
+    {
+      for (i = 1; i <= NF; i++) {
+        $i = toupper(substr($i, 1, 1)) substr($i, 2)
+      }
+      OFS = " "
+      print $0
+    }
+  '
+}
+
+configured_effort() {
+  settings_file=$HOME/.claude/settings.json
+  [ -f "$settings_file" ] || return 0
+
+  jq -r '.effortLevel // empty' "$settings_file" 2>/dev/null
+}
+
+format_model_label() {
+  display_name=$1
+  model_identifier=$2
+  context_size=$3
+  effort_label=$4
+
+  base_label=$display_name
+
+  case "$model_identifier" in
+    claude-opus-*-*)
+      version=${model_identifier#claude-opus-}
+      base_label="Opus ${version/-/.}"
+      ;;
+    claude-sonnet-*-*)
+      version=${model_identifier#claude-sonnet-}
+      base_label="Sonnet ${version/-/.}"
+      ;;
+    claude-haiku-*-*)
+      version=${model_identifier#claude-haiku-}
+      base_label="Haiku ${version/-/.}"
+      ;;
+    claude-*)
+      family=${model_identifier#claude-}
+      base_label=$(title_case_words "$family")
+      ;;
+  esac
+
+  tag_suffix=''
+
+  if [ "$context_size" = "1000000" ]; then
+    tag_suffix='1m'
+  fi
+
+  if [ -n "$effort_label" ]; then
+    if [ -n "$tag_suffix" ]; then
+      tag_suffix="$tag_suffix/$effort_label"
+    else
+      tag_suffix="$effort_label"
+    fi
+  fi
+
+  if [ -n "$tag_suffix" ]; then
+    printf '%s[%s]' "$base_label" "$tag_suffix"
+  else
+    printf '%s' "$base_label"
+  fi
+}
+
 format_line_delta() {
   added=${1:-0}
   removed=${2:-0}
@@ -202,7 +272,10 @@ EOF
   IFS='|' read -r git_branch git_ahead git_behind git_staged git_modified git_untracked git_conflicted git_added git_removed < "$cache_file"
 fi
 
-line=$(printf '%s%s%s' "$BLUE" "$model" "$RESET")
+effort=$(configured_effort)
+model_label=$(format_model_label "$model" "$model_id" "$ctx_size" "$effort")
+
+line=$(printf '%s%s%s' "$BLUE" "$model_label" "$RESET")
 
 short_cwd=$(shorten_path "$cwd")
 [ -n "$short_cwd" ] && line="$line $(printf '%s%s%s' "$CYAN" "$short_cwd" "$RESET")"

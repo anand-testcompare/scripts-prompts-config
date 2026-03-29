@@ -138,7 +138,7 @@ The script lives at:
 - `universal/claude-statusline.sh`
 
 It shows:
-- model
+- model variant (for example `Opus 4.6[1m/high]` when available)
 - shortened working directory
 - git branch plus compact dirty/ahead-behind counts
 - tracked line additions/removals versus `HEAD`
