@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Prevent commits with Claude/Anthropic branding
-if grep -iq "claude\|anthropic" "$1"; then
+# Uses -E (extended regex) for portability across GNU grep (Linux) and BSD grep (macOS)
+if grep -iEq "claude|anthropic|noreply@" "$1"; then
     echo "Error: Commit message contains Claude/Anthropic branding"
     echo "Please remove references to Claude Code and Co-Authored-By: Claude"
     exit 1

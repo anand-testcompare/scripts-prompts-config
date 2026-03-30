@@ -51,8 +51,11 @@ chmod +x .git/hooks/commit-msg
 The hook checks commit messages for:
 - References to "claude" (case-insensitive)
 - References to "anthropic" (case-insensitive)
+- References to "noreply@" (catches AI-tool co-author trailers by email)
 
 If found, it blocks the commit and displays an error message.
+
+Uses `-E` (extended regex) for portability across GNU grep (Linux) and BSD grep (macOS). The original `\|` basic-regex alternation silently fails on BSD grep, allowing commits through on macOS.
 
 ### Testing
 
