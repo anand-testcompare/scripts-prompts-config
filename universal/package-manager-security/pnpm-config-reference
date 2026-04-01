@@ -1,0 +1,19 @@
+# Supply chain attack protection
+# Refuse packages published less than 1 day ago (1440 minutes)
+# Blocks day-zero attacks where malicious packages are published and quickly removed
+#
+# These are set via: pnpm config set <key> <value>
+# Or add to .npmrc (pnpm reads it) or pnpm-workspace.yaml
+
+# Block packages published less than 1 day ago
+minimumReleaseAge=1440
+
+# Allow your own npm orgs to bypass the age check
+# Add your orgs here to install fresh packages immediately
+minimumReleaseAgeExclude=["@nyrra", "@openontology", "@shpitdev", "@sketchi-app"]
+
+# Block transitive deps from non-registry sources (git/tarball URLs)
+blockExoticSubdeps=true
+
+# Fail install if any dependency has unreviewed build scripts
+strictDepBuilds=true

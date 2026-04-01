@@ -1,0 +1,14 @@
+# Supply chain attack protection
+# Disables all lifecycle scripts globally
+# Blocks postinstall scripts that malware uses as an attack vector
+#
+# Installation: Copy to ~/.yarnrc.yml (Yarn Berry/modern versions)
+#
+# Re-enable scripts for specific packages that need them (e.g., esbuild, sharp):
+#   dependenciesMeta:
+#     esbuild:
+#       built: true
+#     sharp:
+#       built: true
+
+enableScripts: false
