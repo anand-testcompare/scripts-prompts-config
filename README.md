@@ -63,6 +63,7 @@ Both Bash and Zsh configurations include:
 - **Clipboard**: Cross-platform clipboard support (`pbcopy`, `pbpaste` via xclip)
 - **Secure Credentials**: Automatic loading from `.shell_secrets`
 - **Exa MCP**: Set `EXA_API_KEY` in `~/.shell_secrets`; tracked Codex/OpenCode configs enable web search, advanced search, code context, crawling, company research, people search, and deep research. The tracked OpenCode config now lives at `universal/.config/opencode/opencode.jsonc`
+- **Codex Feature Banner**: `universal/codex-shell-tools.sh` wraps `codex` so interactive launches can print grouped feature flags from `codex features list`
 - **Modern CLI Tools**: eza (ls replacement), bat (cat replacement with automatic secret masking for `.env` files), ripgrep, fd
 
 ### Zsh-Specific Enhancements
@@ -110,6 +111,7 @@ scripts-prompts-config/
 │       ├── configure_screenshot_shortcuts.sh
 │       └── update_packages.sh
 └── universal/                 # Cross-platform scripts, hooks, and troubleshooting playbooks
+    ├── codex-shell-tools.sh
     ├── convert_to_svg.sh
     ├── kill-dev.sh
     ├── optimize_logos.sh

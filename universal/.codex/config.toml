@@ -27,6 +27,9 @@ shell_snapshot = true
 multi_agent = true
 steer = true
 personality = false
+apps = false
+plugins = false
+tui_app_server = false
 
 [plugins."github@openai-curated"]
 enabled = false
