@@ -25,10 +25,15 @@ env_vars = ["EXA_API_KEY"]
 unified_exec = true
 shell_snapshot = true
 multi_agent = true
+multi_agent_v2 = true
 steer = true
 personality = false
 apps = false
 plugins = false
+js_repl = true
+code_mode = true
+codex_hooks = true
+memories = true
 tui_app_server = false
 
 [plugins."github@openai-curated"]

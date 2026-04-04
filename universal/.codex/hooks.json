@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "^startup$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.codex/hooks/git-status-summary.sh\"",
+            "timeout": 10,
+            "statusMessage": "checking git status"
+          }
+        ]
+      }
+    ]
+  }
+}
