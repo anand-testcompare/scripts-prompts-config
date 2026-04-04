@@ -27,14 +27,27 @@ _codex_print_feature_table() {
 }
 
 _codex_print_grouped_feature_table() {
-  local rows
+  local rows true_color reset_color
   rows="$1"
 
   [ -n "$rows" ] || return 0
 
-  printf '%s\n' "$rows" | awk '
-    function add_row(stage, feature, enabled, row) {
-      row = sprintf("%-30s %s", feature, enabled)
+  if [ -t 1 ]; then
+    true_color=$'\033[32m'
+    reset_color=$'\033[0m'
+  else
+    true_color=""
+    reset_color=""
+  fi
+
+  printf '%s\n' "$rows" | awk -v true_color="$true_color" -v reset_color="$reset_color" '
+    function add_row(stage, feature, enabled, enabled_display, row) {
+      enabled_display = enabled
+      if (enabled == "true" && true_color != "") {
+        enabled_display = true_color enabled reset_color
+      }
+
+      row = sprintf("%-30s %s", feature, enabled_display)
       if (group_rows[stage] != "") {
         group_rows[stage] = group_rows[stage] "\n" row
       } else {
