@@ -4,17 +4,9 @@
   "small_model": "openai/gpt-5.4-mini",
   "mcp": {
     "exa": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "exa-mcp-server",
-        "tools=web_search_exa,web_search_advanced_exa,get_code_context_exa,crawling_exa,company_research_exa,people_search_exa,deep_researcher_start,deep_researcher_check"
-      ],
-      "enabled": true,
-      "environment": {
-        "EXA_API_KEY": "{env:EXA_API_KEY}"
-      }
+      "type": "remote",
+      "url": "https://mcp.exa.ai/mcp?tools=web_search_exa,web_search_advanced_exa,get_code_context_exa,crawling_exa",
+      "enabled": true
     },
     "gh_grep": {
       "type": "remote",
