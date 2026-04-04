@@ -9,6 +9,8 @@ install -m 0644 "$repo_root/osx/config/.aerospace.toml" "$HOME/.aerospace.toml"
 install -m 0644 "$repo_root/osx/config/.skhdrc" "$HOME/.skhdrc"
 mkdir -p "$HOME/.config/ghostty"
 install -m 0644 "$repo_root/osx/config/.config/ghostty/config" "$HOME/.config/ghostty/config"
+mkdir -p "$HOME/.config/wezterm"
+install -m 0644 "$repo_root/osx/config/.config/wezterm/wezterm.lua" "$HOME/.config/wezterm/wezterm.lua"
 
 "$repo_root/osx/scripts/configure_macos_defaults.sh"
 

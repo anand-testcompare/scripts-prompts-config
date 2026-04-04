@@ -83,10 +83,11 @@ alias pbcopy='wl-copy'
 alias pbpaste='wl-paste'
 
 # Better ls (requires eza)
-alias ls='eza -lh --group-directories-first --icons=auto'
+ls() { env -u NO_COLOR command eza -lh --group-directories-first --icons=auto "$@"; }
 alias lsa='ls -a'
-alias lt='eza --tree --level=2 --long --icons --git'
+lt() { env -u NO_COLOR command eza --tree --level=2 --long --icons --git "$@"; }
 alias lta='lt -a'
+tree() { command tree -C "$@"; }
 
 # Better cat (requires bat)
 alias cat='bat'
