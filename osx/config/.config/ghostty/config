@@ -4,8 +4,8 @@
 font-family = "JetBrainsMono Nerd Font Mono"
 font-size = 14
 
-# Theme - using default with custom background
-# background = 1e1e1e  # Uncomment and adjust if you want a specific grey background
+# Theme
+theme = "Catppuccin Frappe"
 
 # Performance optimizations
 auto-update = off
