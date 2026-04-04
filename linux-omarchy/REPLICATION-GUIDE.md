@@ -49,6 +49,16 @@ eval "$(starship init zsh)"
 eval "$(mise activate zsh)"
 ```
 
+### Match the macOS git prompt
+Ghostty is not the source of the branch details. The prompt comes from `starship`.
+
+Copy the tracked config to get the same compact branch and git-status display used on macOS:
+
+```bash
+mkdir -p ~/.config
+cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/starship.toml ~/.config/starship.toml
+```
+
 ### What each tool does:
 | Tool | Purpose |
 |------|---------|

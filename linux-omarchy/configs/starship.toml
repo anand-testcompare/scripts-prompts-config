@@ -1,0 +1,61 @@
+format = "$directory$git_branch$git_status$nodejs$python$golang$rust$line_break$character"
+add_newline = true
+
+[directory]
+style = "bold cyan"
+truncation_length = 3
+truncation_symbol = "../"
+read_only = " ro"
+
+[git_branch]
+symbol = ""
+style = "bold purple"
+format = " [$branch]($style)"
+
+[git_status]
+style = "yellow"
+format = " [$staged$modified$untracked$deleted$renamed$conflicted$stashed$ahead_behind]($style)"
+staged = "+$count "
+modified = "!$count "
+untracked = "?$count "
+deleted = "x$count "
+renamed = ">$count "
+conflicted = "=$count "
+stashed = "*$count "
+ahead = "^$count "
+behind = "v$count "
+diverged = "^$ahead_count v$behind_count "
+up_to_date = ""
+
+[nodejs]
+symbol = ""
+style = "green"
+format = " via [$version]($style)"
+
+[python]
+symbol = ""
+style = "blue"
+format = " via [$version]($style)"
+
+[golang]
+symbol = ""
+style = "blue"
+format = " via [$version]($style)"
+
+[rust]
+symbol = ""
+style = "red"
+format = " via [$version]($style)"
+
+[character]
+success_symbol = "> "
+error_symbol = "> "
+
+[aws]
+disabled = true
+
+[gcloud]
+disabled = true
+
+[kubernetes]
+disabled = true
