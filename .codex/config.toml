@@ -1,2 +1,5 @@
 [features]
 codex_hooks = true
+
+[tui]
+theme = "catppuccin-frappe"

@@ -11,6 +11,9 @@ approval_policy = "never"
 hide_full_access_warning = true
 hide_rate_limit_model_nudge = true
 
+[tui]
+theme = "catppuccin-frappe"
+
 [mcp_servers.exa]
 command = "npx"
 args = [
