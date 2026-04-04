@@ -42,7 +42,8 @@ Notes:
 ## 2. Aliases and helpers
 
 The following Omarchy-style aliases/functions were added to `~/.zshrc`:
-- `eza`-based `ls`, `lt`, `lta`
+- `eza`-based `ls`, `lt`, `lta` that ignore inherited `NO_COLOR`
+- `tree` with `-C` for colorized output
 - `bat` for `cat` (with secret masking for env-like files)
 - `ff` (fzf preview), `..`/`...`/`....` navigation
 - git aliases (`g`, `gcm`, `gcam`, `gcad`)
@@ -175,14 +176,14 @@ cmd + shift - t [
   "Arc" ~
   "Safari" ~
   "Helium" ~
-  * : open -na /Applications/Ghostty.app
+  * : open -a /Applications/Ghostty.app
 ]
-cmd + shift - return : open -na /Applications/Ghostty.app
+cmd + shift - return : open -a /Applications/Ghostty.app
 cmd + shift - b : open -na /Applications/Helium.app
 cmd + shift - f : open -a Finder
 cmd + shift - a : open -a ChatGPT
 
-# If you want true Omarchy, but it conflicts with send/submit in apps:
+# If you want the old always-fresh Ghostty behavior:
 # cmd - return : open -na /Applications/Ghostty.app
 ```
 
@@ -193,11 +194,10 @@ launchctl kickstart -k gui/$(id -u)/com.koekeishiya.skhd
 ```
 
 Notes:
-- `Cmd+Shift+T` now launches a fresh Ghostty window by default, but passes through unchanged in Chrome, Arc, Safari, and Helium so those apps can keep their tab restore behavior.
-- `Cmd+Shift+Return` is an explicit backup shortcut for opening a fresh Ghostty window.
-- The launcher uses `open -na` on purpose so new windows open in your current workspace instead of jumping to an existing app window in another macOS Space.
-- Expected tradeoff: each fresh app instance shows as its own icon in the Dock while running.
-- If you prefer single Dock app grouping, switch those bindings back to `open -a ...`, but macOS may jump to another Space.
+- `Cmd+Shift+T` now reuses Ghostty by default, but passes through unchanged in Chrome, Arc, Safari, and Helium so those apps can keep their tab restore behavior.
+- `Cmd+Shift+Return` also reuses Ghostty instead of forcing another app instance.
+- This favors not accumulating stray Ghostty instances over keeping every launch pinned to the current macOS Space.
+- If you explicitly want the old "always fresh instance" behavior back, switch the bindings to `open -na ...`.
 
 ---
 
@@ -307,7 +307,7 @@ Reload config after edits:
 aerospace reload-config
 ```
 
-One-command sync for the backed-up macOS window-manager configs:
+One-command sync for the backed-up macOS window-manager and terminal configs:
 ```bash
 ./osx/scripts/apply_window_manager_setup.sh
 ```
@@ -317,7 +317,7 @@ Includes:
 - `Cmd+Ctrl+F` maximize the focused window without using macOS native fullscreen
 - `Alt+Shift+;`, then `r` force reset to tiled layout + flatten tree
 - `Alt+Shift+;`, then `a` explicit accordion mode (only when intended)
-- `Alt+Enter` open a fresh Ghostty app instance (`open -na`) for new workspace sessions
+- `Alt+Enter` reopen Ghostty without forcing a brand-new app instance
 - A login-time retiling pass to clean up stacked/restored windows after reboot
 
 Recommended macOS defaults for AeroSpace workflows:

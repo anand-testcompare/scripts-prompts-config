@@ -44,19 +44,21 @@ _codex_print_grouped_feature_table() {
     }
 
     {
-      if (!match($0, /^(.*[^[:space:]])[[:space:]]+(true|false)[[:space:]]*$/, tail)) {
+      if (NF < 3) {
         next
       }
 
-      left = tail[1]
-      enabled = tail[2]
-
-      if (!match(left, /^([[:alnum:]_][[:alnum:]_-]*)[[:space:]]+(.+)$/, head)) {
+      enabled = $NF
+      if (enabled != "true" && enabled != "false") {
         next
       }
 
-      feature = head[1]
-      stage = head[2]
+      feature = $1
+      stage = $2
+      for (i = 3; i < NF; i++) {
+        stage = stage " " $i
+      }
+
       add_row(stage, feature, enabled)
       seen[stage] = 1
     }
