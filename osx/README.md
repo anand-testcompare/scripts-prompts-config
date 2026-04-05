@@ -122,15 +122,30 @@ disabled = true
 
 ---
 
-## 3b. Claude Code status line
+## 3b. Claude Code settings
 
-Keep Claude's own bottom status line compact and useful by pointing it at the tracked script in this repo:
+Backed up Claude Code user settings live at:
+- `osx/config/.claude/settings.json`
+
+Copy them into place:
+```bash
+mkdir -p ~/.claude
+cp osx/config/.claude/settings.json ~/.claude/settings.json
+```
+
+This tracked config does two important things:
+- disables Claude Code commit and PR attribution globally with `"attribution": { "commit": "", "pr": "" }`
+- points Claude's status line at the tracked repo script
 
 ```json
 {
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "statusLine": {
     "type": "command",
-    "command": "/Users/anandpant/scripts-prompts-config/universal/claude-statusline.sh"
+    "command": "bash /Users/anandpant/scripts-prompts-config/universal/claude-statusline.sh"
   }
 }
 ```
@@ -149,7 +164,8 @@ It shows:
 Notes:
 - It caches git lookups for 5 seconds so the status line stays responsive in large repos.
 - It uses two lines: repo identity/health on line 1, quantitative usage on line 2.
-- Claude Code reads `statusLine` from `~/.claude/settings.json`.
+- Claude Code reads `statusLine` and `attribution` from `~/.claude/settings.json`.
+- Anthropic's current docs say empty `attribution.commit` and `attribution.pr` strings hide both commit and PR attribution.
 
 ---
 

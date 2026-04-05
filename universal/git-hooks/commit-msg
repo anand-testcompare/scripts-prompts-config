@@ -1,9 +1,24 @@
 #!/bin/bash
 
-# Prevent commits with Claude/Anthropic branding
+# Prevent automated Claude/Anthropic attribution in commits
 # Uses -E (extended regex) for portability across GNU grep (Linux) and BSD grep (macOS)
-if grep -iEq "claude|anthropic|noreply@" "$1"; then
-    echo "Error: Commit message contains Claude/Anthropic branding"
-    echo "Please remove references to Claude Code and Co-Authored-By: Claude"
+author_ident=$(git var GIT_AUTHOR_IDENT 2>/dev/null || printf '')
+committer_ident=$(git var GIT_COMMITTER_IDENT 2>/dev/null || printf '')
+
+if grep -iEq '^[[:space:]]*generated with .*claude' "$1"; then
+    echo "Error: Commit message contains Claude attribution"
+    echo "Please remove the generated-with footer/header"
+    exit 1
+fi
+
+if grep -iEq '^[[:space:]]*(co-authored-by|signed-off-by|authored-by):.*(claude|anthropic|noreply@)' "$1"; then
+    echo "Error: Commit message contains Claude/Anthropic attribution"
+    echo "Please remove Claude/Anthropic co-author or attribution trailers"
+    exit 1
+fi
+
+if printf '%s\n%s\n' "$author_ident" "$committer_ident" | grep -iEq 'claude|anthropic|noreply@'; then
+    echo "Error: Git author or committer identity contains Claude/Anthropic attribution"
+    echo "Please reset git author settings before committing"
     exit 1
 fi

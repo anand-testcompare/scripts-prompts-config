@@ -2,7 +2,7 @@
 
 ## commit-msg Hook
 
-This hook prevents commits containing Claude/Anthropic branding text and is OS-agnostic.
+This hook prevents automated Claude/Anthropic attribution patterns in commits while still allowing normal mentions of Claude in regular commit text.
 
 ### Installation
 
@@ -49,24 +49,26 @@ chmod +x .git/hooks/commit-msg
 ### What It Does
 
 The hook checks commit messages for:
-- References to "claude" (case-insensitive)
-- References to "anthropic" (case-insensitive)
-- References to "noreply@" (catches AI-tool co-author trailers by email)
+- `Generated with Claude...` attribution headers/footers
+- attribution trailers such as `Co-Authored-By`, `Signed-off-by`, or `Authored-by` when they reference Claude/Anthropic identities
+- git author/committer identities containing `claude`, `anthropic`, or `noreply@`
 
-If found, it blocks the commit and displays an error message.
+If these specific patterns are found, it blocks the commit and displays an error message.
 
 Uses `-E` (extended regex) for portability across GNU grep (Linux) and BSD grep (macOS). The original `\|` basic-regex alternation silently fails on BSD grep, allowing commits through on macOS.
 
 ### Testing
 
-Try to commit with a message containing "Claude":
+Try to commit with a Claude attribution trailer:
 ```bash
-git commit -m "Added feature with Claude"
+git commit -m "Added feature
+
+Co-authored-by: Claude <noreply@anthropic.com>"
 # Should fail with error message
 ```
 
-Normal commits work fine:
+Normal commits and regular mentions of Claude work fine:
 ```bash
-git commit -m "Added new feature"
+git commit -m "Integrate Claude API retries"
 # Should succeed
 ```

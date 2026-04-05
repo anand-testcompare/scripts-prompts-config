@@ -19,6 +19,8 @@ cd scripts-prompts-config
 # Apply backed-up macOS configs
 cp osx/config/.aerospace.toml ~/.aerospace.toml
 cp osx/config/.skhdrc ~/.skhdrc
+mkdir -p ~/.claude
+cp osx/config/.claude/settings.json ~/.claude/settings.json
 mkdir -p ~/.config/ghostty
 cp osx/config/.config/ghostty/config ~/.config/ghostty/config
 mkdir -p ~/.config/wezterm
@@ -62,6 +64,7 @@ Both Bash and Zsh configurations include:
 - **System Info**: Memory (`meminfo`), CPU (`cpuinfo`), disk usage (`diskinfo`)
 - **Clipboard**: Cross-platform clipboard support (`pbcopy`, `pbpaste` via xclip)
 - **Secure Credentials**: Automatic loading from `.shell_secrets`
+- **Claude Code**: Tracked macOS user settings disable commit/PR attribution and point the Claude status line at `universal/claude-statusline.sh`
 - **Exa MCP**: Tracked Codex/OpenCode configs use Exa's hosted MCP endpoint and enable `web_search_exa`, `web_search_advanced_exa`, `get_code_context_exa`, and `crawling_exa`. Keep any `EXA_API_KEY` usage local-only; do not commit it into repo-managed MCP URLs. The tracked OpenCode config now lives at `universal/.config/opencode/opencode.jsonc`
 - **Codex Feature Banner**: `universal/codex-shell-tools.sh` wraps `codex` so interactive launches can print grouped feature flags from `codex features list`
 - **Modern CLI Tools**: eza (ls replacement), bat (cat replacement with automatic secret masking for `.env` files), ripgrep, fd
