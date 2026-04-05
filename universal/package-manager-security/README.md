@@ -18,10 +18,12 @@ Block **day-zero attacks**: Malicious packages published and removed within hour
 ## Key Settings
 
 ### Release Age Protection
-- **npm**: `min-release-age=86400` (seconds)
+- **npm**: `min-release-age=1` (days)
 - **pnpm**: `minimumReleaseAge=1440` (minutes)
 - **bun**: `minimumReleaseAge = 86400` (seconds, in `[install]` section)
 - **yarn**: No release age feature (rely on script disabling)
+
+Important: npm, pnpm, and Bun use different units here. npm uses days, pnpm uses minutes, and Bun uses seconds.
 
 ### Script Protection
 - **npm**: `ignore-scripts=true` (all-or-nothing, use in CI)

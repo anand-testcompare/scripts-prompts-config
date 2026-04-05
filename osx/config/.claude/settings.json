@@ -72,6 +72,6 @@
     "pr-review-toolkit@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true
   },
-  "skipDangerousModePermissionPrompt": true,
-  "installMethod": "homebrew"
+  "effortLevel": "high",
+  "skipDangerousModePermissionPrompt": true
 }

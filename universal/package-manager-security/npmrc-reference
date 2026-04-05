@@ -1,5 +1,5 @@
 # Supply chain attack protection
-# Refuse packages published less than 1 day ago (86400 seconds)
+# Refuse packages published less than 1 day ago (npm counts in days)
 # This blocks day-zero attacks where malicious packages are published and quickly removed
 #
 # Installation: Copy to ~/.npmrc (merge with your existing registry/auth settings)
@@ -11,8 +11,8 @@
 # Or temporarily disable the check:
 #   npm config set min-release-age 0
 #   npm install @yourorg/package@version
-#   npm config set min-release-age 86400
+#   npm config set min-release-age 1
 
-min-release-age=86400
+min-release-age=1
 ignore-scripts=false
 audit=true

@@ -136,6 +136,7 @@ cp osx/config/.claude/settings.json ~/.claude/settings.json
 This tracked config does two important things:
 - disables Claude Code commit and PR attribution globally with `"attribution": { "commit": "", "pr": "" }`
 - points Claude's status line at the tracked repo script
+- persists `/effort high` in `~/.claude/settings.json` as the fallback session default
 
 ```json
 {
@@ -146,8 +147,15 @@ This tracked config does two important things:
   "statusLine": {
     "type": "command",
     "command": "bash /Users/anandpant/scripts-prompts-config/universal/claude-statusline.sh"
-  }
+  },
+  "effortLevel": "high"
 }
+```
+
+If you want Claude Code to start at max effort on supported models, add this to `~/.zshrc`:
+
+```bash
+export CLAUDE_CODE_EFFORT_LEVEL=max
 ```
 
 The script lives at:
@@ -164,7 +172,8 @@ It shows:
 Notes:
 - It caches git lookups for 5 seconds so the status line stays responsive in large repos.
 - It uses two lines: repo identity/health on line 1, quantitative usage on line 2.
-- Claude Code reads `statusLine` and `attribution` from `~/.claude/settings.json`.
+- Claude Code reads `statusLine`, `attribution`, and `effortLevel` from `~/.claude/settings.json`.
+- Anthropic's current docs say `CLAUDE_CODE_EFFORT_LEVEL` takes precedence over both `/effort` and the persisted `effortLevel` setting.
 - Anthropic's current docs say empty `attribution.commit` and `attribution.pr` strings hide both commit and PR attribution.
 
 ---
