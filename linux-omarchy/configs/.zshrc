@@ -34,6 +34,7 @@ export PATH="/home/anandpant/.cache/.bun/bin:$PATH"
 export GOPATH="$HOME/go"
 export PATH="$PATH:$GOPATH/bin"
 
+export CODEX_FEATURE_MODE=nondefault
 if [[ -f "$HOME/scripts-prompts-config/universal/codex-shell-tools.sh" ]]; then
   source "$HOME/scripts-prompts-config/universal/codex-shell-tools.sh"
 fi
