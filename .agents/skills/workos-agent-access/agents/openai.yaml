@@ -1,0 +1,7 @@
+interface:
+  display_name: "WorkOS Agent Access"
+  short_description: "Provision lower-env WorkOS agent access"
+  default_prompt: "Use $workos-agent-access to create or reuse a lower-env WorkOS user and establish an authenticated browser session."
+
+policy:
+  allow_implicit_invocation: true
