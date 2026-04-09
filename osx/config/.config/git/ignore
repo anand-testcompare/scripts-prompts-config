@@ -1,0 +1,9 @@
+**/.claude/settings.local.json
+
+# OMC local runtime artifacts
+**/.omc/*
+!**/.omc/skills/
+!**/.omc/skills/**
+**/.claude/skills/omc-reference/
+**/.claude/skills/omc-reference/**
+**/.claude/CLAUDE-omc.md

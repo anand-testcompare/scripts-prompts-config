@@ -176,6 +176,26 @@ Notes:
 - Anthropic's current docs say `CLAUDE_CODE_EFFORT_LEVEL` takes precedence over both `/effort` and the persisted `effortLevel` setting.
 - Anthropic's current docs say empty `attribution.commit` and `attribution.pr` strings hide both commit and PR attribution.
 
+## 3c. OMC in an isolated profile
+
+Use the tracked installer when you want `omc` available globally without letting OMC rewrite the normal `~/.claude` profile that `claude` uses:
+
+```bash
+bash universal/install-omc-isolated.sh
+```
+
+This does four things:
+- installs the real OMC CLI package (`oh-my-claude-sisyphus`) globally
+- relinks both the active global `omc` shim and `~/.local/bin/omc` to the tracked wrapper at `universal/omc-wrapper.sh`
+- forces `omc` to run with `CLAUDE_CONFIG_DIR=~/.claude-omc` and `OMC_STATE_DIR=~/.claude-omc/state`
+- on macOS, mirrors the existing Claude Code keychain login into the isolated OMC profile
+- leaves `claude` on the normal `~/.claude` profile and configures global Git ignores from `osx/config/.config/git/ignore`
+
+Result:
+- `claude` keeps using your normal `~/.claude/settings.json` and `~/.claude/CLAUDE.md`
+- `omc` uses the isolated `~/.claude-omc` tree instead
+- repo-local OMC runtime files such as `.omc/`, `.claude/skills/omc-reference/`, and `.claude/CLAUDE-omc.md` stay globally ignored
+
 ---
 
 ## 4. Omarchy-style app launch keys (skhd)
