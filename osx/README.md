@@ -225,7 +225,7 @@ cmd + shift - t [
   "Helium" ~
   * : open -a /Applications/Ghostty.app
 ]
-cmd + shift - return : open -a /Applications/Ghostty.app
+cmd + shift - return : osascript -e 'tell application "Ghostty" to activate' -e 'tell application "Ghostty" to new window'
 cmd + shift - b : open -na /Applications/Helium.app
 cmd + shift - f : open -a Finder
 cmd + shift - a : open -a ChatGPT
@@ -242,7 +242,7 @@ launchctl kickstart -k gui/$(id -u)/com.koekeishiya.skhd
 
 Notes:
 - `Cmd+Shift+T` now reuses Ghostty by default, but passes through unchanged in Chrome, Arc, Safari, and Helium so those apps can keep their tab restore behavior.
-- `Cmd+Shift+Return` also reuses Ghostty instead of forcing another app instance.
+- `Cmd+Shift+Return` now asks Ghostty to create a new window in the existing app via AppleScript, instead of relying on macOS app reopen behavior.
 - This favors not accumulating stray Ghostty instances over keeping every launch pinned to the current macOS Space.
 - If you explicitly want the old "always fresh instance" behavior back, switch the bindings to `open -na ...`.
 
@@ -264,6 +264,7 @@ Keybindings included:
 - Cmd+Shift+D split down
 - Cmd+T new tab
 - Cmd+N new window
+- Cmd+Shift+Return new window (also mirrored globally in `skhd`)
 - Cmd+W close pane
 - Cmd+{/} previous/next tab
 
