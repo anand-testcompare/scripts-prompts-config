@@ -8,7 +8,7 @@ cmd + shift - t [
   "Helium" ~
   * : open -a /Applications/Ghostty.app
 ]
-cmd + shift - return : open -a /Applications/Ghostty.app
+cmd + shift - return : osascript -e 'tell application "Ghostty" to activate' -e 'tell application "Ghostty" to new window'
 cmd + shift - b : open -na /Applications/Helium.app
 cmd + shift - f : open -a Finder
 cmd + shift - a : open -a ChatGPT
