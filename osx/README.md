@@ -184,11 +184,13 @@ Use the tracked installer when you want `omc` available globally without letting
 bash universal/install-omc-isolated.sh
 ```
 
-This does four things:
+This does six things:
 - installs the real OMC CLI package (`oh-my-claude-sisyphus`) globally
 - relinks both the active global `omc` shim and `~/.local/bin/omc` to the tracked wrapper at `universal/omc-wrapper.sh`
+- makes plain `omc` default to OMC's YOLO launch path while leaving management commands such as `omc setup` and `omc doctor` alone
 - forces `omc` to run with `CLAUDE_CONFIG_DIR=~/.claude-omc` and `OMC_STATE_DIR=~/.claude-omc/state`
 - on macOS, mirrors the existing Claude Code keychain login into the isolated OMC profile
+- removes the legacy `gemini-image-generation` MCP registry entry from `~/.claude.json`, `~/.omc/mcp-registry.json`, and `~/.codex/config.toml`
 - leaves `claude` on the normal `~/.claude` profile and configures global Git ignores from `osx/config/.config/git/ignore`
 
 Result:
