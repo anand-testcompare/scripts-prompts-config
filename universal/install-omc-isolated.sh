@@ -11,6 +11,11 @@ WRAPPER_SOURCE="$REPO_ROOT/universal/omc-wrapper.sh"
 WRAPPER_TARGET_LOCAL="$HOME/.local/bin/omc"
 NORMAL_CLAUDE_SETTINGS="$HOME/.claude/settings.json"
 ISOLATED_CLAUDE_SETTINGS="$OMC_CONFIG_DIR/settings.json"
+CLAUDE_MCP_CONFIG="$HOME/.claude.json"
+OMC_MCP_REGISTRY="$HOME/.omc/mcp-registry.json"
+OMC_MCP_REGISTRY_STATE="$HOME/.omc/state/mcp-registry-state.json"
+CODEX_CONFIG="$HOME/.codex/config.toml"
+LEGACY_GEMINI_MCP_NAME="gemini-image-generation"
 
 log() {
   printf '%s\n' "$*"
@@ -157,6 +162,74 @@ validate_settings() {
   log "Validated isolated OMC settings: $ISOLATED_CLAUDE_SETTINGS"
 }
 
+remove_legacy_gemini_image_generation() {
+  local tmp
+
+  if command -v jq >/dev/null 2>&1; then
+    if [ -f "$CLAUDE_MCP_CONFIG" ]; then
+      tmp="$(mktemp)"
+      jq --arg name "$LEGACY_GEMINI_MCP_NAME" '
+        del(.mcpServers[$name])
+        | (.. | objects | select(has("disabledMcpServers")) | .disabledMcpServers) |= map(select(. != $name))
+        | del(.. | objects | select(.disabledMcpServers? == []) | .disabledMcpServers)
+        | if (.mcpServers // null) == {} then del(.mcpServers) else . end
+      ' "$CLAUDE_MCP_CONFIG" > "$tmp"
+      if ! cmp -s "$CLAUDE_MCP_CONFIG" "$tmp"; then
+        mv "$tmp" "$CLAUDE_MCP_CONFIG"
+        log "Removed legacy MCP server from Claude config: $CLAUDE_MCP_CONFIG"
+      else
+        rm -f "$tmp"
+      fi
+    fi
+
+    if [ -f "$OMC_MCP_REGISTRY" ]; then
+      tmp="$(mktemp)"
+      jq --arg name "$LEGACY_GEMINI_MCP_NAME" 'del(.[$name])' "$OMC_MCP_REGISTRY" > "$tmp"
+      if ! cmp -s "$OMC_MCP_REGISTRY" "$tmp"; then
+        mv "$tmp" "$OMC_MCP_REGISTRY"
+        log "Removed legacy MCP server from OMC registry: $OMC_MCP_REGISTRY"
+      else
+        rm -f "$tmp"
+      fi
+    fi
+
+    if [ -f "$OMC_MCP_REGISTRY_STATE" ]; then
+      tmp="$(mktemp)"
+      jq --arg name "$LEGACY_GEMINI_MCP_NAME" '
+        .managedServers = ((.managedServers // []) | map(select(. != $name)))
+      ' "$OMC_MCP_REGISTRY_STATE" > "$tmp"
+      if ! cmp -s "$OMC_MCP_REGISTRY_STATE" "$tmp"; then
+        mv "$tmp" "$OMC_MCP_REGISTRY_STATE"
+        log "Removed legacy MCP server state: $OMC_MCP_REGISTRY_STATE"
+      else
+        rm -f "$tmp"
+      fi
+    fi
+  fi
+
+  if [ -f "$CODEX_CONFIG" ]; then
+    tmp="$(mktemp)"
+    awk -v target="[mcp_servers.${LEGACY_GEMINI_MCP_NAME}]" '
+      BEGIN { skip = 0 }
+      /^\[/ {
+        if ($0 == target) {
+          skip = 1
+          next
+        }
+        skip = 0
+      }
+      skip { next }
+      { print }
+    ' "$CODEX_CONFIG" > "$tmp"
+    if ! cmp -s "$CODEX_CONFIG" "$tmp"; then
+      mv "$tmp" "$CODEX_CONFIG"
+      log "Removed legacy MCP server from Codex config: $CODEX_CONFIG"
+    else
+      rm -f "$tmp"
+    fi
+  fi
+}
+
 main() {
   require_command claude
   require_command git
@@ -171,6 +244,7 @@ main() {
   ensure_plugin
   run_omc_setup
   merge_safe_base_settings
+  remove_legacy_gemini_image_generation
   validate_settings
 
   log "OMC isolated config root: $OMC_CONFIG_DIR"
