@@ -328,6 +328,8 @@ Includes:
 - Vim pane movement/resizing + mouse support
 - Truecolor compatibility for Ghostty and WezTerm (`xterm-ghostty:RGB`, `wezterm:RGB`)
 - TPM plugins: sensible, resurrect, continuum
+- Mouse wheel scroll enters tmux scrollback/copy-mode inside full-screen TUIs (prevents Ghostty/tmux from turning wheel input into prompt-history navigation in Codex/Claude Code)
+- `prefix + m` toggles tmux mouse mode off temporarily for native selection/Cmd-click links
 
 Use this only if you explicitly want tmux for remote persistence or a terminal-agnostic workflow. The main macOS path in this repo is now WezTerm-native.
 

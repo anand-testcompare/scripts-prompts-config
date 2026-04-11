@@ -4,6 +4,32 @@ _codex_features_raw() {
   command codex features list 2>/dev/null
 }
 
+_codex_default_features_raw() {
+  if [ -n "${_CODEX_DEFAULT_FEATURE_ROWS_CACHE-}" ]; then
+    printf '%s\n' "$_CODEX_DEFAULT_FEATURE_ROWS_CACHE"
+    return 0
+  fi
+
+  local cache_root tmp_home rows
+  cache_root="${XDG_CACHE_HOME:-$HOME/.cache}/codex-feature-defaults"
+
+  mkdir -p "$cache_root" 2>/dev/null || return 0
+
+  tmp_home="$(mktemp -d "$cache_root/home.XXXXXX" 2>/dev/null)" || return 0
+  rows="$(
+    HOME="$tmp_home" \
+    XDG_CONFIG_HOME="$tmp_home/.config" \
+    XDG_CACHE_HOME="$tmp_home/.cache" \
+    command codex features list 2>/dev/null
+  )"
+  rm -rf "$tmp_home"
+
+  [ -n "$rows" ] || return 0
+
+  _CODEX_DEFAULT_FEATURE_ROWS_CACHE="$rows"
+  printf '%s\n' "$rows"
+}
+
 _codex_features_subset() {
   local pattern
   pattern="${1:-^(codex_hooks|memories|tool_search|tool_suggest|js_repl|multi_agent|multi_agent_v2|tool_call_mcp_elicitation|shell_snapshot|unified_exec)[[:space:]]}"
@@ -12,7 +38,47 @@ _codex_features_subset() {
 }
 
 _codex_features_nondefault() {
-  _codex_features_raw | awk '$2 != "stable" || $3 != "false"'
+  local default_rows current_rows
+  default_rows="$1"
+  current_rows="$(_codex_features_raw)"
+
+  [ -n "$current_rows" ] || return 0
+
+  if [ -z "$default_rows" ]; then
+    printf '%s\n' "$current_rows" | awk '$2 != "stable" || $3 != "false"'
+    return 0
+  fi
+
+  {
+    printf '%s\n' "$default_rows"
+    printf '__CURRENT__\n'
+    printf '%s\n' "$current_rows"
+  } | awk '
+    $0 == "__CURRENT__" {
+      in_current = 1
+      next
+    }
+
+    {
+      if (NF < 3) {
+        next
+      }
+
+      enabled = $NF
+      if (enabled != "true" && enabled != "false") {
+        next
+      }
+
+      if (!in_current) {
+        defaults[$1] = enabled
+        next
+      }
+
+      if (!($1 in defaults) || defaults[$1] != enabled) {
+        print $0
+      }
+    }
+  '
 }
 
 _codex_print_feature_table() {
@@ -27,24 +93,57 @@ _codex_print_feature_table() {
 }
 
 _codex_print_grouped_feature_table() {
-  local rows true_color reset_color
+  local rows default_rows diff_color reset_color
   rows="$1"
+  default_rows="$2"
 
   [ -n "$rows" ] || return 0
 
   if [ -t 1 ]; then
-    true_color=$'\033[32m'
+    diff_color=$'\033[32m'
     reset_color=$'\033[0m'
   else
-    true_color=""
+    diff_color=""
     reset_color=""
   fi
 
-  printf '%s\n' "$rows" | awk -v true_color="$true_color" -v reset_color="$reset_color" '
-    function add_row(stage, feature, enabled, enabled_display, row) {
+  {
+    printf '%s\n' "$default_rows"
+    printf '__ROWS__\n'
+    printf '%s\n' "$rows"
+  } | awk -v diff_color="$diff_color" -v reset_color="$reset_color" '
+    $0 == "__ROWS__" {
+      in_rows = 1
+      next
+    }
+
+    !in_rows {
+      if (NF < 3) {
+        next
+      }
+
+      enabled = $NF
+      if (enabled != "true" && enabled != "false") {
+        next
+      }
+
+      default_enabled[$1] = enabled
+      default_count++
+      next
+    }
+
+    function add_row(stage, feature, enabled, enabled_display, row, is_nondefault) {
       enabled_display = enabled
-      if (enabled == "true" && true_color != "") {
-        enabled_display = true_color enabled reset_color
+
+      is_nondefault = 0
+      if (default_count > 0) {
+        is_nondefault = (!(feature in default_enabled) || default_enabled[feature] != enabled)
+      } else if (enabled == "true") {
+        is_nondefault = 1
+      }
+
+      if (is_nondefault && diff_color != "") {
+        enabled_display = diff_color enabled reset_color
       }
 
       row = sprintf("%-30s %s", feature, enabled_display)
@@ -111,8 +210,9 @@ _codex_print_grouped_feature_table() {
 }
 
 codex_feature_banner() {
-  local mode rows
+  local mode rows default_rows
   mode="${1:-${CODEX_FEATURE_MODE:-all}}"
+  default_rows="$(_codex_default_features_raw)"
 
   case "$mode" in
     all)
@@ -125,7 +225,7 @@ codex_feature_banner() {
       rows="$(_codex_features_subset)"
       ;;
     nondefault)
-      rows="$(_codex_features_nondefault)"
+      rows="$(_codex_features_nondefault "$default_rows")"
       ;;
     regex:*)
       rows="$(_codex_features_subset "${mode#regex:}")"
@@ -135,7 +235,7 @@ codex_feature_banner() {
       ;;
   esac
 
-  _codex_print_grouped_feature_table "$rows"
+  _codex_print_grouped_feature_table "$rows" "$default_rows"
 }
 
 codex_hidden_features() {
@@ -166,7 +266,7 @@ _codex_should_show_banner() {
 
 codex() {
   if [ -t 0 ] && [ -t 1 ] && [ "${CODEX_FEATURE_BANNER:-1}" = "1" ] && _codex_should_show_banner "${1-}"; then
-    printf 'Codex feature flags\n'
+    printf 'Codex feature flags (green = differs from default)\n'
     codex_feature_banner
     printf '\n'
   fi

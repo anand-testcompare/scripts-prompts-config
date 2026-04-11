@@ -4,8 +4,8 @@
 # Claude Code: always use max effort
 export CLAUDE_CODE_EFFORT_LEVEL=max
 
-# Codex: print feature flags that differ from defaults before each launch
-export CODEX_FEATURE_MODE=nondefault
+# Codex: print all feature flags before each launch; green means the value differs from the default baseline
+export CODEX_FEATURE_MODE=all
 if [[ -f "$HOME/scripts-prompts-config/universal/codex-shell-tools.sh" ]]; then
   source "$HOME/scripts-prompts-config/universal/codex-shell-tools.sh"
 fi
