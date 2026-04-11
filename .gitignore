@@ -16,6 +16,14 @@
 # local claude settings
 .claude/settings.local.json
 
+# Pi/OMP agent configs (templates tracked, real configs ignored)
+YT:**/.pi/agent/settings.json
+SH:**/.pi/agent/auth.json
+ZJ:**/.omp/agent/config.yml
+NS:**/.omp/agent/auth.json
+RR:**/.claude-omc/settings.json
+BK:**/.claude-omc/state.json
+
 # local agent/runtime artifacts
 .memory/
 

@@ -1,0 +1,26 @@
+# Copy this file to ~/.omp/agent/config.yml and customize for your setup
+# DO NOT commit the actual config.yml file with real values to version control!
+
+lastChangelogVersion: 13.19.0
+modelRoles:
+  # Default model for general tasks
+  default: openai-codex/gpt-5.4:high
+
+  # Fast/cheap model for quick tasks
+  smol: fireworks-openai/accounts/fireworks/routers/kimi-k2p5-turbo
+
+  # High-capacity model for planning
+  plan: openai-codex/gpt-5.4:xhigh
+
+  # Alternative model for specific tasks
+  slow: opencode-go/glm-5:xhigh
+
+  # Model for commit message generation
+  commit: fireworks-anthropic/accounts/fireworks/routers/kimi-k2p5-turbo
+
+hideThinkingBlock: false
+
+skills:
+  includeSkills:
+    - agent-browser
+    - readme-maintainer

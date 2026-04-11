@@ -66,8 +66,9 @@ Both Bash and Zsh configurations include:
 - **Secure Credentials**: Automatic loading from `.shell_secrets`
 - **Claude Code**: Tracked macOS user settings disable commit/PR attribution, point the Claude status line at `universal/claude-statusline.sh`, and persist `effortLevel: "high"`; `CLAUDE_CODE_EFFORT_LEVEL=max` in shell config overrides that to max on supported models
 - **Exa MCP**: Tracked Codex/OpenCode configs use Exa's hosted MCP endpoint and enable `web_search_exa`, `web_search_advanced_exa`, `get_code_context_exa`, and `crawling_exa`. Keep any `EXA_API_KEY` usage local-only; do not commit it into repo-managed MCP URLs. The tracked OpenCode config now lives at `universal/.config/opencode/opencode.jsonc`
-- **Codex Feature Banner**: `universal/codex-shell-tools.sh` wraps `codex` so interactive launches can print grouped feature flags from `codex features list`
+- **Codex Feature Banner**: `universal/codex-shell-tools.sh` wraps `codex` so interactive launches can compare current flags against a clean-home default baseline and highlight only the drifted values
 - **Modern CLI Tools**: eza (ls replacement), bat (cat replacement with automatic secret masking for `.env` files), ripgrep, fd
+- **Pi/OMP Configuration**: Tracked templates for `~/.pi/agent/settings.json` and `~/.omp/agent/config.yml` with Fireworks AI provider support (models: `fireworks-openai/accounts/fireworks/routers/kimi-k2p5-turbo`, `fireworks-anthropic/accounts/fireworks/routers/kimi-k2p5-turbo`). Keep `FIREWORKS_API_KEY` local-only in `~/.shell_secrets`
 
 ### Zsh-Specific Enhancements
 
@@ -113,23 +114,27 @@ scripts-prompts-config/
 │       ├── configure_macos_defaults.sh
 │       ├── configure_screenshot_shortcuts.sh
 │       └── update_packages.sh
-└── universal/                 # Cross-platform scripts, hooks, and troubleshooting playbooks
-    ├── codex-shell-tools.sh
-    ├── convert_to_svg.sh
-    ├── kill-dev.sh
-    ├── optimize_logos.sh
-    ├── pi-google-code-assist-antigravity-troubleshooting.md
-    └── git-hooks/
-        ├── commit-msg
-        └── README.md
+PX:└── universal/                 # Cross-platform scripts, hooks, and agent configs
+TV:    ├── codex-shell-tools.sh
+PB:    ├── convert_to_svg.sh
+RT:    ├── kill-dev.sh
+RT:    ├── optimize_logos.sh
+PK:    ├── pi-google-code-assist-antigravity-troubleshooting.md
+JK:    ├── .pi/agent/
+QV:    │   └── settings.json.template    # Pi agent configuration template
+RM:    ├── .omp/agent/
+HQ:    │   └── config.yml.template         # OMP agent configuration template
+RT:    └── git-hooks/
+YQ:        ├── commit-msg
+BN:        └── README.md
 ```
 
 ## Security
 
 ### Best Practices
 
-1. **Never commit `.shell_secrets`, `.mcp.json`, or `.claude.json`** - The repository `.gitignore` blocks these
-2. **Use the template** - `.shell_secrets.template` shows the structure without real values
+1. **Never commit `.shell_secrets`, `.mcp.json`, `.claude.json`, or agent configs** - The repository `.gitignore` blocks these
+2. **Use templates** - `.shell_secrets.template`, `.pi/agent/settings.json.template`, and `.omp/agent/config.yml.template` show the structure without real values
 3. **Rotate exposed credentials** - Immediately rotate any accidentally exposed keys
 4. **Proper permissions** - Scripts automatically set 600 on sensitive files
 
