@@ -13,10 +13,10 @@ window-padding-y = 14
 confirm-close-surface=false
 resize-overlay = never
 gtk-toolbar-style = flat
+bell-features = no-attention,no-title,no-border,no-system,no-audio
 notify-on-command-finish = never
+notify-on-command-finish-action = no-bell,no-notify
 desktop-notifications = false
-# Prevent bells from requesting attention or rewriting the window title.
-bell-features = no-system,no-audio,no-attention,no-title,no-border
 
 # Cursor styling
 cursor-style = "block"
@@ -54,3 +54,6 @@ mouse-scroll-multiplier = 0.95
 
 # Disable paste protection prompts/filters
 clipboard-paste-protection = false
+
+# Fix general slowness on hyprland (https://github.com/ghostty-org/ghostty/discussions/3224)
+async-backend = epoll

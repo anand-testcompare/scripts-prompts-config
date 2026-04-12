@@ -182,12 +182,14 @@ exec-once = xremap --device "YOUR_KEYBOARD_NAME" ~/.config/xremap/config.yml
 
 ---
 
-### Config Sync Checklist (Ghostty + xremap)
-- Update live configs: `~/.config/ghostty/config` and `~/.config/xremap/config.yml`
+### Config Sync Checklist (Ghostty + tmux + xremap)
+- Update live configs: `~/.config/ghostty/config`, `~/.config/tmux/tmux.conf`, and `~/.config/xremap/config.yml`
 - Restart xremap: `systemctl --user restart xremap`
 - Reload Ghostty: Ctrl+Shift+, (or restart Ghostty)
+- Reload tmux: `tmux source-file ~/.config/tmux/tmux.conf`
 - Copy into repo:
   - `cp ~/.config/ghostty/config ~/scripts-prompts-config/linux-omarchy/configs/ghostty-config`
+  - `cp ~/.config/tmux/tmux.conf ~/scripts-prompts-config/linux-omarchy/configs/tmux.conf`
   - `cp ~/.config/xremap/config.yml ~/scripts-prompts-config/linux-omarchy/configs/xremap-config.yml`
 - Sanity check keys in Ghostty: Super+A/C/V/W/D and Ctrl+T
 
@@ -486,10 +488,23 @@ Notes:
 - Uses the Omarchy theme file via `config-file = ?"~/.config/omarchy/current/theme/ghostty.conf"`.
 - Super-based bindings remain in Ghostty, but Ghostty-specific xremap overrides map Super+A/C/V/W/D to Ctrl+Shift+… in Ghostty.
 - Ctrl+Shift+W is bound to `close_surface` so Super+W closes the current split (not the entire window).
+- Bell attention and command-finish notifications are disabled to avoid terminal focus-steal on CLI completion.
+
+## 8. tmux Config
+
+Copy the live tmux config from the repo and reload it:
+```bash
+mkdir -p ~/.config/tmux
+cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/tmux.conf ~/.config/tmux/tmux.conf
+tmux source-file ~/.config/tmux/tmux.conf
+```
+
+Notes:
+- `bell-action none` plus disabled activity/silence actions prevent tmux from marking the terminal urgent when a CLI emits BEL.
 
 ---
 
-## 8. Zed Editor Keybindings
+## 9. Zed Editor Keybindings
 
 Create `~/.config/zed/keymap.json`:
 ```json
