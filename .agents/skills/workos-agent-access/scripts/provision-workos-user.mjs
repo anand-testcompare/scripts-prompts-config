@@ -120,11 +120,13 @@ async function requestJson({ apiKey, baseUrl, method, pathname, query, body }) {
 
 function normalizeRoleSlugs(membership) {
 	return [
-		membership?.role?.slug,
-		...(membership?.roles?.map((role) => role.slug) ?? []),
-	]
-		.filter(Boolean)
-		.sort();
+		...new Set(
+			[
+				membership?.role?.slug,
+				...(membership?.roles?.map((role) => role.slug) ?? []),
+			].filter(Boolean),
+		),
+	].sort();
 }
 
 async function main() {
