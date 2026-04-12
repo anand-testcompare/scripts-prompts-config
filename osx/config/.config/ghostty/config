@@ -9,6 +9,10 @@ theme = "Catppuccin Frappe"
 
 # Performance optimizations
 auto-update = off
+notify-on-command-finish = never
+desktop-notifications = false
+# Prevent bells from requesting attention or rewriting the window title.
+bell-features = no-system,no-audio,no-attention,no-title,no-border
 
 # Mac-style keybindings
 keybind = super+a=select_all
