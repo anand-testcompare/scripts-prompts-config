@@ -19,13 +19,6 @@ else
   }
 end
 
-config.unix_domains = {
-  {
-    name = "main",
-  },
-}
-config.default_gui_startup_args = { "connect", "main" }
-
 config.font = wezterm.font_with_fallback({
   "JetBrainsMono Nerd Font Mono",
   "JetBrains Mono",
@@ -45,7 +38,6 @@ config.use_fancy_tab_bar = false
 config.hide_tab_bar_if_only_one_tab = true
 config.tab_bar_at_bottom = true
 config.window_decorations = "RESIZE"
-config.macos_window_background_blur = 20
 config.native_macos_fullscreen_mode = true
 config.automatically_reload_config = true
 
@@ -104,7 +96,7 @@ config.keys = {
   {
     key = "d",
     mods = "CMD|SHIFT",
-    action = split_in_current_cwd("Down"),
+    action = split_in_current_cwd("Bottom"),
   },
   {
     key = "w",
