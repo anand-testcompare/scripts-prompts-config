@@ -385,6 +385,21 @@ bind = , XF86Launch6, exec, hyprctl keyword monitor DP-1,preferred,auto,2
 
 **Note:** Keychron F13/F14/F15 send `XF86Tools`, `XF86Launch5`, `XF86Launch6`. Use `wev -f wl_keyboard:key` to find your keyboard's actual keycodes.
 
+### Theme Accents (Active Border Gradient)
+
+Set a soft sage gradient for active borders in `~/.config/omarchy/current/theme/hyprland.conf`:
+```bash
+$activeBorderColor = rgba(0a100bee) rgba(8aab96ee) 45deg
+
+general {
+    col.active_border = $activeBorderColor
+}
+
+group {
+    col.border_active = $activeBorderColor
+}
+```
+
 ### Scratchpad Window Management
 
 Omarchy includes a scratchpad (special workspace) with default bindings:
@@ -420,11 +435,45 @@ Add to `~/.config/hypr/hyprland.conf`:
 bind = SUPER SHIFT, S, exec, ~/.local/bin/toggle-scratchpad-window
 ```
 
-Add visual indicator (teal border) for scratchpad windows in `~/.config/hypr/looknfeel.conf`:
+Add visual indicator (pastel sage border) for scratchpad windows in `~/.config/hypr/looknfeel.conf`:
 ```bash
-# Teal border for scratchpad windows
-windowrulev2 = bordercolor rgb(00b5b5), onworkspace:special:scratchpad
+# Pastel sage border for scratchpad windows
+windowrule = border_color rgb(8aab96) rgb(8aab96), match:workspace special:scratchpad
+windowrule = border_size 2, match:workspace special:scratchpad
 ```
+
+### Dropdown Terminal (Alacritty, special workspace)
+
+Create `~/.local/bin/toggle-dropdown-terminal`:
+```bash
+#!/bin/bash
+# Toggle dropdown terminal - spawns if not running, toggles visibility if running
+
+if hyprctl clients -j | jq -e '.[] | select(.class == "alacritty-dropdown")' > /dev/null 2>&1; then
+    hyprctl dispatch togglespecialworkspace dropdown
+else
+    uwsm-app -- alacritty --class alacritty-dropdown &
+    sleep 0.3
+    hyprctl dispatch togglespecialworkspace dropdown
+fi
+```
+
+Make it executable:
+```bash
+chmod +x ~/.local/bin/toggle-dropdown-terminal
+```
+
+Add window rules to `~/.config/hypr/hyprland.conf`:
+```bash
+# Window rules for dropdown terminal
+windowrulev2 = float, class:^(alacritty-dropdown)$
+windowrulev2 = size 100% 45%, class:^(alacritty-dropdown)$
+windowrulev2 = move 0 0, class:^(alacritty-dropdown)$
+windowrulev2 = workspace special:dropdown silent, class:^(alacritty-dropdown)$
+windowrulev2 = animation slideIn, class:^(alacritty-dropdown)$
+```
+
+**Note:** No global keybinding is set by default to avoid conflicts. Bind it manually if desired.
 
 ---
 
@@ -475,9 +524,154 @@ Super_R-Alt_R-d: Super_R-Alt_R-d
 - `hyprwhspr status` - Confirm the service, backend, and input pipeline are healthy
 - `journalctl --user -u hyprwhspr.service -f` - Tail live logs while testing
 
+### Optional: Auto-pause Spotify while dictating
+
+Create `~/.local/bin/hyprwhspr-spotify-toggle` (watches the hyprwhspr recording flag and pauses/resumes Spotify):
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+STATUS_FILE="${HOME}/.config/hyprwhspr/recording_status"
+STATE_FILE="${HOME}/.config/hyprwhspr/spotify_was_playing"
+STATUS_DIR="$(dirname "$STATUS_FILE")"
+STATUS_BASENAME="$(basename "$STATUS_FILE")"
+
+playerctl_spotify() {
+  playerctl -p spotify "$@" 2>/dev/null
+}
+
+is_spotify_playing() {
+  local status
+  status="$(playerctl_spotify status || true)"
+  [[ "$status" == "Playing" ]]
+}
+
+pause_spotify_if_playing() {
+  if is_spotify_playing; then
+    printf '1' >"$STATE_FILE"
+    playerctl_spotify pause || true
+  else
+    rm -f "$STATE_FILE"
+  fi
+}
+
+resume_spotify_if_needed() {
+  if [[ -f "$STATE_FILE" ]]; then
+    playerctl_spotify play || true
+    rm -f "$STATE_FILE"
+  fi
+}
+
+mkdir -p "$STATUS_DIR"
+
+# Handle current state on startup.
+if [[ -f "$STATUS_FILE" ]]; then
+  pause_spotify_if_playing
+fi
+
+inotifywait -m -e create -e delete -e moved_to -e moved_from -e close_write "$STATUS_DIR" | \
+while read -r _dir _events file; do
+  [[ "$file" == "$STATUS_BASENAME" ]] || continue
+  if [[ -f "$STATUS_FILE" ]]; then
+    pause_spotify_if_playing
+  else
+    resume_spotify_if_needed
+  fi
+done
+```
+
+Make it executable and start it on login (e.g., add to `~/.config/hypr/autostart.conf`):
+```bash
+chmod +x ~/.local/bin/hyprwhspr-spotify-toggle
+exec-once = ~/.local/bin/hyprwhspr-spotify-toggle
+```
+
 ---
 
-## 7. Ghostty Terminal Config
+## 6. Alacritty Terminal Config
+
+Add to `~/.config/alacritty/alacritty.toml`:
+```toml
+general.import = [ "~/.config/omarchy/current/theme/alacritty.toml" ]
+
+[colors.primary]
+background = "#0a0f1a"
+foreground = "#e8ede9"
+
+[colors.normal]
+black   = "#0a100b"
+red     = "#e09080"
+green   = "#5ec4a0"
+yellow  = "#e8d080"
+blue    = "#60b0e0"
+magenta = "#c090c0"
+cyan    = "#50d0d0"
+white   = "#e8ede9"
+
+[colors.bright]
+black   = "#607068"
+red     = "#f0a090"
+green   = "#70e0b8"
+yellow  = "#f8e8a0"
+blue    = "#80c8f0"
+magenta = "#e0a8e0"
+cyan    = "#60f0e8"
+white   = "#f8fcf8"
+
+[env]
+TERM = "xterm-256color"
+
+[terminal]
+shell = { program = "tmux", args = ["new-session", "-A", "-s", "main"] }
+
+[font]
+normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
+bold = { family = "JetBrainsMono Nerd Font", style = "Bold" }
+italic = { family = "JetBrainsMono Nerd Font", style = "Italic" }
+size = 9
+
+[window]
+padding.x = 14
+padding.y = 14
+decorations = "None"
+opacity = 0.85
+
+[cursor]
+style = { shape = "Block", blinking = "Never" }
+
+[keyboard]
+bindings = [
+  { key = "Insert", mods = "Shift", action = "Paste" },
+  { key = "Insert", mods = "Control", action = "Copy" },
+  { key = "Equals", mods = "Control|Shift", action = "IncreaseFontSize" },
+  { key = "Minus", mods = "Control|Shift", action = "DecreaseFontSize" },
+  { key = "Key0", mods = "Control|Shift", action = "ResetFontSize" },
+  { key = "Return", mods = "Shift", chars = "\\u001b\\r" }
+]
+```
+
+---
+
+## 7. Kitty Terminal Config
+
+Copy the kitty config and theme files:
+```bash
+mkdir -p ~/.config/kitty/themes
+cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/kitty.conf ~/.config/kitty/kitty.conf
+cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/kitty-tokyo-night-storm.conf ~/.config/kitty/themes/tokyo-night-storm.conf
+cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/kitty-aether.conf ~/.config/kitty/themes/aether.conf
+```
+
+Notes:
+- Default theme is Tokyo Night Storm (included via `include themes/tokyo-night-storm.conf`).
+- Aether theme available as an alternative (change the include line in kitty.conf).
+- Uses `clear_all_shortcuts yes` and defines only the bindings needed (Ctrl-based, matching Linux muscle memory).
+- `shift+enter` sends ESC+CR for Claude Code accept behavior.
+- Reload with `Ctrl+Shift+F5` or restart kitty.
+
+---
+
+## 8. Ghostty Terminal Config
 
 Copy the full config so it stays in sync with the repo:
 ```bash
@@ -490,7 +684,7 @@ Notes:
 - Ctrl+Shift+W is bound to `close_surface` so Super+W closes the current split (not the entire window).
 - Bell attention and command-finish notifications are disabled to avoid terminal focus-steal on CLI completion.
 
-## 8. tmux Config
+## 9. tmux Config
 
 Copy the live tmux config from the repo and reload it:
 ```bash
@@ -504,7 +698,7 @@ Notes:
 
 ---
 
-## 9. Zed Editor Keybindings
+## 10. Zed Editor Keybindings
 
 Create `~/.config/zed/keymap.json`:
 ```json
@@ -541,9 +735,41 @@ Create `~/.config/zed/keymap.json`:
 ]
 ```
 
+### Zed Global Settings
+
+Create or update `~/.config/zed/settings.json` (redact any API keys):
+```json
+{
+  "prettier": { "allowed": false },
+  "agent": {
+    "default_profile": "yolo",
+    "default_model": { "provider": "zed.dev", "model": "gemini-3-flash" },
+    "inline_assistant_model": { "provider": "zed.dev", "model": "gemini-3-flash" },
+    "always_allow_tool_actions": true
+  },
+  "search": { "include_ignored": true },
+  "agent_servers": { "claude": { "default_mode": "bypassPermissions" } },
+  "lsp": { "eslint": { "binary": { "path_lookup": false } } },
+  "project_panel": { "hide_hidden": false, "hide_gitignore": false },
+  "context_servers": {
+    "mcp-server-context7": {
+      "enabled": true,
+      "settings": {
+        "context7_api_key": "REDACTED"
+      }
+    }
+  },
+  "icon_theme": { "mode": "system", "light": "Catppuccin Frappé", "dark": "Catppuccin Frappé" },
+  "base_keymap": "Cursor",
+  "ui_font_size": 16,
+  "buffer_font_size": 15,
+  "theme": { "mode": "system", "light": "Gruvbox Light", "dark": "One Dark" }
+}
+```
+
 ---
 
-## 9. VS Code Keybindings
+## 11. VS Code Keybindings
 
 Create `~/.config/Code/User/keybindings.json`:
 ```json
@@ -559,7 +785,29 @@ Create `~/.config/Code/User/keybindings.json`:
 
 ---
 
-## 10. Neovim (LazyVim)
+## 12. Llama.cpp Serve Helper (Parakeet v3 CPU/GPU Toggle)
+
+When serving a llama model, temporarily switch Parakeet v3 to CPU to free VRAM, then restore GPU on exit.
+
+`/home/anandpant/llama.cpp/serve.sh`:
+```bash
+# Switch parakeet to CPU mode to free up vRAM for llama
+systemctl --user stop parakeet-tdt-0.6b-v3.service 2>/dev/null
+PARAKEET_USE_CPU=1 systemctl --user set-environment PARAKEET_USE_CPU=1
+systemctl --user start parakeet-tdt-0.6b-v3.service
+
+# Restore parakeet to GPU mode on exit
+cleanup() {
+    systemctl --user stop parakeet-tdt-0.6b-v3.service 2>/dev/null
+    systemctl --user unset-environment PARAKEET_USE_CPU
+    systemctl --user start parakeet-tdt-0.6b-v3.service
+}
+trap cleanup EXIT INT TERM
+```
+
+---
+
+## 13. Neovim (LazyVim)
 
 The setup is mostly default LazyVim. Only customization:
 
@@ -582,9 +830,15 @@ vim.opt.relativenumber = false
 - [ ] Add Hyprland zoom controls (cursor section in looknfeel.conf, bindings)
 - [ ] Add monitor scale presets (F13/F14/F15 for 4K scaling)
 - [ ] Create toggle-scratchpad-window script and add Super+Shift+S binding
-- [ ] Add teal border for scratchpad windows in looknfeel.conf
-- [ ] Install hyprwhspr (`yay -S hyprwhspr`)
-- [ ] Copy `~/.config/hyprwhspr/config.json` and enable `hyprwhspr.service`
+- [ ] Add pastel sage border for scratchpad windows in looknfeel.conf
+- [ ] Install hyprwhspr (`yay -S hyprwhspr && sudo pacman -S python-rich`)
+- [ ] Configure hyprwhspr and enable systemd service
+- [ ] Add optional hyprwhspr Spotify auto-pause helper
+- [ ] Configure Alacritty overrides (colors, tmux shell, keybinds)
+- [ ] Configure tmux (prefix, plugins)
+- [ ] Configure kitty (copy config + theme files)
 - [ ] Configure Ghostty with Mac-style keybindings
 - [ ] Configure Zed with Mac-style keybindings
+- [ ] Configure Zed global settings (remember to add your Context7 API key)
 - [ ] Configure VS Code shift+enter binding
+- [ ] Verify llama.cpp serve helper toggles Parakeet v3 CPU/GPU correctly

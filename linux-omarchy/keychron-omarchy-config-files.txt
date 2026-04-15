@@ -1,5 +1,10 @@
 # Config files modified for Omarchy customizations (keybindings, terminals, theme, scripts)
 
+# Kitty terminal - Tokyo Night Storm theme, Ctrl-based shortcuts, splits layout
+~/.config/kitty/kitty.conf
+~/.config/kitty/themes/tokyo-night-storm.conf
+~/.config/kitty/themes/aether.conf
+
 # Ghostty terminal - Uses Super keybinds + Ghostty-specific xremap overrides
 ~/.config/ghostty/config
 
