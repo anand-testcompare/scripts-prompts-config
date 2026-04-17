@@ -1,6 +1,10 @@
 # Repo-Backed Agent Skills
 
-Use `./.agents/skills` as the source of truth for skills that should be installable from this repository.
+Use `./.agents/skills` as the git-tracked source of truth for skills that should be installable from this repository.
+
+Installed copies belong in `~/.agents/skills`. That is the shared runtime location picked up by Codex, OpenCode, Pi, and other tools that read the universal `.agents` skill directory.
+
+Do not symlink repo skills into `~/.agents/skills`. Install them with `npx skills add` so every machine follows the same path.
 
 ## Available Skills
 
@@ -15,36 +19,24 @@ List installable skills:
 npx skills add anand-testcompare/scripts-prompts-config -l
 ```
 
-Install `acpx` globally for Codex:
+Install `acpx` into `~/.agents/skills`:
 
 ```bash
 npx skills add anand-testcompare/scripts-prompts-config \
   --skill acpx \
-  --agent codex \
   -g -y
 ```
 
-Install `workos-agent-access` globally for Codex:
+Interactive install:
+
+```bash
+npx skills add anand-testcompare/scripts-prompts-config
+```
+
+Install `workos-agent-access` into `~/.agents/skills`:
 
 ```bash
 npx skills add anand-testcompare/scripts-prompts-config \
   --skill workos-agent-access \
-  --agent codex \
   -g -y
 ```
-
-## Link From A Local Clone
-
-If you want `~/.agents/skills/<name>` to point at this checkout directly, use:
-
-```bash
-./.agents/scripts/link-skill.sh acpx
-```
-
-Link every repo-backed skill:
-
-```bash
-./.agents/scripts/link-skill.sh --all
-```
-
-The linker targets `~/.agents/skills`, which Codex already reads on this machine.
