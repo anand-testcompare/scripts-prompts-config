@@ -2,7 +2,8 @@
 
 This folder backs up portable home-directory agent config and skill content.
 If you want a skill to be installable from this repository via `npx skills add ...`,
-track it under repo-root `./.agents/skills` instead. See [../../.agents/README.md](../../.agents/README.md).
+track it under repo-root `./.agents/skills` instead and install it into `~/.agents/skills`.
+See [../../.agents/README.md](../../.agents/README.md).
 
 ## Local Created/Customized Skills (Copied Here)
 
