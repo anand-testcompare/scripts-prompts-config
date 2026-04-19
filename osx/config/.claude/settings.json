@@ -17,6 +17,7 @@
       "Glob",
       "Grep",
       "Bash",
+      "Monitor",
       "WebFetch",
       "WebSearch",
       "mcp__convex",
