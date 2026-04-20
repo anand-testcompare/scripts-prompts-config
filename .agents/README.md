@@ -9,6 +9,7 @@ Do not symlink repo skills into `~/.agents/skills`. Install them with `npx skill
 ## Available Skills
 
 - `acpx`
+- `readme-maintainer`
 - `workos-agent-access`
 
 ## Install From This Repo
@@ -31,6 +32,14 @@ Interactive install:
 
 ```bash
 npx skills add anand-testcompare/scripts-prompts-config
+```
+
+Install `readme-maintainer` into `~/.agents/skills`:
+
+```bash
+npx skills add anand-testcompare/scripts-prompts-config \
+  --skill readme-maintainer \
+  -g -y
 ```
 
 Install `workos-agent-access` into `~/.agents/skills`:
