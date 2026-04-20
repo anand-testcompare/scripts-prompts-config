@@ -19,8 +19,8 @@ Produce README files that are fast to skim, technically accurate, and explicit a
 Run the bundled scanner first:
 
 ```bash
-python ~/.codex/skills/readme-maintainer/scripts/readme_facts.py --repo . --format markdown > /tmp/readme-facts.md
-python ~/.codex/skills/readme-maintainer/scripts/readme_facts.py --repo . --format json > /tmp/readme-facts.json
+python ~/.agents/skills/readme-maintainer/scripts/readme_facts.py --repo . --format markdown > /tmp/readme-facts.md
+python ~/.agents/skills/readme-maintainer/scripts/readme_facts.py --repo . --format json > /tmp/readme-facts.json
 ```
 
 Use `/tmp/readme-facts.json` as the source of truth for detected runtime, tools, deployment, external services, API surface, and test/CI gaps.
