@@ -37,6 +37,21 @@ eval "$(mise activate zsh)"
 Notes:
 - Keep native `pbcopy`, `pbpaste`, and `open` on macOS (do not override).
 
+### Repo-managed shell extras
+
+To keep shared shell helpers backed up in this repo, source the tracked extras file from `~/.zshrc`:
+
+```bash
+if [[ -f "$HOME/scripts-prompts-config/osx/config/shell-extras.zsh" ]]; then
+  source "$HOME/scripts-prompts-config/osx/config/shell-extras.zsh"
+fi
+```
+
+Today that file enables:
+- `CLAUDE_CODE_EFFORT_LEVEL=max`
+- the Codex feature banner from `universal/codex-shell-tools.sh`
+- the npm install report wrapper from `universal/npm-shell-tools.sh`
+
 ---
 
 ## 2. Aliases and helpers
