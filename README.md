@@ -67,6 +67,7 @@ Both Bash and Zsh configurations include:
 - **Claude Code**: Tracked macOS user settings disable commit/PR attribution, point the Claude status line at `universal/claude-statusline.sh`, and persist `effortLevel: "high"`; `CLAUDE_CODE_EFFORT_LEVEL=max` in shell config overrides that to max on supported models
 - **Exa MCP**: Tracked Codex/OpenCode configs use Exa's hosted MCP endpoint and enable `web_search_exa`, `web_search_advanced_exa`, `get_code_context_exa`, and `crawling_exa`. Keep any `EXA_API_KEY` usage local-only; do not commit it into repo-managed MCP URLs. The tracked OpenCode config now lives at `universal/.config/opencode/opencode.jsonc`
 - **Codex Feature Banner**: `universal/codex-shell-tools.sh` wraps `codex` so interactive launches can compare current flags against a clean-home default baseline and highlight only the drifted values
+- **npm Install Report**: `universal/npm-shell-tools.sh` wraps `npm install`/`npm i`/`npm add` and reports requested vs upstream vs installed versions when policies like `min-release-age` cause silent older installs
 - **Modern CLI Tools**: eza (ls replacement), bat (cat replacement with automatic secret masking for `.env` files), ripgrep, fd
 - **Pi/OMP Configuration**: Tracked templates for `~/.pi/agent/settings.json` and `~/.omp/agent/config.yml` with Fireworks AI provider support (models: `fireworks-openai/accounts/fireworks/routers/kimi-k2p5-turbo`, `fireworks-anthropic/accounts/fireworks/routers/kimi-k2p5-turbo`). Keep `FIREWORKS_API_KEY` local-only in `~/.shell_secrets`
 - **Pi Extensions**: `universal/.pi/agent/extensions/` tracks portable global pi extensions, including `/exit` as an alias for `/quit`
@@ -117,6 +118,8 @@ scripts-prompts-config/
 │       └── update_packages.sh
 PX:└── universal/                 # Cross-platform scripts, hooks, and agent configs
 TV:    ├── codex-shell-tools.sh
+NP:    ├── npm-install-aware.mjs
+NP:    ├── npm-shell-tools.sh
 PB:    ├── convert_to_svg.sh
 RT:    ├── kill-dev.sh
 RT:    ├── optimize_logos.sh

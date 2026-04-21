@@ -9,3 +9,8 @@ export CODEX_FEATURE_MODE=all
 if [[ -f "$HOME/scripts-prompts-config/universal/codex-shell-tools.sh" ]]; then
   source "$HOME/scripts-prompts-config/universal/codex-shell-tools.sh"
 fi
+
+# npm: after install/add, report the real upstream latest and the version npm actually installed.
+if [[ -f "$HOME/scripts-prompts-config/universal/npm-shell-tools.sh" ]]; then
+  source "$HOME/scripts-prompts-config/universal/npm-shell-tools.sh"
+fi
