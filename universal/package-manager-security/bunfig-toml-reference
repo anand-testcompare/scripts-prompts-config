@@ -1,13 +1,3 @@
-# Supply chain attack protection
-# Refuse packages published less than 1 day ago (86400 seconds)
-# Blocks day-zero attacks where malicious packages are published and quickly removed
-#
-# Installation: Copy to ~/.bunfig.toml
-#
-# To install a fresh package immediately (project-level override):
-#   Create bunfig.toml in project root:
-#   [install]
-#   minimumReleaseAge = 0
-
+# ~/.bunfig.toml
 [install]
 minimumReleaseAge = 86400

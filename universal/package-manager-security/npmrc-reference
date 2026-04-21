@@ -1,18 +1,7 @@
-# Supply chain attack protection
-# Refuse packages published less than 1 day ago (npm counts in days)
-# This blocks day-zero attacks where malicious packages are published and quickly removed
+# npm
+# Do not put `min-release-age` in ~/.npmrc.
+# Current npm versions warn on it in user config.
 #
-# Installation: Copy to ~/.npmrc (merge with your existing registry/auth settings)
-#
-# IMPORTANT: npm does NOT support per-scope exclusions for min-release-age.
-# To install fresh packages from your own orgs immediately, use:
-#   npm install @yourorg/package@version --min-release-age=0
-#
-# Or temporarily disable the check:
-#   npm config set min-release-age 0
-#   npm install @yourorg/package@version
-#   npm config set min-release-age 1
-
-min-release-age=1
-ignore-scripts=false
-audit=true
+# If you want a persistent release-age gate, use:
+# - pnpm-config-reference
+# - bunfig-toml-reference
