@@ -402,7 +402,29 @@ Keybindings included:
 
 ---
 
-## 9. macOS defaults script (for AeroSpace)
+## 9. File extension defaults (Zed-first)
+
+Use the tracked script to configure macOS LaunchServices file defaults:
+
+```bash
+chmod +x osx/scripts/configure_file_defaults.sh
+./osx/scripts/configure_file_defaults.sh
+```
+
+Preference split:
+- Zed for code/config/docs/text files: Markdown, MDX, text, JSON/JSONC, YAML, TOML, XML, CSS/SCSS, JS/JSX, TSX, Python, Ruby, Go, Rust, Java, C/C++, shell, Zsh, SQL, `.gitignore`, Dockerfile, and lock files
+- Sublime Text for `.log` files, because it is especially fast with huge single log files
+- Leave browser/images/PDF/CSV defaults alone: HTML/SVG/CSV/PNG/JPG/PDF are not changed by this script
+
+The script installs `duti` with Homebrew if needed. `duti` is a small CLI wrapper around macOS LaunchServices defaults, equivalent to using Finder's Get Info -> Open With -> Change All, but repeatable.
+
+Notes:
+- The script intentionally does not set `.ts`, because macOS often maps `.ts` to `public.mpeg-2-transport-stream` video rather than TypeScript.
+- Bundle IDs default to `dev.zed.Zed` and `com.sublimetext.4`; override with `ZED_BUNDLE_ID=...` or `SUBLIME_BUNDLE_ID=...` if needed.
+
+---
+
+## 10. macOS defaults script (for AeroSpace)
 
 Apply macOS defaults that work better with AeroSpace workspace behavior:
 
@@ -423,7 +445,7 @@ Notes:
 
 ---
 
-## 10. Screenshot shortcut conflict fix (for AeroSpace)
+## 11. Screenshot shortcut conflict fix (for AeroSpace)
 
 This script configures macOS screenshot shortcuts to avoid conflict with AeroSpace:
 - Remap screenshot full-screen from `Cmd+Shift+3` to `Ctrl+Cmd+3`
@@ -456,5 +478,6 @@ The script creates a backup at:
 - [ ] Copy Ghostty config and keybindings or WezTerm config
 - [ ] Install AeroSpace + copy `~/.aerospace.toml` and enable Accessibility
 - [ ] Run `osx/scripts/configure_macos_defaults.sh` (AeroSpace-friendly macOS defaults)
+- [ ] Run `osx/scripts/configure_file_defaults.sh` (Zed-first file defaults, Sublime for logs)
 - [ ] Copy Zed keymap
 - [ ] Run screenshot shortcut remap script for AeroSpace (`Cmd+Shift+3/4/5` conflicts)
