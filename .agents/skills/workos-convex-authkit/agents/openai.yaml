@@ -1,0 +1,4 @@
+interface:
+  display_name: "workos + convex authkit playbook"
+  short_description: "Debug WorkOS AuthKit + Convex auth flows"
+  default_prompt: "Use $workos-convex-authkit to debug a WorkOS AuthKit + Convex (customJwt) login issue end-to-end."

@@ -17,15 +17,14 @@ Use this skill for lower-environment access only.
 
 ## Repo Clues
 
-For Prismantix Studio, confirm the current auth shape in:
+Confirm the current auth shape before choosing a login path. Common files:
 
-- `apps/studio/src/start.ts`
-- `apps/studio/src/routes/sign-in.tsx`
-- `apps/studio/src/routes/callback.tsx`
-- `convex.json`
-- `.github/workflows/studio-deploy.yml`
+- SvelteKit: `src/hooks.server.ts`, `src/routes/sign-in`, `src/routes/callback`, `src/routes/sign-out`
+- Next.js: `proxy.ts`, `middleware.ts`, `app/callback/route.ts`, `app/sign-out/route.ts`
+- Convex: `convex.json`, `convex/auth.config.ts`
+- Deploy: `.depot/workflows/*.yml`, `.github/workflows/*.yml`, app deploy scripts
 
-Today this repo uses WorkOS hosted AuthKit plus `@workos/authkit-session`, so both of these login paths are valid:
+When a repo uses WorkOS hosted AuthKit plus `@workos/authkit-session` or `@workos/authkit-sveltekit`, both of these login paths may be valid:
 
 1. real browser sign-in with persisted browser state
 2. direct sealed-session cookie injection
@@ -33,14 +32,20 @@ Today this repo uses WorkOS hosted AuthKit plus `@workos/authkit-session`, so bo
 ## Workflow
 
 1. Read `references/playbook.md`.
-2. Prefer the existing Convex `authKit` automation to configure redirect URIs, homepage URL, and CORS origins. Only reach for direct WorkOS CLI config when you are working outside the normal Convex dev or deploy path.
-3. Ensure the target WorkOS environment is selected and the app origin is configured.
-4. Provision or update the lower-env agent user with `scripts/provision-workos-user.mjs`.
-5. Choose a login path:
+2. Prefer the repo's existing Convex/AuthKit deployment contract. Do not assume Convex `authKit` automation is always safe for every environment:
+   - Dev/simple lower envs can usually auto-provision.
+   - Preview auto-provisioning can create one WorkOS env per preview deployment.
+   - Production deploys that use deployment-specific Convex deploy keys may require a pre-existing Convex WorkOS integration/env vars before `convex deploy` can configure AuthKit.
+   - A Convex "Shared AuthKit Environment" is distinct from an ad hoc WorkOS CLI environment.
+3. Only reach for direct WorkOS CLI config when you are working outside the normal Convex dev/deploy path or the deploy handoff intentionally configures WorkOS from Convex-stored credentials.
+4. Ensure the target WorkOS environment is selected and the app origin is configured.
+5. Provision or update the lower-env agent user with `scripts/provision-workos-user.mjs`.
+6. Choose a login path:
    - If the app uses `@workos/authkit-session` and you have the cookie password, prefer the sealed-session path with `scripts/issue-sealed-session.mjs`.
    - Otherwise use the hosted `/sign-in` flow and persist the browser session with `agent-browser`.
-6. Store transient credentials and session state in `.memory/workos-agent-access/`.
-7. Validate the authenticated app route you actually need, not just the homepage.
+7. Store transient credentials and session state in `.memory/workos-agent-access/`.
+8. Validate the authenticated app route you actually need, not just the homepage.
+9. If social sign-in is enabled in dev/test, do not hide or bypass it to paper over errors. Hosted social providers should reach the provider page; immediate Google/Microsoft/GitHub errors usually indicate WorkOS environment/config drift.
 
 ## Default Preference Order
 

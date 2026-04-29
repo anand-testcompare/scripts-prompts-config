@@ -16,6 +16,10 @@ This playbook is intentionally lower-env focused. The goal is to give the agent 
   - add redirect URIs, CORS origins, and homepage URL
   - run `doctor`
 - The WorkOS CLI does not currently expose `user create`, so user provisioning should use the API or SDK directly.
+- Convex AuthKit can provision WorkOS environments and write `WORKOS_*` values into Convex env, but this behavior depends on deployment type and credentials:
+  - Dev and simple lower-env flows can auto-provision.
+  - Preview auto-provisioning can create WorkOS environment sprawl.
+  - Production deploys using deployment-specific Convex deploy keys may need a pre-existing Convex WorkOS integration before `convex deploy` can configure AuthKit.
 
 Canonical sources:
 
@@ -23,6 +27,7 @@ Canonical sources:
 - https://workos.com/docs/reference/authkit/authentication
 - https://workos.com/docs/authkit/cli-installer
 - https://workos.com/docs/sso/redirect-uris
+- https://docs.convex.dev/auth/authkit/auto-provision
 
 ## Lower-Env Rules
 
@@ -38,48 +43,58 @@ Canonical sources:
 - WorkOS client ID for the app
 - App origin, for example:
   - `http://localhost:3001`
-  - `https://studio.prismantix.com`
+  - `https://app.example.com`
 - If sealed-session login is desired:
   - `WORKOS_COOKIE_PASSWORD`
 - If org-scoped access is required:
   - WorkOS organization ID
   - optional role slug or role slugs
 
-For Prismantix, derive `APP_ORIGIN` from the Cloudflare Worker deployment origin or custom domain. Do not assume some other hosting platform will supply the right origin automatically.
-For deploys, Prismantix already routes these values through Convex `authKit` config in `convex.json`:
+Derive `APP_ORIGIN` from the actual app URL the browser uses. For Cloudflare Workers this can be either a workers.dev preview URL or a custom domain. Do not assume some other hosting platform will supply the right origin automatically.
 
-- `preview.configure.redirectUris = ["${buildEnv.STUDIO_APP_ORIGIN}/callback"]`
-- `preview.configure.appHomepageUrl = "${buildEnv.STUDIO_APP_HOMEPAGE_URL}"`
-- `preview.configure.corsOrigins = ["${buildEnv.STUDIO_APP_ORIGIN}"]`
-- `prod.configure.redirectUris = ["${buildEnv.STUDIO_APP_ORIGIN}/callback"]`
-- `prod.configure.appHomepageUrl = "${buildEnv.STUDIO_APP_HOMEPAGE_URL}"`
-- `prod.configure.corsOrigins = ["${buildEnv.STUDIO_APP_ORIGIN}"]`
+For Convex-backed deploys, inspect the repo before choosing a source of truth:
 
-That means the normal source of truth for remote redirect/CORS/homepage linkage is Convex plus the build env passed by the Cloudflare deploy workflow, not an ad hoc WorkOS dashboard edit.
+- `packages/backend/convex.json`
+- app deploy handoff scripts, for example `apps/app/scripts/deploy-from-convex.mjs`
+- CI deploy workflows, for example `.depot/workflows/deploy.yml`
+- `convex/auth.config.ts`, because Convex JWT validation usually reads `WORKOS_CLIENT_ID`
+
+The intended source of truth should be explicit. In some repos, Convex `authKit` automation owns redirect/CORS/homepage. In others, the app deploy handoff fetches WorkOS credentials from Convex env and configures WorkOS with `workos config`.
 
 ## Step 1: Select And Configure The WorkOS Environment
 
-There are three configuration paths:
+There are four configuration paths:
 
-1. Convex `authKit` automation for the normal Prismantix dev, preview, and production flows
-2. `workos install` for greenfield or disposable setup
-3. explicit `workos config` commands for an already-integrated repo when you are working outside the Convex flow
+1. Convex `authKit` automation for dev or simple deployment-specific environments
+2. Convex Shared AuthKit Environment for sharing one WorkOS environment across preview deployments
+3. `workos install` for greenfield or disposable setup
+4. explicit `workos config` commands for an already-integrated repo when you are working outside the Convex flow
 
 ### Option A: Convex `authKit` Automation
 
-This is the default path for Prismantix.
-
 Convex documents that when `convex.json` includes an `authKit` section, the CLI configures AuthKit environments for `dev`, `preview`, and `prod` code pushes using `WORKOS_CLIENT_ID` and `WORKOS_API_KEY` from local env, the build env, or the Convex deployment. Source: https://docs.convex.dev/auth/authkit/auto-provision
 
-For this repo, that means:
+This is often a good default for local dev. Be more careful in preview and production:
 
-- local `convex dev` owns local AuthKit bootstrap and writes local env values
-- preview builds configure WorkOS from `STUDIO_APP_ORIGIN` and `STUDIO_APP_HOMEPAGE_URL`
-- prod builds configure WorkOS from the production equivalents of those same build envs
+- Preview: deployment-specific AuthKit automation can create one WorkOS environment per preview deployment. That is useful for isolation, but can become dashboard/env sprawl.
+- Production: if CI uses a deployment-specific Convex deploy key, `convex deploy` may refuse to auto-provision/configure AuthKit unless WorkOS credentials already exist in build env or the target Convex deployment.
+- Dashboard integration buttons can create/link a WorkOS environment and write `WORKOS_CLIENT_ID`, `WORKOS_API_KEY`, and often `WORKOS_ENVIRONMENT_ID` into Convex env. App session secrets such as `WORKOS_COOKIE_PASSWORD` may still need to be set separately.
 
-Use this path whenever you are validating the real app deployment behavior and do not need to override WorkOS settings by hand.
+Use this path when it matches the repo's intended deployment contract and will not create unwanted WorkOS environment sprawl.
 
-### Option B: Installer Path
+### Option B: Convex Shared AuthKit Environment
+
+Convex Shared AuthKit Environments belong to a project rather than one deployment and are a better fit when many preview deployments should share one lower-env WorkOS app.
+
+Before implementing this path, verify:
+
+- whether preview deploys automatically receive `WORKOS_CLIENT_ID` and `WORKOS_API_KEY` from the shared AuthKit environment
+- whether `convex/auth.config.ts` can read `WORKOS_CLIENT_ID` in each preview deployment after deploy
+- whether app Worker deploys can fetch the needed `WORKOS_*` values from Convex without storing them in CI secrets
+- whether per-preview `WORKOS_COOKIE_PASSWORD` should be unique or shared
+- whether old per-preview WorkOS environments need cleanup
+
+### Option C: Installer Path
 
 The official installer can derive and configure the dashboard linkage for you.
 WorkOS documents that `workos install` automatically sets redirect URIs, CORS origins, and homepage URL. In practice, the redirect URI is the main input and the homepage/CORS origin are derived from its origin.
@@ -91,19 +106,19 @@ npx workos@latest install \
   --integration tanstack-start \
   --redirect-uri "$APP_ORIGIN/callback" \
   --homepage-url "$APP_ORIGIN" \
-  --install-dir apps/studio
+  --install-dir apps/app
 ```
 
 Use this only when you actually want the installer to analyze and potentially edit the project. It is not the right default for a repo that already has WorkOS integrated.
 
-### Option C: Explicit Dashboard Config
+### Option D: Explicit Dashboard Config
 
 Use these only when you intentionally need to repair or inspect linkage outside the normal Convex dev or deploy path. They keep the same effective dashboard linkage without asking the installer to touch code:
 
 ```bash
 npx workos@latest auth login
-npx workos@latest env add prismantix-preview "$WORKOS_API_KEY" --client-id "$WORKOS_CLIENT_ID"
-npx workos@latest env switch prismantix-preview
+npx workos@latest env add app-preview "$WORKOS_API_KEY" --client-id "$WORKOS_CLIENT_ID"
+npx workos@latest env switch app-preview
 npx workos@latest config redirect add "$APP_ORIGIN/callback"
 npx workos@latest config cors add "$APP_ORIGIN"
 npx workos@latest config homepage-url set "$APP_ORIGIN"
@@ -112,7 +127,7 @@ npx workos@latest doctor --install-dir "$PWD"
 
 Notes:
 
-- In Prismantix, the desired redirect URI, homepage URL, and CORS origin should match the values already declared in `convex.json` and supplied to the Cloudflare deploy workflow.
+- The desired redirect URI, homepage URL, and CORS origin should match the values already declared in `convex.json` or supplied to the app deploy handoff.
 - Redirect URIs must exist in WorkOS before hosted auth will succeed.
 - `workos doctor` is useful to confirm the current env, dashboard settings, and callback URI without mutating anything.
 - Wildcard redirect URIs are supported, but not on public suffix domains. Use them only when the preview domain pattern actually supports it.
@@ -128,7 +143,7 @@ node .agents/skills/workos-agent-access/scripts/provision-workos-user.mjs \
   --password "$WORKOS_AGENT_PASSWORD" \
   --first-name "Codex" \
   --last-name "Preview" \
-  --external-id "agent:prismantix:preview" \
+  --external-id "agent:app:preview" \
   --organization-id "$WORKOS_ORGANIZATION_ID" \
   --role-slug "admin"
 ```
@@ -170,14 +185,14 @@ sealed_session="$(
   | jq -r '.sealedSession'
 )"
 
-agent-browser --session-name prismantix-preview open "$APP_ORIGIN"
+agent-browser --session-name app-preview open "$APP_ORIGIN"
 agent-browser cookies set wos-session "$sealed_session"
 agent-browser open "$APP_ORIGIN/prompt-lab"
 ```
 
 Notes:
 
-- Prismantix currently uses the default WorkOS cookie name, `wos-session`.
+- Many AuthKit integrations use the default WorkOS cookie name, `wos-session`; verify the app has not overridden it.
 - The helper bootstraps the official WorkOS Node SDK into `.memory/workos-agent-access/runtime/` the first time it runs, so it stays self-contained instead of depending on workspace packages.
 - This browser cookie injection path is for lower-env automation. It does not preserve `HttpOnly`, but the server only needs the cookie value to be sent back on requests.
 - If the app has overridden `WORKOS_COOKIE_NAME`, use that value instead.
@@ -188,7 +203,7 @@ Notes:
 If sealed-session login is not available or is behaving oddly, use the real login flow once and persist the session:
 
 ```bash
-agent-browser --session-name prismantix-preview open "$APP_ORIGIN/sign-in"
+agent-browser --session-name app-preview open "$APP_ORIGIN/sign-in"
 agent-browser wait --load networkidle
 agent-browser snapshot -i
 ```
@@ -198,8 +213,8 @@ Then fill the hosted WorkOS form, finish the redirect, and reuse the same `--ses
 For a one-off handoff from a human-authenticated browser:
 
 ```bash
-agent-browser --auto-connect state save ./.memory/workos-agent-access/prismantix-preview-auth.json
-agent-browser --state ./.memory/workos-agent-access/prismantix-preview-auth.json open "$APP_ORIGIN/prompt-lab"
+agent-browser --auto-connect state save ./.memory/workos-agent-access/app-preview-auth.json
+agent-browser --state ./.memory/workos-agent-access/app-preview-auth.json open "$APP_ORIGIN/prompt-lab"
 ```
 
 ## When To Prefer Which Path
@@ -220,6 +235,7 @@ agent-browser --state ./.memory/workos-agent-access/prismantix-preview-auth.json
 - Protected backend requests succeed.
 - The session persists across a page refresh.
 - If org-scoped behavior matters, the correct org is selected after login.
+- If social sign-in is enabled in dev/test, click the hosted social button and confirm it reaches the provider page. Do not remove/hide social buttons as a workaround for a broken lower-env WorkOS configuration.
 
 ## Sharp Edges
 
@@ -227,4 +243,5 @@ agent-browser --state ./.memory/workos-agent-access/prismantix-preview-auth.json
 - Some email domains can be forced into SSO by WorkOS environment policy. In this repo's current test environment, `example.com` was rejected for password auth with `sso_required`, while `example.org` worked.
 - If the app origin is wrong or missing from WorkOS redirect config, hosted sign-in will fail with redirect URI errors.
 - If the cookie password is wrong, the sealed-session path will produce a session the app cannot read.
-- If the app rotates cookie config or session handling, re-check `apps/studio/src/start.ts` before assuming the fast path still applies.
+- If the app rotates cookie config or session handling, re-check the app auth hook/startup files before assuming the fast path still applies.
+- WorkOS-hosted social buttons in dev/test are expected to work. An immediate provider error such as Google `invalid_request` usually points to the wrong WorkOS environment or incomplete provider configuration, not a reason to disable social sign-in.
