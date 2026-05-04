@@ -9,8 +9,10 @@ Do not symlink repo skills into `~/.agents/skills`. Install them with `npx skill
 ## Available Skills
 
 - `acpx`
+- `codex-goal-prompting`
 - `readme-maintainer`
 - `workos-agent-access`
+- `workos-convex-authkit`
 
 ## Install From This Repo
 
@@ -34,6 +36,14 @@ Interactive install:
 npx skills add anand-testcompare/scripts-prompts-config
 ```
 
+Install `codex-goal-prompting` into `~/.agents/skills`:
+
+```bash
+npx skills add anand-testcompare/scripts-prompts-config \
+  --skill codex-goal-prompting \
+  -g -y
+```
+
 Install `readme-maintainer` into `~/.agents/skills`:
 
 ```bash
@@ -47,5 +57,13 @@ Install `workos-agent-access` into `~/.agents/skills`:
 ```bash
 npx skills add anand-testcompare/scripts-prompts-config \
   --skill workos-agent-access \
+  -g -y
+```
+
+Install `workos-convex-authkit` into `~/.agents/skills`:
+
+```bash
+npx skills add anand-testcompare/scripts-prompts-config \
+  --skill workos-convex-authkit \
   -g -y
 ```
