@@ -1,3 +1,12 @@
 # oh-my-claudecode / oh-my-codex runtime state
 .omc/
 .omx/
+
+# Agent skill sync outputs (source lives in scripts-prompts-config)
+**/.agents/skills/*
+**/.claude/skills/*
+**/.pi/*
+**/.codex/skills/*
+**/.opencode/skills/*
+**/skills-lock.json
+**/.claude/scheduled_tasks.lock

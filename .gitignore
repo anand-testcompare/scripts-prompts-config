@@ -27,5 +27,22 @@ BK:**/.claude-omc/state.json
 # local agent/runtime artifacts
 .memory/
 
+# This repo is the source of truth for agent skills/configs; keep these
+# addable even though the global ignore hides generated copies elsewhere.
+!.agents/skills/
+!.agents/skills/**
+!universal/.agents/skills/
+!universal/.agents/skills/**
+!universal/.pi/
+!universal/.pi/**
+!**/.claude/skills/
+!**/.claude/skills/**
+!**/.codex/skills/
+!**/.codex/skills/**
+!**/.opencode/skills/
+!**/.opencode/skills/**
+!**/skills-lock.json
+!**/.claude/scheduled_tasks.lock
+
 # generated local Omarchy snapshots
 backups/omarchy-dotfiles-*/
