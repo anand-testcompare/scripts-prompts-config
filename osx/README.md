@@ -402,16 +402,22 @@ Important:
 
 ---
 
-## 8. Zed keybindings (global dock toggles)
+## 8. Zed config/keybindings
 
-Backed up keymap lives at:
+Backed up Zed config lives at:
+- `osx/config/zed/settings.json`
 - `osx/config/zed/keymap.json`
 
 Copy to your local machine:
 ```bash
 mkdir -p ~/.config/zed
+cp osx/config/zed/settings.json ~/.config/zed/settings.json
 cp osx/config/zed/keymap.json ~/.config/zed/keymap.json
 ```
+
+Current visual defaults:
+- theme: `One Dark`
+- icon theme: `Material Icon Theme`
 
 Keybindings included:
 - `Ctrl+B` toggle left dock
