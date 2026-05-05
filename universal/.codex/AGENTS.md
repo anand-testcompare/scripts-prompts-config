@@ -39,6 +39,7 @@
 - Avoid important files existing only on the current machine. If a file matters, commit it and get it into the remote; otherwise delete it or add an appropriate `.gitignore` rule.
 - Prefer small PRs that move real work into the remote quickly instead of letting config changes sit locally and drift.
 - If you temporarily stash or branch to get work done, clean that up before finishing unless the user explicitly asks to keep it around.
+- Use semantic branch prefixes that describe the work, such as `feat/`, `fix/`, `docs/`, `refactor/`, `chore/`, or `test/`. Do not use `codex/` as an agent-signature branch prefix.
 
 ## Memory
 
