@@ -70,7 +70,7 @@ Both Bash and Zsh configurations include:
 - **npm Install Report**: `universal/npm-shell-tools.sh` wraps `npm install`/`npm i`/`npm add` and reports requested vs upstream vs installed versions when policies like `min-release-age` cause silent older installs
 - **Modern CLI Tools**: eza (ls replacement), bat (cat replacement with automatic secret masking for `.env` files), ripgrep, fd
 - **Pi/OMP Configuration**: Tracked templates for `~/.pi/agent/settings.json` and `~/.omp/agent/config.yml` with Fireworks AI provider support (models: `fireworks-openai/accounts/fireworks/routers/kimi-k2p5-turbo`, `fireworks-anthropic/accounts/fireworks/routers/kimi-k2p5-turbo`). Keep `FIREWORKS_API_KEY` local-only in `~/.shell_secrets`
-- **Pi Extensions**: `universal/.pi/agent/extensions/` tracks portable global pi extensions, including `/exit` as an alias for `/quit`
+- **Pi Extensions**: `universal/.pi/agent/extensions/` tracks portable global pi extensions, including `/exit` as an alias for `/quit` and `/merged` for post-merge verification follow-up
 
 ### Zsh-Specific Enhancements
 
@@ -127,7 +127,8 @@ PK:    ├── pi-google-code-assist-antigravity-troubleshooting.md
 JK:    ├── .pi/agent/
 QV:    │   ├── settings.json.template    # Pi agent configuration template
 EX:    │   └── extensions/
-AL:    │       └── exit-command.ts       # Adds /exit alias for quitting pi
+AL:    │       ├── exit-command.ts       # Adds /exit alias for quitting pi
+AL:    │       └── merged.ts             # Adds /merged post-merge follow-up prompt
 RM:    ├── .omp/agent/
 HQ:    │   └── config.yml.template         # OMP agent configuration template
 RT:    └── git-hooks/
