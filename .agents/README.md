@@ -10,6 +10,7 @@ Do not symlink repo skills into `~/.agents/skills`. Install them with `npx skill
 
 - `acpx`
 - `codex-goal-prompting`
+- `merged`
 - `readme-maintainer`
 - `workos-agent-access`
 - `workos-convex-authkit`
@@ -41,6 +42,14 @@ Install `codex-goal-prompting` into `~/.agents/skills`:
 ```bash
 npx skills add anand-testcompare/scripts-prompts-config \
   --skill codex-goal-prompting \
+  -g -y
+```
+
+Install `merged` into `~/.agents/skills`:
+
+```bash
+npx skills add anand-testcompare/scripts-prompts-config \
+  --skill merged \
   -g -y
 ```
 

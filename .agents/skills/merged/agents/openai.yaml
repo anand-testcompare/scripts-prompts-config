@@ -1,0 +1,4 @@
+interface:
+  display_name: "merged"
+  short_description: "Post-merge sync, verify, cleanup, and next slice"
+  default_prompt: "Switch to the primary branch, pull latest with fast-forward only, verify the merged state locally and remotely, smoke production/deployments if relevant, clean up safe stale branch state, and recommend one sensible next feature or improvement."
