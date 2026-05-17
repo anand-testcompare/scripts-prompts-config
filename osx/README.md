@@ -308,8 +308,7 @@ exec zsh
 ```
 
 Behavior:
-- Connects the GUI to a local WezTerm mux domain named `main`
-- Native panes/tabs/workspaces, no tmux required
+- Native panes/tabs, no tmux or default mux server required
 - Cmd+D split right
 - Cmd+Shift+D split down
 - Cmd+T new tab
@@ -317,11 +316,11 @@ Behavior:
 - Cmd+Shift+{/} previous/next tab
 - Cmd+Shift+L launcher for tabs/workspaces
 - Cmd+Shift+P pane picker
-- Cmd+N new macOS WezTerm window (attached to the same local mux domain)
+- Cmd+N new macOS WezTerm window
 - Cmd+= / Cmd+- / Cmd+0 font zoom controls
 
 Notes:
-- Using a local mux domain gives you durable local tabs/workspaces without layering tmux inside WezTerm.
+- The default GUI startup path is intentionally local/native; do not auto-connect to a `main` mux domain unless you explicitly want durable WezTerm mux workspaces.
 - Shell integration keeps WezTerm's tracked cwd in sync after `cd`, which is what makes `Cmd+D` and `Cmd+Shift+D` open in the directory you're actually working in.
 
 ---

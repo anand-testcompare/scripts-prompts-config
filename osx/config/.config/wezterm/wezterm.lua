@@ -36,21 +36,10 @@ config.window_padding = {
 
 config.use_fancy_tab_bar = false
 config.hide_tab_bar_if_only_one_tab = true
-config.tab_bar_at_bottom = true
+config.tab_bar_at_bottom = false
 config.window_decorations = "RESIZE"
 config.native_macos_fullscreen_mode = true
 config.automatically_reload_config = true
-
-wezterm.on("update-right-status", function(window, _)
-  local workspace = window:active_workspace()
-  window:set_right_status(wezterm.format({
-    { Foreground = { Color = "#607068" } },
-    { Text = "workspace " },
-    { Foreground = { Color = "#5ec4a0" } },
-    { Text = workspace },
-    { Text = " " },
-  }))
-end)
 
 local function pane_cwd_path(pane)
   local cwd = pane:get_current_working_dir()
