@@ -53,7 +53,7 @@ Both Bash and Zsh configurations include:
 - **Clipboard**: Cross-platform clipboard support (`pbcopy`, `pbpaste` via xclip)
 - **Secure Credentials**: Automatic loading from `.shell_secrets`
 - **Claude Code**: Tracked macOS user settings disable commit/PR attribution, point the Claude status line at `universal/claude-statusline.sh`, and persist `effortLevel: "high"`; `CLAUDE_CODE_EFFORT_LEVEL=max` in shell config overrides that to max on supported models
-- **Exa MCP**: Tracked Codex/OpenCode configs use Exa's hosted MCP endpoint and enable `web_search_exa`, `web_search_advanced_exa`, `get_code_context_exa`, and `crawling_exa`. Keep any `EXA_API_KEY` usage local-only; do not commit it into repo-managed MCP URLs. The tracked OpenCode config now lives at `universal/.config/opencode/opencode.jsonc`
+- **Exa MCP**: Tracked Codex/OpenCode configs use Exa's hosted MCP endpoint and enable `web_search_exa`, `web_search_advanced_exa`, `get_code_context_exa`, and `crawling_exa`. Keep any `EXA_API_KEY` usage local-only; do not commit it into repo-managed MCP URLs. Tracked OpenCode config lives under `universal/.config/opencode/`, including `opencode.jsonc` and `tui.jsonc`.
 - **Codex Feature Banner**: `universal/codex-shell-tools.sh` wraps `codex` so interactive launches can compare current flags against a clean-home default baseline and highlight only the drifted values
 - **pnpm 11 Defaults**: `osx/scripts/configure_pnpm_defaults.sh` activates `pnpm@11.5.1` through Corepack and writes persistent pnpm security defaults (`minimumReleaseAge`, exotic subdependency blocking, strict dependency builds) to pnpm's user config.
 - **Modern CLI Tools**: eza (ls replacement), bat (cat replacement with automatic secret masking for `.env` files), ripgrep, fd
