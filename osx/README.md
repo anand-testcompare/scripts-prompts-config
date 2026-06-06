@@ -2,6 +2,17 @@
 
 This file documents the macOS changes applied in this session.
 
+## OMP MCP scoping
+
+Run this after restoring configs to keep Larry generators scoped to Codestrap and remove the Vercel Claude plugin cache:
+
+```bash
+# Optional: export LARRY_API_KEY=... if you want the generated local Codestrap MCP config to embed it.
+bash osx/scripts/configure_omp_mcp_scope.sh
+```
+
+The script keeps `~/.codeium/windsurf/mcp_config.json` empty globally, writes Larry only to `~/Development/codestrap/.windsurf/mcp_config.json`, removes `~/.claude/plugins/cache/claude-plugins-official/vercel`, and clears stale OMP MCP cache rows.
+
 ---
 
 ## 1. Terminal QoL Tools (Homebrew)
