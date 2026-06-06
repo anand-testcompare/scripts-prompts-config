@@ -55,7 +55,7 @@ Both Bash and Zsh configurations include:
 - **Claude Code**: Tracked macOS user settings disable commit/PR attribution, point the Claude status line at `universal/claude-statusline.sh`, and persist `effortLevel: "high"`; `CLAUDE_CODE_EFFORT_LEVEL=max` in shell config overrides that to max on supported models
 - **Exa MCP**: Tracked Codex/OpenCode configs use Exa's hosted MCP endpoint and enable `web_search_exa`, `web_search_advanced_exa`, `get_code_context_exa`, and `crawling_exa`. Keep any `EXA_API_KEY` usage local-only; do not commit it into repo-managed MCP URLs. The tracked OpenCode config now lives at `universal/.config/opencode/opencode.jsonc`
 - **Codex Feature Banner**: `universal/codex-shell-tools.sh` wraps `codex` so interactive launches can compare current flags against a clean-home default baseline and highlight only the drifted values
-- **npm Install Report**: `universal/npm-shell-tools.sh` wraps `npm install`/`npm i`/`npm add` and reports requested vs upstream vs installed versions when policies like `min-release-age` cause silent older installs
+- **pnpm 11 Defaults**: `osx/scripts/configure_pnpm_defaults.sh` activates `pnpm@11.5.1` through Corepack and writes persistent pnpm security defaults (`minimumReleaseAge`, exotic subdependency blocking, strict dependency builds) to pnpm's user config.
 - **Modern CLI Tools**: eza (ls replacement), bat (cat replacement with automatic secret masking for `.env` files), ripgrep, fd
 - **Pi/OMP Configuration**: Tracked templates for `~/.pi/agent/settings.json` and `~/.omp/agent/config.yml` with Fireworks AI provider support (models: `fireworks-openai/accounts/fireworks/routers/kimi-k2p5-turbo`, `fireworks-anthropic/accounts/fireworks/routers/kimi-k2p5-turbo`). Keep `FIREWORKS_API_KEY` local-only in `~/.shell_secrets`
 - **OMP MCP Scope**: `osx/scripts/configure_omp_mcp_scope.sh` keeps user-level Windsurf MCP empty (`~/.codeium/windsurf/mcp_config.json`), creates the Larry generators MCP only at `~/Development/codestrap/.windsurf/mcp_config.json`, removes the Vercel Claude plugin cache, and clears stale OMP MCP cache entries. Keep `LARRY_API_KEY` local-only; export it before running the script if you want it embedded in the generated local Codestrap config.
@@ -93,12 +93,11 @@ scripts-prompts-config/
 │   ├── README.md
 │   └── scripts/
 │       ├── configure_macos_defaults.sh
+│       ├── configure_pnpm_defaults.sh
 │       ├── configure_screenshot_shortcuts.sh
 │       └── update_packages.sh
 PX:└── universal/                 # Cross-platform scripts, hooks, and agent configs
 TV:    ├── codex-shell-tools.sh
-NP:    ├── npm-install-aware.mjs
-NP:    ├── npm-shell-tools.sh
 PB:    ├── convert_to_svg.sh
 RT:    ├── kill-dev.sh
 RT:    ├── optimize_logos.sh
@@ -246,9 +245,17 @@ Applies macOS defaults that improve AeroSpace workspace behavior:
   - Also disables `Displays have separate Spaces` (`spans-displays = true`)
   - Requires logout/login to fully apply
 
+#### configure_pnpm_defaults.sh
+
+Activates pnpm 11 through Corepack and writes pnpm's persistent user config:
+
+```bash
+./osx/scripts/configure_pnpm_defaults.sh
+```
+
 #### update_packages.sh
 
-Updates all package managers on macOS:
+Updates package managers on macOS:
 
 ```bash
 ./osx/scripts/update_packages.sh
@@ -256,7 +263,7 @@ Updates all package managers on macOS:
 
 **Updates:**
 - Homebrew and all installed packages
-- Global npm packages
+- pnpm 11/Corepack defaults
 - Global pnpm packages
 - Checks for macOS system updates
 

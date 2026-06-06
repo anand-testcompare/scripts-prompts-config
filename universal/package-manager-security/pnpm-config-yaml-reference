@@ -1,0 +1,8 @@
+# macOS: ~/Library/Preferences/pnpm/config.yaml
+# Linux/Omarchy: ~/.config/pnpm/config.yaml
+# Managed by osx/scripts/configure_pnpm_defaults.sh on macOS.
+globalBinDir: ~/Library/pnpm
+minimumReleaseAge: 1440
+minimumReleaseAgeExclude: '["@nyrra/*","@openontology/*","@openai/*","@shpitdev/*","@sketchi-app/*","@pnpm/*"]'
+blockExoticSubdeps: true
+strictDepBuilds: true
