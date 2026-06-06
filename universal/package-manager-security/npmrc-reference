@@ -3,5 +3,5 @@
 # Current npm versions warn on it in user config.
 #
 # If you want a persistent release-age gate, use:
-# - pnpm-config-reference
+# - pnpm-config-yaml-reference
 # - bunfig-toml-reference

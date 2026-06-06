@@ -1,5 +1,0 @@
-# ~/.config/pnpm/rc
-minimum-release-age=1440
-minimum-release-age-exclude="[\"@nyrra\", \"@openontology\", \"@openai\", \"@shpitdev\", \"@sketchi-app\"]"
-block-exotic-subdeps=true
-strict-dep-builds=true

@@ -10,7 +10,16 @@ if [[ -f "$HOME/scripts-prompts-config/universal/codex-shell-tools.sh" ]]; then
   source "$HOME/scripts-prompts-config/universal/codex-shell-tools.sh"
 fi
 
-# npm: after install/add, report the real upstream latest and the version npm actually installed.
-if [[ -f "$HOME/scripts-prompts-config/universal/npm-shell-tools.sh" ]]; then
-  source "$HOME/scripts-prompts-config/universal/npm-shell-tools.sh"
+# pnpm: standard package manager. Keep Corepack non-interactive and expose common shortcuts.
+export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+export PNPM_HOME="${PNPM_HOME:-$HOME/Library/pnpm}"
+if [[ -d "$PNPM_HOME" && ":$PATH:" != *":$PNPM_HOME:"* ]]; then
+  export PATH="$PNPM_HOME:$PATH"
 fi
+
+alias p='pnpm'
+alias pi='pnpm install'
+alias pa='pnpm add'
+alias pad='pnpm add --save-dev'
+alias px='pnpm dlx'
+alias prun='pnpm run'

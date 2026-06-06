@@ -61,9 +61,19 @@ fi
 Today that file enables:
 - `CLAUDE_CODE_EFFORT_LEVEL=max`
 - the Codex feature banner from `universal/codex-shell-tools.sh`
-- the npm install report wrapper from `universal/npm-shell-tools.sh`
+- pnpm 11 environment defaults and common pnpm shortcuts (`p`, `pi`, `pa`, `pad`, `px`, `prun`)
 
 ---
+
+## 1b. pnpm 11 defaults
+
+Use pnpm 11 as the default package manager and write the persistent pnpm security policy:
+
+```bash
+bash osx/scripts/configure_pnpm_defaults.sh
+```
+
+This activates `pnpm@11.5.1` through Corepack and writes `~/Library/Preferences/pnpm/config.yaml` with release-age and build-safety defaults.
 
 ## 2. Aliases and helpers
 

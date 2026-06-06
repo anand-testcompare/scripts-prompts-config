@@ -1,12 +1,13 @@
 #!/bin/bash
+set -euo pipefail
 
 echo "🔄 Starting macOS package updates..."
 
 echo "📦 Updating Homebrew and packages..."
 brew update && brew upgrade
 
-echo "🌍 Updating global npm packages..."
-npm update -g
+echo "📦 Ensuring pnpm 11 defaults..."
+bash "$(dirname "$0")/configure_pnpm_defaults.sh"
 
 echo "🌍 Updating global pnpm packages..."
 pnpm update -g
