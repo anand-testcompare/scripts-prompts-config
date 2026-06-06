@@ -11,7 +11,6 @@ Claude Code should follow the repository guidance in `AGENTS.md`. This file mirr
 ## Repo Focus
 
 - Prefer `osx/` and `linux-omarchy/` for current work.
-- Treat `linux-popos/` as legacy unless the task explicitly targets it.
 
 ## Change Rules
 
@@ -35,5 +34,4 @@ Claude Code should follow the repository guidance in `AGENTS.md`. This file mirr
 
 - `osx/` - active macOS configs and scripts
 - `linux-omarchy/` - active Linux/Omarchy docs and configs
-- `linux-popos/` - legacy backup/restore flow and shell-sync prompt
 - `universal/` - cross-platform scripts and shared tooling

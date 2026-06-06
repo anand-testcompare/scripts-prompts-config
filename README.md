@@ -5,7 +5,6 @@ A comprehensive configuration management system for development environments, su
 ## Current Platform Focus
 
 - Primary: `osx/` and `linux-omarchy/`
-- Deprecated: `linux-popos/` (kept for historical reference; avoid adding new configs there)
 
 ## Quick Start
 
@@ -38,17 +37,6 @@ cp osx/config/zed/keymap.json ~/.config/zed/keymap.json
 ./osx/scripts/apply_window_manager_setup.sh
 ```
 
-### Legacy Pop!_OS Scripts (Deprecated)
-
-The `linux-popos/` directory remains available, but is deprecated for ongoing updates.
-Prefer `osx/` and `linux-omarchy/` for new changes.
-
-### Backup Current Configurations
-
-```bash
-cd scripts-prompts-config/linux-popos
-./backup-configs.sh
-```
 
 ## Features
 
@@ -70,6 +58,7 @@ Both Bash and Zsh configurations include:
 - **npm Install Report**: `universal/npm-shell-tools.sh` wraps `npm install`/`npm i`/`npm add` and reports requested vs upstream vs installed versions when policies like `min-release-age` cause silent older installs
 - **Modern CLI Tools**: eza (ls replacement), bat (cat replacement with automatic secret masking for `.env` files), ripgrep, fd
 - **Pi/OMP Configuration**: Tracked templates for `~/.pi/agent/settings.json` and `~/.omp/agent/config.yml` with Fireworks AI provider support (models: `fireworks-openai/accounts/fireworks/routers/kimi-k2p5-turbo`, `fireworks-anthropic/accounts/fireworks/routers/kimi-k2p5-turbo`). Keep `FIREWORKS_API_KEY` local-only in `~/.shell_secrets`
+- **OMP MCP Scope**: `osx/scripts/configure_omp_mcp_scope.sh` keeps user-level Windsurf MCP empty (`~/.codeium/windsurf/mcp_config.json`), creates the Larry generators MCP only at `~/Development/codestrap/.windsurf/mcp_config.json`, removes the Vercel Claude plugin cache, and clears stale OMP MCP cache entries. Keep `LARRY_API_KEY` local-only; export it before running the script if you want it embedded in the generated local Codestrap config.
 - **Pi Extensions**: `universal/.pi/agent/extensions/` tracks portable global pi extensions, including `/exit` as an alias for `/quit` and `/merged` for post-merge verification follow-up
 
 ### Zsh-Specific Enhancements
@@ -95,16 +84,6 @@ scripts-prompts-config/
 ├── CLAUDE.md                   # AI assistant instructions
 ├── README.md                   # This file
 ├── TODO.md                     # Development tasks
-├── linux-popos/             # Deprecated (legacy Pop!_OS/Ubuntu)
-│   ├── backup-configs.sh      # Backup script (Pop!_OS/Ubuntu)
-│   ├── restore-configs.sh     # Restore script (Pop!_OS/Ubuntu)
-│   ├── config/                # Configuration files (local backups)
-│   │   ├── README.md          # Linux-specific documentation
-│   │   └── .shell_secrets.template
-│   ├── prompts/               # AI maintenance prompts
-│   │   └── sync-shell-configs.md
-│   └── scripts/               # Utility scripts
-│       └── emulate_osx_setups.sh
 ├── linux-omarchy/             # Arch/Omarchy docs and scripts
 │   ├── REPLICATION-GUIDE.md
 │   ├── .shell_secrets.template
@@ -153,43 +132,20 @@ All configuration files have been scanned and verified to contain:
 - Only template files for sensitive configuration
 - Proper gitignore rules to prevent accidental commits
 
-## Shell Synchronization
-
-Keep bash and zsh configurations synchronized using the included prompt:
-
-```bash
-# Use the sync prompt with your AI assistant
-cat linux-popos/prompts/sync-shell-configs.md
-```
-
-This ensures consistent:
-
-- Development tools and version managers
-- PATH modifications
-- Environment variables
-- Aliases and functions
-- Third-party tool integrations
-
 ## Installation Requirements
 
 ### Essential Tools
 
 ```bash
-# Package manager updates
-sudo apt update && sudo apt upgrade  # Debian/Ubuntu
-sudo dnf update                      # Fedora
+# macOS
+brew install git curl zsh-autosuggestions zsh-history-substring-search fzf eza bat ripgrep fd zoxide atuin starship mise
 
-# Core utilities
-sudo apt install git curl wget xclip
-
-# Zsh and enhancements
-sudo apt install zsh zsh-syntax-highlighting zsh-autosuggestions
-
-# Modern CLI tools
-sudo apt install exa bat ripgrep fd-find fzf
+# Omarchy/Arch
+sudo pacman -Syu git curl wget zsh fzf eza bat ripgrep fd zoxide atuin starship
 
 # Terminal
-sudo apt install kitty
+brew install --cask ghostty wezterm
+# Omarchy/Arch terminal configs are tracked under linux-omarchy/configs/
 ```
 
 ### Development Tools
@@ -241,7 +197,7 @@ source ~/.bashrc
 
 ```bash
 # Fix script permissions
-chmod +x linux-popos/*.sh osx/scripts/*.sh universal/*.sh
+chmod +x osx/scripts/*.sh linux-omarchy/scripts/*.sh universal/*.sh
 chmod 600 ~/.shell_secrets
 ```
 
@@ -323,7 +279,6 @@ Install the commit-msg hook from `universal/git-hooks/` (see `universal/git-hook
 
 ## Platform-Specific Documentation
 
-- **Linux (Pop!_OS/Ubuntu, deprecated)**: See [linux-popos/config/README.md](linux-popos/config/README.md) (legacy)
 - **Linux (Omarchy/Arch)**: See [linux-omarchy/REPLICATION-GUIDE.md](linux-omarchy/REPLICATION-GUIDE.md) for Omarchy setup details. Screenshot shortcuts are `Ctrl+Shift+3/4/5`.
 - **macOS**: Utility scripts available in `osx/scripts/`
 - **Universal tooling**: Pi + Google provider troubleshooting guide at [universal/pi-google-code-assist-antigravity-troubleshooting.md](universal/pi-google-code-assist-antigravity-troubleshooting.md)
