@@ -1,6 +1,7 @@
 ---
 name: convex-delete-deployments
 description: Bulk deletion workflow for Convex deployments with safe defaults and explicit confirmation. Use when Convex preview environments accumulate, deployment quota is exhausted, or you need to clean up many deployments quickly by type/name filter without deleting prod/dev accidentally.
+disable-model-invocation: true
 ---
 
 # Convex Delete Deployments
@@ -68,6 +69,8 @@ python3 .agents/skills/convex-delete-deployments/scripts/delete_deployments.py \
 - Use `--include-dev` only when intentionally rotating dev deployments.
 - Use `--include-prod` only for explicit teardown workflows.
 - Always inspect dry-run output before `--apply --yes`.
+- Prefer `CONVEX_ACCESS_TOKEN` or the local Convex config over `--token` so access tokens do not appear in shell history or process listings.
+- Do not paste Convex access tokens into prompts, logs, or final answers.
 
 ## Inputs
 
