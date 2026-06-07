@@ -38,10 +38,23 @@ persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     outer.right = 0
 
 [[on-window-detected]]
-    # Utility/overlay apps should never consume tile space on workspace 1.
-    # Keep them on the floating workspaces instead.
-    if.app-name-regex-substring = 'Wispr Flow|Helium|ChatGPT'
+    # Wispr Flow overlay windows should never consume tile space on workspace 1.
+    # Keep them on a floating workspace instead.
+    if.app-name-regex-substring = 'Wispr Flow'
     run = ['layout floating', 'move-node-to-workspace 2']
+
+[[on-window-detected]]
+    # Dev/terminal/browser apps that should tile wherever they are opened.
+    # This restores the prior "snap immediately" behavior even on workspaces
+    # that otherwise default to floating.
+    if.app-name-regex-substring = 'Ghostty|WezTerm|Helium|Code - Insiders|Visual Studio Code|Zed|Cursor|Windsurf|Antigravity|Devin|Codex'
+    run = 'layout tiling'
+
+[[on-window-detected]]
+    # Chrome belongs on workspace 1 and should tile there. Helium is launched
+    # by skhd onto the current workspace instead.
+    if.app-name-regex-substring = 'Google Chrome'
+    run = ['layout tiling', 'move-node-to-workspace 1']
 
 [[on-window-detected]]
     # Workspace 1 is the dedicated tiling workspace.
