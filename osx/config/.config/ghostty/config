@@ -7,12 +7,22 @@ font-size = 14
 # Theme
 theme = "Catppuccin Frappe"
 
+# Avoid macOS-native tab window state with tiling window managers. Ghostty's
+# native macOS tabs are reported to AeroSpace as separate windows, which can
+# leave phantom tile gaps. Cmd+T is bound to a split below for the same reason.
+macos-titlebar-style = tabs
+window-save-state = never
+
 # Performance optimizations
 auto-update = off
 notify-on-command-finish = never
 desktop-notifications = false
 # Prevent bells from requesting attention or rewriting the window title.
 bell-features = no-system,no-audio,no-attention,no-title,no-border
+
+# Treat macOS Option as terminal Alt so Option+Comma/Period reaches Codex
+# instead of becoming the Unicode characters ≤/≥.
+macos-option-as-alt = true
 
 # Mac-style keybindings
 keybind = super+a=select_all
@@ -21,7 +31,9 @@ keybind = super+v=paste_from_clipboard
 keybind = super+d=new_split:right
 keybind = super+shift+d=new_split:down
 keybind = super+w=close_surface
-keybind = super+t=new_tab
+# Use an internal split instead of a native macOS tab so AeroSpace never sees
+# Cmd+T as a new window and creates phantom tile gaps.
+keybind = super+t=new_split:right
 keybind = super+n=new_window
 keybind = super+shift+enter=new_window
 keybind = super+shift+left_bracket=previous_tab
