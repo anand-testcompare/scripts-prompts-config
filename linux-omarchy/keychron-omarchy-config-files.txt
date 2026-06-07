@@ -14,19 +14,20 @@
 # Tmux - prefix remap, plugins, history
 ~/.tmux.conf
 
-# Hyprland bindings - Super+Q closes window, some keys route through ghostty-or-universal
-~/.config/hypr/bindings.conf
+# Hyprland Lua config (Omarchy 4 / Hyprland Lua parser)
+# Super+Q closes window; F13/F14/F15 adjust DP-1 scale; Super+Ctrl zooms cursor.
+~/.config/hypr/bindings.lua
 
-# Hyprland main config - sources Omarchy defaults + your overrides
-~/.config/hypr/hyprland.conf
+# Hyprland main config - requires Omarchy defaults + your overrides
+~/.config/hypr/hyprland.lua
 
 # Hyprland autostart - optional extra autostart processes
-~/.config/hypr/autostart.conf
+~/.config/hypr/autostart.lua
 
 # Hyprland overrides (not included in Omarchy defaults)
-~/.config/hypr/monitors.conf
-~/.config/hypr/input.conf
-~/.config/hypr/looknfeel.conf
+~/.config/hypr/monitors.lua
+~/.config/hypr/input.lua
+~/.config/hypr/looknfeel.lua
 ~/.config/hypr/hypridle.conf
 ~/.config/hypr/hyprlock.conf
 ~/.config/hypr/hyprsunset.conf

@@ -182,20 +182,42 @@ exec-once = xremap --device "YOUR_KEYBOARD_NAME" ~/.config/xremap/config.yml
 
 ---
 
-### Config Sync Checklist (Ghostty + tmux + xremap)
-- Update live configs: `~/.config/ghostty/config`, `~/.config/tmux/tmux.conf`, and `~/.config/xremap/config.yml`
+### Config Sync Checklist (Ghostty + tmux + xremap + Hyprland)
+- Update live configs: `~/.config/ghostty/config`, `~/.tmux.conf`, `~/.config/xremap/config.yml`, and `~/.config/hypr/*.lua`
 - Restart xremap: `systemctl --user restart xremap`
+- Reload Hyprland config: `hyprctl reload && hyprctl configerrors`
 - Reload Ghostty: Ctrl+Shift+, (or restart Ghostty)
-- Reload tmux: `tmux source-file ~/.config/tmux/tmux.conf`
+- Reload tmux: `tmux source-file ~/.tmux.conf`
 - Copy into repo:
   - `cp ~/.config/ghostty/config ~/scripts-prompts-config/linux-omarchy/configs/ghostty-config`
-  - `cp ~/.config/tmux/tmux.conf ~/scripts-prompts-config/linux-omarchy/configs/tmux.conf`
+  - `cp ~/.tmux.conf ~/scripts-prompts-config/linux-omarchy/configs/tmux.conf`
   - `cp ~/.config/xremap/config.yml ~/scripts-prompts-config/linux-omarchy/configs/xremap-config.yml`
-- Sanity check keys in Ghostty: Super+A/C/V/W/D and Ctrl+T
+  - `cp ~/.config/hypr/bindings.lua ~/scripts-prompts-config/linux-omarchy/configs/hypr-bindings.lua`
+  - `cp ~/.config/hypr/monitors.lua ~/scripts-prompts-config/linux-omarchy/configs/hypr-monitors.lua`
+- Sanity check keys in Ghostty: Super+A/C/V/W/D and Ctrl+T; sanity check F13/F14/F15 monitor scaling.
 
 ## 4. Hyprland Customizations
 
-### Hyprland 0.53+ config compatibility (Omarchy defaults)
+### Current Omarchy 4 / Hyprland Lua config
+
+Omarchy 4 migrated Hyprland user config from `.conf` files to Lua. The current, working versions are tracked in `linux-omarchy/configs/hypr-*.lua`.
+
+Restore them with:
+```bash
+mkdir -p ~/.config/hypr
+cp ~/scripts-prompts-config/linux-omarchy/configs/hypr-hyprland.lua ~/.config/hypr/hyprland.lua
+cp ~/scripts-prompts-config/linux-omarchy/configs/hypr-autostart.lua ~/.config/hypr/autostart.lua
+cp ~/scripts-prompts-config/linux-omarchy/configs/hypr-bindings.lua ~/.config/hypr/bindings.lua
+cp ~/scripts-prompts-config/linux-omarchy/configs/hypr-input.lua ~/.config/hypr/input.lua
+cp ~/scripts-prompts-config/linux-omarchy/configs/hypr-looknfeel.lua ~/.config/hypr/looknfeel.lua
+cp ~/scripts-prompts-config/linux-omarchy/configs/hypr-monitors.lua ~/.config/hypr/monitors.lua
+hyprctl reload
+hyprctl configerrors
+```
+
+Important migration note: with the Lua parser, `hyprctl keyword monitor ...` fails with `keyword can't work with non-legacy parsers`. Use Lua `hl.monitor(...)` / `hyprctl eval ...` instead. This matters for the F13/F14/F15 monitor-scale keys.
+
+### Legacy Hyprland 0.53+ config compatibility (old `.conf` configs)
 
 If you see `config option <misc:new_window_takes_over_fullscreen> does not exist` or `invalid field` errors, update the defaults to 0.53+ syntax:
 
@@ -330,32 +352,52 @@ cursor {
 }
 ```
 
-Add to `~/.config/hypr/bindings.conf`:
-```bash
-# Disable Omarchy's default SUPER+scroll workspace cycling
-unbind = SUPER, mouse_down
-unbind = SUPER, mouse_up
+In Omarchy 4, add this to `~/.config/hypr/bindings.lua`:
+```lua
+hl.unbind("SUPER + mouse_down")
+hl.unbind("SUPER + mouse_up")
 
-# Reduce scroll delay for responsive mouse wheel zoom
-binds {
-    scroll_event_delay = 50
-}
+hl.config({
+  binds = {
+    scroll_event_delay = 50,
+  },
+})
 
-# Zoom controls (keyboard with SUPER CTRL)
-binde = SUPER CTRL, equal, exec, hyprctl -q keyword cursor:zoom_factor $(hyprctl getoption cursor:zoom_factor -j | jq '.float * 1.1')
-binde = SUPER CTRL, minus, exec, hyprctl -q keyword cursor:zoom_factor $(hyprctl getoption cursor:zoom_factor -j | jq '(.float * 0.9) | if . < 1 then 1 else . end')
-binde = SUPER CTRL, KP_ADD, exec, hyprctl -q keyword cursor:zoom_factor $(hyprctl getoption cursor:zoom_factor -j | jq '.float * 1.1')
-binde = SUPER CTRL, KP_SUBTRACT, exec, hyprctl -q keyword cursor:zoom_factor $(hyprctl getoption cursor:zoom_factor -j | jq '(.float * 0.9) | if . < 1 then 1 else . end')
+local function set_cursor_zoom(zoom)
+  if zoom < 1 then
+    zoom = 1
+  end
+  hl.config({ cursor = { zoom_factor = zoom } })
+end
 
-# Zoom controls (mouse wheel with SUPER CTRL - avoids conflict with workspace scroll)
-bind = SUPER CTRL, mouse_down, exec, hyprctl -q keyword cursor:zoom_factor $(hyprctl getoption cursor:zoom_factor -j | jq '.float * 1.1')
-bind = SUPER CTRL, mouse_up, exec, hyprctl -q keyword cursor:zoom_factor $(hyprctl getoption cursor:zoom_factor -j | jq '(.float * 0.9) | if . < 1 then 1 else . end')
+local function multiply_cursor_zoom(multiplier)
+  set_cursor_zoom((hl.get_config("cursor.zoom_factor") or 1) * multiplier)
+end
 
-# Zoom reset
-bind = SUPER CTRL, 0, exec, hyprctl -q keyword cursor:zoom_factor 1
-bind = SUPER CTRL SHIFT, mouse_up, exec, hyprctl -q keyword cursor:zoom_factor 1
-bind = SUPER CTRL SHIFT, mouse_down, exec, hyprctl -q keyword cursor:zoom_factor 1
+o.bind("SUPER + CTRL + equal", "Zoom in", function()
+  multiply_cursor_zoom(1.1)
+end, { repeating = true })
+o.bind("SUPER + CTRL + minus", "Zoom out", function()
+  multiply_cursor_zoom(0.9)
+end, { repeating = true })
+o.bind("SUPER + CTRL + KP_ADD", "Zoom in", function()
+  multiply_cursor_zoom(1.1)
+end, { repeating = true })
+o.bind("SUPER + CTRL + KP_SUBTRACT", "Zoom out", function()
+  multiply_cursor_zoom(0.9)
+end, { repeating = true })
+o.bind("SUPER + CTRL + mouse_down", "Zoom in", function()
+  multiply_cursor_zoom(1.1)
+end)
+o.bind("SUPER + CTRL + mouse_up", "Zoom out", function()
+  multiply_cursor_zoom(0.9)
+end)
+o.bind("SUPER + CTRL + 0", "Zoom reset", function()
+  set_cursor_zoom(1)
+end)
 ```
+
+For old `.conf` configs, the previous `hyprctl keyword cursor:zoom_factor ...` commands were valid. They are not valid with the Lua parser.
 
 **Notes:**
 - Zoom only magnifies (values > 1.0). Values below 1.0 have no visual effect.
@@ -375,12 +417,31 @@ For 3840x2160, valid scales include:
 | 1.875 | 2048x1152 |
 | 2.0 | 1920x1080 |
 
-Add to `~/.config/hypr/bindings.conf` (uses F13/F14/F15 on Keychron keyboards):
-```bash
-# DP-1 monitor scale presets (F13/F14/F15 keys)
-bind = , XF86Tools, exec, hyprctl keyword monitor DP-1,preferred,auto,1.666667
-bind = , XF86Launch5, exec, hyprctl keyword monitor DP-1,preferred,auto,1.875
-bind = , XF86Launch6, exec, hyprctl keyword monitor DP-1,preferred,auto,2
+Add to `~/.config/hypr/bindings.lua` (uses F13/F14/F15 on Keychron keyboards):
+```lua
+local function set_dp1_scale(scale)
+  hl.monitor({ output = "DP-1", mode = "preferred", position = "auto", scale = scale })
+end
+
+o.bind("XF86Tools", "DP-1 scale 1.666667", function()
+  set_dp1_scale(1.666667)
+end)
+o.bind("XF86Launch5", "DP-1 scale 1.875", function()
+  set_dp1_scale(1.875)
+end)
+o.bind("XF86Launch6", "DP-1 scale 2", function()
+  set_dp1_scale(2)
+end)
+
+o.bind("F13", "DP-1 scale 1.666667", function()
+  set_dp1_scale(1.666667)
+end)
+o.bind("F14", "DP-1 scale 1.875", function()
+  set_dp1_scale(1.875)
+end)
+o.bind("F15", "DP-1 scale 2", function()
+  set_dp1_scale(2)
+end)
 ```
 
 **Note:** Keychron F13/F14/F15 send `XF86Tools`, `XF86Launch5`, `XF86Launch6`. Use `wev -f wl_keyboard:key` to find your keyboard's actual keycodes.

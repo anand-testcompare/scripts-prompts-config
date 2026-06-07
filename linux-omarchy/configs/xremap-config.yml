@@ -3,11 +3,12 @@
 # Super key for Hyprland window management
 
 keymap:
-  - name: Ghostty split shortcuts (avoid Ctrl+D)
+  - name: Terminal shortcuts (keep Ctrl+C as cancel; use Super+C for copy)
     application:
       only:
         - ghostty
         - com.mitchellh.ghostty
+        - org.wezfurlong.wezterm
     remap:
       Super_L-a: Ctrl-Shift-a      # Ghostty: select all
       Super_L-c: Ctrl-Shift-c      # Ghostty: copy
@@ -24,7 +25,7 @@ keymap:
       Super_L-Alt_L-Up: Super_L-Alt_L-Up
       Super_L-Alt_L-Down: Super_L-Alt_L-Down
       Super_L-Alt_L-Tab: Super_L-Alt_L-Tab
-      # Super+Alt+D passthrough (Hyprland dictation toggle / hyprwhspr)
+      # Super+Alt+D passthrough (Hyprland dictation toggle)
       Super_L-Alt_L-d: Super_L-Alt_L-d
       Super_L-Alt_R-d: Super_L-Alt_R-d
       Super_R-Alt_L-d: Super_R-Alt_L-d
@@ -42,6 +43,7 @@ keymap:
       not:
         - ghostty
         - com.mitchellh.ghostty
+        - org.wezfurlong.wezterm
     remap:
       # Basic editing
       Super_L-a: Ctrl-a          # Select all
@@ -73,7 +75,6 @@ keymap:
       
       # Other common shortcuts
       # Super_L-s: Ctrl-s        # Save - DISABLED: Cmd+S toggles scratchpad (use Ctrl+S to save)
-      Super_L-o: Ctrl-o          # Open
       Super_L-n: Ctrl-n          # New
       Super_L-p: Ctrl-p          # Print / Command palette
       Super_L-r: Ctrl-r          # Reload

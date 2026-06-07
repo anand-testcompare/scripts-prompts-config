@@ -10,7 +10,7 @@ PartOf=graphical-session.target
 Type=simple
 ExecStartPre=/bin/sleep 2
 # Use Hyprland-enabled xremap build (installed to ~/.local/bin without sudo).
-ExecStart=/home/anandpant/.local/bin/xremap-hypr --device "Keychron Keychron Q12 Max" --device "Logitech USB Receiver" /home/anandpant/.config/xremap/config.yml
+ExecStart=/home/anandpant/.local/bin/xremap-hypr --watch=device --device "Keychron Keychron Q12 Max" --device "Keychron  Keychron Link  Keyboard" --device "Logitech USB Receiver" /home/anandpant/.config/xremap/config.yml
 Restart=on-failure
 RestartSec=3
 
