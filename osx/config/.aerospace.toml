@@ -38,17 +38,54 @@ persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     outer.right = 0
 
 [[on-window-detected]]
-    # Keep common app windows responsive in tiling mode when they are created.
-    # This helps avoid a "nothing happens until I click" state after opening/closing
-    # terminals or browsers from app shortcuts.
-    if.app-name-regex-substring = 'Ghostty|Google Chrome|Zed|Cursor|Windsurf|Antigravity'
+    # Utility/overlay apps should never consume tile space on workspace 1.
+    # Keep them on the floating workspaces instead.
+    if.app-name-regex-substring = 'Wispr Flow|Helium|ChatGPT'
+    run = ['layout floating', 'move-node-to-workspace 2']
+
+[[on-window-detected]]
+    # Workspace 1 is the dedicated tiling workspace.
+    if.workspace = '1'
     run = 'layout tiling'
+
+[[on-window-detected]]
+    # Workspaces 2+ are floating workspaces.
+    if.workspace = '2'
+    run = 'layout floating'
+
+[[on-window-detected]]
+    if.workspace = '3'
+    run = 'layout floating'
+
+[[on-window-detected]]
+    if.workspace = '4'
+    run = 'layout floating'
+
+[[on-window-detected]]
+    if.workspace = '5'
+    run = 'layout floating'
+
+[[on-window-detected]]
+    if.workspace = '6'
+    run = 'layout floating'
+
+[[on-window-detected]]
+    if.workspace = '7'
+    run = 'layout floating'
+
+[[on-window-detected]]
+    if.workspace = '8'
+    run = 'layout floating'
+
+[[on-window-detected]]
+    if.workspace = '9'
+    run = 'layout floating'
 
 [mode.main.binding]
     # Layout toggles (defaults)
     alt-slash = 'layout tiles horizontal vertical'
-    # Keep alt-comma on tiles too to avoid accidental accordion mode.
-    alt-comma = 'layout tiles horizontal vertical'
+    # Alt+Comma / Alt+Period are used by terminal apps (e.g. Codex) for history/navigation.
+    # Do not bind them in AeroSpace; otherwise macOS intercepts them before Ghostty/Codex.
 
     # Focus (defaults)
     alt-h = 'focus left'
@@ -87,8 +124,8 @@ persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     # Maximize the focused window without creating a separate macOS fullscreen Space.
     cmd-ctrl-f = 'fullscreen --no-outer-gaps'
 
-    # Reuse Ghostty instead of forcing another app instance.
-    alt-enter = 'exec-and-forget open -a /Applications/Ghostty.app'
+    # Disabled: Alt+Enter is used by spreadsheet apps (e.g. Excel) to insert a newline in a cell.
+    # alt-enter = 'exec-and-forget open -na /Applications/Ghostty.app'
 
     # Workspaces (Omarchy-style on macOS)
     cmd-1 = 'workspace 1'
@@ -114,10 +151,7 @@ persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     cmd-shift-9 = 'move-node-to-workspace --focus-follows-window 9'
 
     # Backup bindings (in case cmd+1..9 is consumed by an app, e.g. browser tab switching)
-    alt-1 = 'workspace 1'
-    alt-2 = 'workspace 2'
-    alt-3 = 'workspace 3'
-    alt-4 = 'workspace 4'
+    # alt-1..4 intentionally left unbound so Option+1..4 are free for apps/macOS text input.
     alt-5 = 'workspace 5'
     alt-6 = 'workspace 6'
     alt-7 = 'workspace 7'
