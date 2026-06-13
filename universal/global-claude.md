@@ -2,6 +2,8 @@
 
 - Before marking any task as done, re-read the user's original request and verify every criterion was actually met and tested. Do not stop at "good enough" or "change made, it probably works" — check each specific ask against what was delivered. If something was missed or only partially addressed, fix it before declaring completion.
 
+- Prefer Graphite (`gt`) for anything beyond an inconsequential change: create/update logical stacked PRs instead of pushing directly to trunk or leaving meaningful work only local.
+
 - we should never resort to a dummy/mocked result in the event of some type of failure. masking errors is counter productive and its critical we instead gracefully catch the errors and expose them so they can be fixed, but never just introduce a fallback to a fake dataset because a real result failed.
 
 - **AI SDK (v6 or @beta)**: Use `ai` or `ai@beta` package only. Do NOT add provider-specific SDKs (`@ai-sdk/openai`, `@ai-sdk/google`, `openai`, `anthropic`, etc. unless specifically requested). However if openrouter is being used `@openrouter/ai-sdk-provider` is acceptable. Pass model strings directly (e.g., `"google/gemini-3.1-flash-lite-preview"`). Env var: `AI_GATEWAY_API_KEY` if using vercel gateway or `OPENROUTER_API_KEY` if using the openrouter provider.

@@ -37,6 +37,7 @@
 
 - Avoid leaving random stashes, local-only branches, or other local-only state behind when the task is complete.
 - Avoid important files existing only on the current machine. If a file matters, commit it and get it into the remote; otherwise delete it or add an appropriate `.gitignore` rule.
+- Prefer Graphite (`gt`) for anything beyond an inconsequential change: create/update logical stacked PRs instead of pushing directly to trunk or leaving meaningful work only local.
 - Prefer logical PRs that move complete, proven functionality into the remote. Do not split work into tiny PRs just to appear done.
 - If you temporarily stash or branch to get work done, clean that up before finishing unless the user explicitly asks to keep it around.
 - Use semantic branch prefixes that describe the work, such as `feat/`, `fix/`, `docs/`, `refactor/`, `chore/`, or `test/`. Do not use `codex/` as an agent-signature branch prefix.
