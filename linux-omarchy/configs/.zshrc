@@ -141,36 +141,6 @@ fi
 # sentry
 fpath=("/home/anandpant/.local/share/zsh/site-functions" $fpath)
 
-# Claude Code – max effort on supported models (overrides effortLevel in settings.json)
-export CLAUDE_CODE_EFFORT_LEVEL=max
-
-# Launch Claude Code with oh-my-claudecode: `omc` enables OMC for the
-# session, plain `claude` runs vanilla (the default in settings.json).
-omc() {
-  local settings="$HOME/.claude/settings.json"
-  local vanilla_sl="bash $HOME/scripts-prompts-config/universal/claude-statusline.sh"
-  local omc_sl='node $HOME/.claude/hud/omc-hud.mjs'
-
-  # flip to OMC
-  local tmp=$(mktemp)
-  jq '
-    .enabledPlugins["oh-my-claudecode@omc"] = true |
-    .statusLine.command = "'"$omc_sl"'"
-  ' "$settings" > "$tmp" && mv "$tmp" "$settings"
-
-  # run claude, then restore vanilla on exit
-  claude "$@"
-  local rc=$?
-
-  tmp=$(mktemp)
-  jq '
-    .enabledPlugins["oh-my-claudecode@omc"] = false |
-    .statusLine.command = "'"$vanilla_sl"'"
-  ' "$settings" > "$tmp" && mv "$tmp" "$settings"
-
-  return $rc
-}
-
 # Turso
 export PATH="$PATH:/home/anandpant/.turso"
 

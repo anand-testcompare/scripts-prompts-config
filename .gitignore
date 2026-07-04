@@ -21,8 +21,6 @@ YT:**/.pi/agent/settings.json
 SH:**/.pi/agent/auth.json
 ZJ:**/.omp/agent/config.yml
 NS:**/.omp/agent/auth.json
-RR:**/.claude-omc/settings.json
-BK:**/.claude-omc/state.json
 
 # local agent/runtime artifacts
 .memory/

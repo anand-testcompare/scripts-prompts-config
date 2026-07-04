@@ -59,9 +59,10 @@ fi
 ```
 
 Today that file enables:
-- `CLAUDE_CODE_EFFORT_LEVEL=max`
 - the Codex feature banner from `universal/codex-shell-tools.sh`
 - pnpm 11 environment defaults and common pnpm shortcuts (`p`, `pi`, `pa`, `pad`, `px`, `prun`)
+
+It intentionally does not export `CLAUDE_CODE_EFFORT_LEVEL`; Claude Code treats any value as an override, so leaving it absent lets `/effort` or ultracode choose the active effort.
 
 ---
 
@@ -160,19 +161,22 @@ disabled = true
 
 ## 3b. Claude Code settings
 
-Backed up Claude Code user settings live at:
+Backed up Claude Code user settings and keybindings live at:
 - `osx/config/.claude/settings.json`
+- `osx/config/.claude/keybindings.json`
 
 Copy them into place:
 ```bash
 mkdir -p ~/.claude
 cp osx/config/.claude/settings.json ~/.claude/settings.json
+cp osx/config/.claude/keybindings.json ~/.claude/keybindings.json
 ```
 
-This tracked config does two important things:
+This tracked config does these important things:
 - disables Claude Code commit and PR attribution globally with `"attribution": { "commit": "", "pr": "" }`
 - points Claude's status line at the tracked repo script
 - persists `/effort high` in `~/.claude/settings.json` as the fallback session default
+- binds Option+. / Option+, in Claude Code's model picker to increase/decrease effort
 
 ```json
 {
@@ -188,11 +192,7 @@ This tracked config does two important things:
 }
 ```
 
-If you want Claude Code to start at max effort on supported models, add this to `~/.zshrc`:
-
-```bash
-export CLAUDE_CODE_EFFORT_LEVEL=max
-```
+By default, the shell extras leave `CLAUDE_CODE_EFFORT_LEVEL` unset, because any value in that environment variable takes precedence over both `/effort` and the persisted `effortLevel` setting. Leaving the variable absent lets `/effort` or ultracode choose the active effort.
 
 The script lives at:
 - `universal/claude-statusline.sh`
