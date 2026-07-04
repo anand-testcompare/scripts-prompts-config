@@ -1,7 +1,0 @@
-{
-  "preset": "focused",
-  "elements": {
-    "gitRepo": true,
-    "gitBranch": true
-  }
-}
