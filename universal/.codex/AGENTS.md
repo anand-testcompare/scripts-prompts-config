@@ -11,6 +11,19 @@
 - Prefer clean, readable code: good structure/grouping, no dead code.
 - Make low-risk refactors as you go; avoid high-risk/complex refactors unless necessary.
 
+## Delegated Delivery
+
+- After aligning with the user on large product or feature buckets, act as the delivery owner and delegate implementation work to an agent in a dedicated Herdr worktree.
+- When implementation is ready, run a separate independent review agent. Route valid findings back through implementation, rerun affected and required tests, and keep iterating until review and CI are green.
+- Use logical Graphite PRs or stacks for meaningful work. Once review and CI are green, merge autonomously with `gt merge`, verify the resulting `main` state and production deployment or runtime surfaces, and clean up completed Herdr worktrees and branches.
+- Do not require the user to review or merge individual PRs. Escalate only genuine product or architecture decisions, unavailable credentials, or blockers that cannot be resolved independently.
+
+## Agent Model Selection
+
+- Use Codex `gpt-5.6-sol` for delegated planning, implementation, and review by default. Do not launch older Codex models such as `gpt-5.5`.
+- Set reasoning effort explicitly when launching an agent: use `low` or `medium` for simple, bounded work and `xhigh` for hard, broad, or high-risk work.
+- Claude models, including Opus, are optional only for genuinely UI/UX-heavy work. Keep non-UI implementation and review on Codex `gpt-5.6-sol`.
+
 ## Quality & Testing
 
 - Reproduce defects before fixing.
@@ -32,6 +45,7 @@
 ## Tools
 
 - you have: gh, vercel, gcloud, convex, d3k, sentry-cli, and others installed in the cli. most projects arent public and need to be accessed with authed tools.
+- When sending a prompt or instruction through Herdr, use `herdr pane run <pane_id> "<prompt>"`; it submits the text and `Enter` atomically. Do not use `herdr agent send` for prompts because it intentionally writes literal text without submitting it. Use `agent send` only when unsubmitted text is explicitly desired, and verify the target pane after every send.
 
 ## Git Workflow
 
