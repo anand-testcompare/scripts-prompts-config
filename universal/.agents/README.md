@@ -20,16 +20,16 @@ Use this repository as the source for shared custom skills:
 
 ```bash
 # List available skills
-npx skills add anand-testcompare/scripts-prompts-config -l
+npx skills add anandpant/scripts-prompts-config -l
 
 # Install one skill globally for Codex
-npx skills add anand-testcompare/scripts-prompts-config \
+npx skills add anandpant/scripts-prompts-config \
   --skill convex-delete-deployments \
   --agent codex \
   -g -y
 
 # Install all skills from this repo globally
-npx skills add anand-testcompare/scripts-prompts-config --all -g
+npx skills add anandpant/scripts-prompts-config --all -g
 ```
 
 ## Upstream Skills (Install Instead of Copying)
