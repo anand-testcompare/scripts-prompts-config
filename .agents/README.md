@@ -20,13 +20,13 @@ Do not symlink repo skills into `~/.agents/skills`. Install them with `npx skill
 List installable skills:
 
 ```bash
-npx skills add anand-testcompare/scripts-prompts-config -l
+npx skills add anandpant/scripts-prompts-config -l
 ```
 
 Install `acpx` into `~/.agents/skills`:
 
 ```bash
-npx skills add anand-testcompare/scripts-prompts-config \
+npx skills add anandpant/scripts-prompts-config \
   --skill acpx \
   -g -y
 ```
@@ -34,13 +34,13 @@ npx skills add anand-testcompare/scripts-prompts-config \
 Interactive install:
 
 ```bash
-npx skills add anand-testcompare/scripts-prompts-config
+npx skills add anandpant/scripts-prompts-config
 ```
 
 Install `codex-goal-prompting` into `~/.agents/skills`:
 
 ```bash
-npx skills add anand-testcompare/scripts-prompts-config \
+npx skills add anandpant/scripts-prompts-config \
   --skill codex-goal-prompting \
   -g -y
 ```
@@ -48,7 +48,7 @@ npx skills add anand-testcompare/scripts-prompts-config \
 Install `merged` into `~/.agents/skills`:
 
 ```bash
-npx skills add anand-testcompare/scripts-prompts-config \
+npx skills add anandpant/scripts-prompts-config \
   --skill merged \
   -g -y
 ```
@@ -56,7 +56,7 @@ npx skills add anand-testcompare/scripts-prompts-config \
 Install `readme-maintainer` into `~/.agents/skills`:
 
 ```bash
-npx skills add anand-testcompare/scripts-prompts-config \
+npx skills add anandpant/scripts-prompts-config \
   --skill readme-maintainer \
   -g -y
 ```
@@ -64,7 +64,7 @@ npx skills add anand-testcompare/scripts-prompts-config \
 Install `workos-agent-access` into `~/.agents/skills`:
 
 ```bash
-npx skills add anand-testcompare/scripts-prompts-config \
+npx skills add anandpant/scripts-prompts-config \
   --skill workos-agent-access \
   -g -y
 ```
@@ -72,7 +72,7 @@ npx skills add anand-testcompare/scripts-prompts-config \
 Install `workos-convex-authkit` into `~/.agents/skills`:
 
 ```bash
-npx skills add anand-testcompare/scripts-prompts-config \
+npx skills add anandpant/scripts-prompts-config \
   --skill workos-convex-authkit \
   -g -y
 ```
