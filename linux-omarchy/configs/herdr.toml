@@ -1,0 +1,12 @@
+onboarding = false
+
+# Match the terminal shortcuts used across Ghostty and tmux. Ctrl+Space opens
+# Herdr's one-shot prefix; prefix+g still enters persistent navigation mode.
+[keys]
+prefix = "ctrl+space"
+workspace_picker = "prefix+backtick"
+new_tab = "prefix+t"
+close_workspace = "prefix+ctrl+w"
+split_vertical = "prefix+d"
+split_horizontal = "prefix+shift+d"
+close_pane = "prefix+w"

@@ -14,6 +14,9 @@
 # Tmux - prefix remap, plugins, history
 ~/.tmux.conf
 
+# Herdr - tmux-style prefix and terminal-aligned pane/tab shortcuts
+~/.config/herdr/config.toml
+
 # Hyprland Lua config (Omarchy 4 / Hyprland Lua parser)
 # Super+Q closes window; F13/F14/F15 adjust DP-1 scale; Super+Ctrl zooms cursor.
 ~/.config/hypr/bindings.lua
@@ -140,6 +143,15 @@
 # TMUX
 # ----
 # Prefix               Ctrl+Space (instead of Ctrl+B)
+
+# HERDR
+# -----
+# Prefix               Ctrl+Space (instead of Ctrl+B)
+# Prefix+g             Persistent navigation mode
+# Prefix+d             Split right
+# Prefix+Shift+d       Split down
+# Prefix+t             New tab
+# Prefix+w             Close pane
 
 # ZED EDITOR
 # ----------
