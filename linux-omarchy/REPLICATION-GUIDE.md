@@ -182,15 +182,17 @@ exec-once = xremap --device "YOUR_KEYBOARD_NAME" ~/.config/xremap/config.yml
 
 ---
 
-### Config Sync Checklist (Ghostty + tmux + xremap + Hyprland)
-- Update live configs: `~/.config/ghostty/config`, `~/.tmux.conf`, `~/.config/xremap/config.yml`, and `~/.config/hypr/*.lua`
+### Config Sync Checklist (Ghostty + tmux + Herdr + xremap + Hyprland)
+- Update live configs: `~/.config/ghostty/config`, `~/.tmux.conf`, `~/.config/herdr/config.toml`, `~/.config/xremap/config.yml`, and `~/.config/hypr/*.lua`
 - Restart xremap: `systemctl --user restart xremap`
 - Reload Hyprland config: `hyprctl reload && hyprctl configerrors`
 - Reload Ghostty: Ctrl+Shift+, (or restart Ghostty)
 - Reload tmux: `tmux source-file ~/.tmux.conf`
+- Reload Herdr: `herdr server reload-config`
 - Copy into repo:
   - `cp ~/.config/ghostty/config ~/scripts-prompts-config/linux-omarchy/configs/ghostty-config`
   - `cp ~/.tmux.conf ~/scripts-prompts-config/linux-omarchy/configs/tmux.conf`
+  - `cp ~/.config/herdr/config.toml ~/scripts-prompts-config/linux-omarchy/configs/herdr.toml`
   - `cp ~/.config/xremap/config.yml ~/scripts-prompts-config/linux-omarchy/configs/xremap-config.yml`
   - `cp ~/.config/hypr/bindings.lua ~/scripts-prompts-config/linux-omarchy/configs/hypr-bindings.lua`
   - `cp ~/.config/hypr/monitors.lua ~/scripts-prompts-config/linux-omarchy/configs/hypr-monitors.lua`
@@ -756,6 +758,17 @@ tmux source-file ~/.config/tmux/tmux.conf
 
 Notes:
 - `bell-action none` plus disabled activity/silence actions prevent tmux from marking the terminal urgent when a CLI emits BEL.
+
+### Herdr keybindings
+
+Restore the matching Herdr prefix and pane controls:
+```bash
+mkdir -p ~/.config/herdr
+cp /home/anandpant/scripts-prompts-config/linux-omarchy/configs/herdr.toml ~/.config/herdr/config.toml
+herdr server reload-config
+```
+
+The bindings mirror the terminal muscle memory: `Ctrl+Space` is the prefix, then `g` enters persistent navigation, `d` splits right, `Shift+D` splits down, `t` opens a tab, and `w` closes the current pane.
 
 ---
 
