@@ -75,6 +75,8 @@ function createSkillTagAutocompleteProvider(
   pi: ExtensionAPI,
   current: AutocompleteProvider,
 ): AutocompleteProvider {
+  const ownedItems = new WeakSet<AutocompleteItem>();
+
   return {
     triggerCharacters: ["$"],
 
@@ -90,11 +92,12 @@ function createSkillTagAutocompleteProvider(
         return current.getSuggestions(lines, cursorLine, cursorCol, options);
       }
 
+      for (const item of items) ownedItems.add(item);
       return { prefix: `$${query}`, items };
     },
 
     applyCompletion(lines, cursorLine, cursorCol, item, prefix) {
-      if (!prefix.startsWith("$")) {
+      if (!ownedItems.has(item)) {
         return current.applyCompletion(lines, cursorLine, cursorCol, item, prefix);
       }
 
