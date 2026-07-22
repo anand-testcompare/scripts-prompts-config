@@ -94,6 +94,10 @@ function createSkillTagAutocompleteProvider(
     },
 
     applyCompletion(lines, cursorLine, cursorCol, item, prefix) {
+      if (!prefix.startsWith("$")) {
+        return current.applyCompletion(lines, cursorLine, cursorCol, item, prefix);
+      }
+
       const currentLine = lines[cursorLine] ?? "";
       const beforePrefix = currentLine.slice(0, cursorCol - prefix.length);
       const afterCursor = currentLine.slice(cursorCol);
