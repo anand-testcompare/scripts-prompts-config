@@ -17,6 +17,7 @@ This repository exists to keep working configs, scripts, and prompts reproducibl
 - Keep bash and zsh behavior in sync when editing shared shell config.
 - Preserve safety-first restore behavior if touching backup/restore scripts.
 - Keep committed configs free of machine-specific secrets unless a file is explicitly intended as a template.
+- Never install, configure, or recommend OMC, OMX, Oh My Claude Code, or related variants.
 
 ## Config Sync
 

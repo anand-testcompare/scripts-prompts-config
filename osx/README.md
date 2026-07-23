@@ -161,15 +161,15 @@ disabled = true
 
 ## 3b. Claude Code settings
 
-Backed up Claude Code user settings and keybindings live at:
+Backed up Claude Code user settings and universal reasoning keybindings live at:
 - `osx/config/.claude/settings.json`
-- `osx/config/.claude/keybindings.json`
+- `universal/.claude/keybindings.json`
 
-Copy them into place:
+Copy the settings and install the shared Claude/Pi shortcuts:
 ```bash
 mkdir -p ~/.claude
 cp osx/config/.claude/settings.json ~/.claude/settings.json
-cp osx/config/.claude/keybindings.json ~/.claude/keybindings.json
+./universal/install-agent-reasoning-shortcuts.sh
 ```
 
 This tracked config does these important things:
@@ -192,7 +192,7 @@ This tracked config does these important things:
 }
 ```
 
-By default, the shell extras leave `CLAUDE_CODE_EFFORT_LEVEL` unset, because any value in that environment variable takes precedence over both `/effort` and the persisted `effortLevel` setting. Leaving the variable absent lets `/effort` or ultracode choose the active effort.
+By default, the shell extras leave `CLAUDE_CODE_EFFORT_LEVEL` unset, because any value in that environment variable takes precedence over both `/effort` and the persisted `effortLevel` setting. Leaving the variable absent lets the interactive effort controls choose the active effort.
 
 The script lives at:
 - `universal/claude-statusline.sh`
