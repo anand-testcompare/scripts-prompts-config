@@ -20,7 +20,7 @@ cp osx/config/.aerospace.toml ~/.aerospace.toml
 cp osx/config/.skhdrc ~/.skhdrc
 mkdir -p ~/.claude
 cp osx/config/.claude/settings.json ~/.claude/settings.json
-cp osx/config/.claude/keybindings.json ~/.claude/keybindings.json
+./universal/install-agent-reasoning-shortcuts.sh
 mkdir -p ~/.config/ghostty
 cp osx/config/.config/ghostty/config ~/.config/ghostty/config
 mkdir -p ~/.config/wezterm
@@ -53,7 +53,9 @@ Both Bash and Zsh configurations include:
 - **System Info**: Memory (`meminfo`), CPU (`cpuinfo`), disk usage (`diskinfo`)
 - **Clipboard**: Cross-platform clipboard support (`pbcopy`, `pbpaste` via xclip)
 - **Secure Credentials**: Automatic loading from `.shell_secrets`
-- **Claude Code**: Tracked macOS user settings disable commit/PR attribution, point the Claude status line at `universal/claude-statusline.sh`, persist `effortLevel: "high"` as a fallback, add Option+. / Option+, effort keybindings in the model picker, and leave `CLAUDE_CODE_EFFORT_LEVEL` unset so `/effort` or ultracode can choose the active effort
+- **Agent Reasoning Shortcuts**: `universal/install-agent-reasoning-shortcuts.sh` installs Option+. / Option+, effort controls for Claude Code and Pi; Codex already provides the same bindings natively
+- **No OMC/OMX**: These agent wrappers are intentionally unsupported; `universal/purge-omc-omx.sh` removes their packages, plugins, wrappers, state, caches, and shell configuration
+- **Claude Code**: Tracked macOS user settings disable commit/PR attribution, point the Claude status line at `universal/claude-statusline.sh`, persist `effortLevel: "high"` as a fallback, and leave `CLAUDE_CODE_EFFORT_LEVEL` unset so `/effort` can choose the active effort
 - **Exa MCP**: Tracked Codex/OpenCode configs use Exa's hosted MCP endpoint and enable `web_search_exa`, `web_search_advanced_exa`, `get_code_context_exa`, and `crawling_exa`. Keep any `EXA_API_KEY` usage local-only; do not commit it into repo-managed MCP URLs. Tracked OpenCode config lives under `universal/.config/opencode/`, including `opencode.jsonc` and `tui.jsonc`.
 - **Codex Feature Banner**: `universal/codex-shell-tools.sh` wraps `codex` so interactive launches can compare current flags against a clean-home default baseline and highlight only the drifted values
 - **pnpm 11 Defaults**: `osx/scripts/configure_pnpm_defaults.sh` activates `pnpm@11.5.1` through Corepack and writes persistent pnpm security defaults (`minimumReleaseAge`, exotic subdependency blocking, strict dependency builds) to pnpm's user config.
@@ -99,6 +101,8 @@ scripts-prompts-config/
 │       └── update_packages.sh
 PX:└── universal/                 # Cross-platform scripts, hooks, and agent configs
 TV:    ├── codex-shell-tools.sh
+PB:    ├── install-agent-reasoning-shortcuts.sh
+PB:    ├── purge-omc-omx.sh
 PB:    ├── convert_to_svg.sh
 RT:    ├── kill-dev.sh
 RT:    ├── optimize_logos.sh
@@ -107,7 +111,8 @@ JK:    ├── .pi/agent/
 QV:    │   ├── settings.json.template    # Pi agent configuration template
 EX:    │   └── extensions/
 AL:    │       ├── exit-command.ts       # Adds /exit alias for quitting pi
-AL:    │       └── merged.ts             # Adds /merged post-merge follow-up prompt
+AL:    │       ├── merged.ts             # Adds /merged post-merge follow-up prompt
+AL:    │       └── thinking-level-shortcuts.ts # Adds Alt+. / Alt+, reasoning controls
 RM:    ├── .omp/agent/
 HQ:    │   └── config.yml.template         # OMP agent configuration template
 RT:    └── git-hooks/
